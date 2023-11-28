@@ -42,7 +42,7 @@ export default class BoxElement extends BaseElement {
         this.scrollableContainer = new ScrollComponent("Nothing found", 5.0)
             .setX(new CenterConstraint())
             .setY((10).percent())
-            .setWidth((60).percent())
+            .setWidth((80).percent())
             .setHeight((80).percent())
             .setChildOf(this.mainBlock)
         

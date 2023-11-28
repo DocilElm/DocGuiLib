@@ -30,8 +30,21 @@ export default class BaseElement {
             ? (ElementUtils.percentToPixel(y, Renderer.screen.getHeight())).pixels()
             : (y).pixels()
 
-        this.cleanValues.x = x
-        this.cleanValues.y = y
+        this.cleanValues.x = this.x.value
+        this.cleanValues.y = this.y.value
+
+        return this
+    }
+
+    /**
+     * - Force sets the position values to the given ones (dosent automatically assign them to percent or pixels)
+     * @param {Number} x 
+     * @param {Number} y 
+     * @returns this for method chaining
+     */
+    _setPosition(x, y) {
+        this.x = x
+        this.y = y
 
         return this
     }
@@ -51,8 +64,21 @@ export default class BaseElement {
             ? (ElementUtils.percentToPixel(height, Renderer.screen.getHeight())).pixels()
             : (height).pixels()
 
-        this.cleanValues.width = width
-        this.cleanValues.height = height
+        this.cleanValues.width = this.width.value
+        this.cleanValues.height = this.height.value
+
+        return this
+    }
+
+    /**
+     * - Force sets the size values to the given ones (dosent automatically assign them to percent or pixels)
+     * @param {Number} width 
+     * @param {Number} height 
+     * @returns this for method chaining
+     */
+    _setSize(width, height) {
+        this.width = width
+        this.height = height
 
         return this
     }
