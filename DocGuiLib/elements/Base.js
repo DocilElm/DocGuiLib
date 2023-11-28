@@ -6,6 +6,13 @@ export default class BaseElement {
         this.y = (y).percent()
         this.width = (w).percent()
         this.height = (h).percent()
+
+        this.cleanValues = {
+            x: x,
+            y: y,
+            width: w,
+            height: h
+        }
     }
 
     /**
@@ -17,13 +24,14 @@ export default class BaseElement {
      */
     setPosition(x, y, isPercent = true) {
         this.x = isPercent
-            //? (x).percent()
             ? (ElementUtils.percentToPixel(x, Renderer.screen.getWidth())).pixels()
             : (x).pixels()
         this.y = isPercent
-            //? (y).percent()
             ? (ElementUtils.percentToPixel(y, Renderer.screen.getHeight())).pixels()
             : (y).pixels()
+
+        this.cleanValues.x = x
+        this.cleanValues.y = y
 
         return this
     }
@@ -37,13 +45,14 @@ export default class BaseElement {
      */
     setSize(width, height, isPercent = true) {
         this.width = isPercent
-            // ? (width).percent()
             ? (ElementUtils.percentToPixel(width, Renderer.screen.getWidth())).pixels()
             : (width).pixels()
         this.height = isPercent
-            // ? (height).percent()
             ? (ElementUtils.percentToPixel(height, Renderer.screen.getHeight())).pixels()
             : (height).pixels()
+
+        this.cleanValues.width = width
+        this.cleanValues.height = height
 
         return this
     }

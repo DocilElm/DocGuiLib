@@ -8,7 +8,11 @@ import TextInputElement from "./elements/TextInput"
 const gui = new HandleGui().setCommand("testdoc")
 const btn1 = new ButtonElement().setString("test").addHandler((comp, event) => ChatLib.chat("test 1"))
 const btn2 = new ButtonElement().setString("test 2").addHandler((comp, event) => { ChatLib.chat("test 2") })
-const textInput = new TextInputElement("test 3", 1, 50)
+
+const textInput = new TextInputElement("test 3", 1, 25).addOnKeyTypeEvent((inputText) => {
+    ChatLib.chat(inputText)
+})
+
 const element = new BoxElement()
 
 element

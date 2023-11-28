@@ -6,7 +6,7 @@ export default class BoxElement extends BaseElement {
     constructor() {
         super(10, 10, 13, 50)
 
-        this.text = "default text"
+        this.text = "Placeholder"
         this.buttons = new Set()
     }
 
