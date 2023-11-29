@@ -4,28 +4,26 @@ import BaseElement from "./Base"
 
 export default class SliderElement extends BaseElement {
     /**
-     * @param {String} string 
-     * @param {[Number, Number, Number]} settings Min value, max value, default value
+     * @param {[Number, Number, Number]} settings [Min, Max, Starting Value]
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Number} width 
+     * @param {Number} width The width in pixels
      * @param {Number} height 
      */
-    constructor(string = "Placeholder", settings = [ 1, 10, 2 ], x, y, width, height) {
+    constructor(settings = [ 1, 10, 2 ], x, y, width, height) {
         super(x, y, width, height)
 
-        this.string = string
         this.value = null
         this.settings = settings
 
+        this.initialPercent = settings[2] / 10
+        this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(this.initialPercent) : this.x
         this.isDragging = false
-        this.steps = parseInt((this.cleanValues.width / settings[1]) - 1)
+        this.offset = 0
 
         // Handlers
         this.onMouseDrag = null
         this.shouldCancel = false
-
-        this.offset = 0
     }
 
     /**
@@ -58,19 +56,19 @@ export default class SliderElement extends BaseElement {
             .setColor(new ElementUtils.JavaColor(0 / 255, 0 / 255, 0 / 255, 80 / 255))
         
         this.sliderBox = new UIRoundedRectangle(3)
-            .setX(this.x)
+            .setX(this.initialX)
             .setY(new CenterConstraint())
             .setWidth(new AspectConstraint(1))
             .setHeight((9).pixels())
             .setChildOf(this.sliderBar)
         
-        this.sliderValue = new UIText("0")
+        this.sliderValue = new UIText(this.settings[2])
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
             .setChildOf(this.sliderBox)
 
         this.compBox = new UIRoundedRectangle(3)
-            .setWidth(new RelativeConstraint(0))
+            .setWidth(new RelativeConstraint(this.initialPercent))
             .setHeight((100).percent())
             .setChildOf(this.sliderBar)
 
@@ -103,12 +101,24 @@ export default class SliderElement extends BaseElement {
                 // Makes the round number a percent basing it off of the parent
                 const percent = (roundNumber - this.sliderBar.getLeft()) / this.sliderBar.getWidth()
                 // Makes the rounded number into an actual slider value
-                this.value = parseInt(MathLib.map(roundNumber - this.sliderBar.getLeft(), 0, this.cleanValues.width, this.settings[0], this.settings[1]))
+                this.value = parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
 
                 this.sliderValue.setText(this.value)
                 this.sliderBox.setX(new RelativeConstraint(percent))
                 this.compBox.setWidth(new RelativeConstraint(percent))
             })
+
+        this.sliderBar.onMouseClick((component, event) => {
+            const percent = event.relativeX / component.getWidth()
+            this.value = parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
+
+            this.sliderValue.setText(this.value)
+            this.sliderBox.setX(new RelativeConstraint(percent))
+            this.compBox.setWidth(new RelativeConstraint(percent))
+
+            this.isDragging = true
+        })
+
         return this.sliderBar
     }
 }
