@@ -4,7 +4,7 @@ import BaseElement from "./Base"
 import TextInputElement from "./TextInput"
 
 export default class ColorPickerElement extends BaseElement {
-    constructor(string = "Placedholder", x, y, width, height) {
+    constructor(string = "Placeholder", x, y, width, height) {
         super(x, y, width, height)
 
         this.string = string

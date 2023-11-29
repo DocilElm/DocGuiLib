@@ -5,6 +5,7 @@ import ButtonElement from "./elements/Button"
 import BoxElement from "./elements/Box"
 import TextInputElement from "./elements/TextInput"
 import ColorPickerElement from "./elements/ColorPicker"
+import SliderElement from "./elements/Slider"
 
 const gui = new HandleGui().setCommand("testdoc")
 const btn1 = new ButtonElement().setString("test").addHandler((comp, event) => ChatLib.chat("test 1"))
@@ -16,12 +17,22 @@ const textInput = new TextInputElement("test 3", 1, 25).addOnKeyTypeEvent((input
 
 const pickColor = new ColorPickerElement("Hex color", 1, 35).setSize(50, 50, false)
 
+const slider = new SliderElement("asda", [0, 10, 2], 1, 50, 100).addOnMouseDragEvent((x, y, button, component) => {
+    ChatLib.chat("test slider")
+})
+
+// This is an example with the slider's built-in event being cancelled
+const slider2 = new SliderElement("asda", [0, 10, 2], 1, 50, 100).addOnMouseDragEvent((x, y, button, component) => {
+    // you can make your custom animation for it here
+    component.setX((x).pixel())
+}, true)
+
 const element = new BoxElement()
 
 element
     .setPosition(10, 10)
     .setText("testing block")
-    .addButton([btn1, btn2, textInput, pickColor])
+    .addButton([btn1, btn2, textInput, pickColor, slider])
 
 gui.draw(element)
 

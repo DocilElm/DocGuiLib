@@ -36,4 +36,5 @@ export default class ElementUtils {
 
         return rgb
     }
+      
 }

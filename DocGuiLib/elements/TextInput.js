@@ -1,4 +1,4 @@
-import { UIBlock, UITextInput } from "../../Elementa"
+import { UIRoundedRectangle, UITextInput } from "../../Elementa"
 import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
@@ -56,11 +56,12 @@ export default class TextInputElement extends BaseElement {
      * @returns {TextInputElement}
      */
     _create() {
-        this.bgBox = new UIBlock(new ElementUtils.JavaColor(0 / 255, 0 / 255, 0 / 255, 80 / 255))
+        this.bgBox = new UIRoundedRectangle(3)
             .setX(this.x)
             .setY(this.y)
             .setWidth((this.cleanValues.width).pixels())
             .setHeight((this.cleanValues.height).pixels())
+            .setColor(new ElementUtils.JavaColor(0 / 255, 0 / 255, 0 / 255, 80 / 255))
 
         this.textInput = new UITextInput(this.string)
             .setX((2).pixels())

@@ -1,4 +1,4 @@
-import { AdditiveConstraint, Animations, CenterConstraint, ConstantColorConstraint, SiblingConstraint, UIRoundedRectangle, UIWrappedText, animate } from "../../Elementa"
+import { AdditiveConstraint, Animations, CenterConstraint, ConstantColorConstraint, SiblingConstraint, UIBlock, UIRoundedRectangle, UIWrappedText, animate } from "../../Elementa"
 import ElementUtils from "../core/Element"
 
 export default class ButtonElement {
