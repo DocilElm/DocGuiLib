@@ -6,6 +6,7 @@ import BoxElement from "./elements/Box"
 import TextInputElement from "./elements/TextInput"
 import ColorPickerElement from "./elements/ColorPicker"
 import SliderElement from "./elements/Slider"
+import SelectionElement from "./elements/Selection"
 
 const gui = new HandleGui().setCommand("testdoc")
 const btn1 = new ButtonElement().setString("test").addHandler((comp, event) => ChatLib.chat("test 1"))
@@ -27,12 +28,14 @@ const slider2 = new SliderElement("asda", [0, 10, 2], 1, 50, 100).addOnMouseDrag
     component.setX((x).pixel())
 }, true)
 
+const selection = new SelectionElement(["a", "test", "same"], 1, 58, 100, 5)
+
 const element = new BoxElement()
 
 element
     .setPosition(10, 10)
     .setText("testing block")
-    .addButton([btn1, btn2, textInput, pickColor, slider])
+    .addButton([btn1, btn2, textInput, pickColor, slider, selection])
 
 gui.draw(element)
 
