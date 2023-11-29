@@ -44,4 +44,7 @@ TODO:
 change the [Button] and [Box] classes to either their own thing
 or make them be able to set manual positions and stuff so others can use it
 instead of the current system where it auto aligns with itself
+\n
+also add default initial values in the params of the components
+so that the user can have a starting point in case they use it for config
 */

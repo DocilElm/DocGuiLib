@@ -21,12 +21,11 @@ export default class SliderElement extends BaseElement {
         this.isDragging = false
         this.steps = parseInt((this.cleanValues.width / settings[1]) - 1)
 
-        this.grabOffset = null
-        this.grabAmount = 0
-
         // Handlers
         this.onMouseDrag = null
         this.shouldCancel = false
+
+        this.offset = 0
     }
 
     /**
@@ -76,15 +75,17 @@ export default class SliderElement extends BaseElement {
             .setChildOf(this.sliderBar)
 
         // Slider events
+        // Taking the same approach as [https://github.com/EssentialGG/Vigilance/blob/master/src/main/kotlin/gg/essential/vigilance/gui/settings/Slider.kt]
+        // since the slider was flickering a lot with the previous code
         this.sliderBox
-            .onMouseClick(() => {
+            .onMouseClick((component, event) => {
                 this.isDragging = true
-                this.grabAmount++
+                this.offset = event.relativeX - (component.getWidth() / 2)
             })
 
             .onMouseRelease(() => {
                 this.isDragging = false
-                this.grabAmount = 0
+                this.offset = 0
             })
 
             .onMouseDrag((component, x, y, button) => {
@@ -93,14 +94,20 @@ export default class SliderElement extends BaseElement {
                 if (this.onMouseDrag) this.onMouseDrag(x, y, button, component)
 
                 // Cancel the custom event for this component
-                if (this.shouldCancel) return
-                
-                const mouseX = parseInt(Math.min(Math.max(x, this.settings[0]), this.cleanValues.width))
-                this.value = parseInt(MathLib.map(mouseX, 0, this.cleanValues.width, this.settings[0], this.settings[1]))
+                if (this.shouldCancel || !this.offset) return
+
+                const clamped = (x + component.getLeft()) - this.offset
+                // Rounds the number if it's above max it returns max value
+                // if it's below min it reutnrs min value
+                const roundNumber = Math.min(Math.max(clamped, this.sliderBar.getLeft()), this.sliderBar.getRight())
+                // Makes the round number a percent basing it off of the parent
+                const percent = (roundNumber - this.sliderBar.getLeft()) / this.sliderBar.getWidth()
+                // Makes the rounded number into an actual slider value
+                this.value = parseInt(MathLib.map(roundNumber - this.sliderBar.getLeft(), 0, this.cleanValues.width, this.settings[0], this.settings[1]))
 
                 this.sliderValue.setText(this.value)
-                this.sliderBox.setX((this.steps * this.value).pixels())
-                this.compBox.setWidth((this.steps * this.value).pixels())
+                this.sliderBox.setX(new RelativeConstraint(percent))
+                this.compBox.setWidth(new RelativeConstraint(percent))
             })
         return this.sliderBar
     }
