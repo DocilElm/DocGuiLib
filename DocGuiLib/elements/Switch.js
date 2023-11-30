@@ -55,6 +55,8 @@ export default class SwitchComponent extends BaseElement {
 
         // Event handlers
         this.switchBox.onMouseClick((component) => {
+            if (this._triggerEvent(this.onMouseClick, component) === 1) return
+
             this.enabled = !this.enabled
 
             animate(component, (animation) => {
@@ -70,11 +72,15 @@ export default class SwitchComponent extends BaseElement {
         this.hoverText.hide()
 
         this.text.onMouseEnter((component) => {
+            if (this._triggerEvent(this.onMouseEnter, component) === 1) return
+
             component.hide()
             this.hoverText.unhide(true)
         })
 
         this.hoverText.onMouseLeave((component) => {
+            if (this._triggerEvent(this.onMouseLeave, component) === 1) return
+
             this.text.unhide(true)
             component.hide()
         })

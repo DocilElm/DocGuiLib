@@ -13,25 +13,32 @@ const gui = new HandleGui().setCommand("testdoc")
 const btn1 = new ButtonElement().setString("test").addHandler((comp, event) => ChatLib.chat("test 1"))
 const btn2 = new ButtonElement().setString("test 2").addHandler((comp, event) => { ChatLib.chat("test 2") })
 
-const textInput = new TextInputElement("test 3", 1, 25).addOnKeyTypeEvent((inputText) => {
+const textInput = new TextInputElement("test 3", 1, 25).onKeyTypeEvent((inputText) => {
     ChatLib.chat(inputText)
 })
 
-const pickColor = new ColorPickerElement("Hex color", 1, 35).setSize(50, 50, false)
+const pickColor = new ColorPickerElement("Hex color", 1, 35).setSize(100, 20, false)
 
-const slider = new SliderElement([0, 10, 0], 1, 50, 100).addOnMouseDragEvent((x, y, button, component) => {
-    ChatLib.chat("test slider")
+const slider = new SliderElement([0, 10, 0], 1, 50, 100).onMouseDragEvent((x, y, button, component) => {
+    ChatLib.chat(`slider test`)
 })
 
 // This is an example with the slider's built-in event being cancelled
-const slider2 = new SliderElement([0, 10, 2], 1, 50, 100).addOnMouseDragEvent((x, y, button, component) => {
-    // you can make your custom animation for it here
-    component.setX((x).pixel())
-}, true)
+const slider2 = new SliderElement([0, 10, 2], 1, 80, 100)
+    .onMouseDragEvent((x, y, button, component) => {
+        // you can make your custom animation for it here if you want to
+        component.setX((x).pixel())
+    }, true)
+    .onMouseClickEvent(() => { // we also need to cancel the click event since this is for the on click custom event feature
+        ChatLib.chat("something")
+    }, true)
 
 const selection = new SelectionElement(["a", "test", "same"], 1, 58, 100, 5)
 
 const switchcomp = new SwitchComponent(false, "test 4", "This is a test description", 1, 65, 100, 8)
+    .onMouseClickEvent((comp) => ChatLib.chat(`component clicked ${comp}`))
+    .onMouseEnterEvent((comp) => ChatLib.chat(`A: ${comp}`))
+    .onMouseLeaveEvent((comp) => ChatLib.chat(`B: ${comp}`))
 
 const element = new BoxElement()
 

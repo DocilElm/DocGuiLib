@@ -1,4 +1,4 @@
-import { CenterConstraint, UIRoundedRectangle, UIText } from "../../Elementa"
+import { AspectConstraint, CenterConstraint, UIRoundedRectangle, UIText } from "../../Elementa"
 import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 import TextInputElement from "./TextInput"
@@ -23,12 +23,12 @@ export default class ColorPickerElement extends BaseElement {
     // This element will be taking the same approach as [https://github.com/Debuggingss/ClickGui/blob/master/src/main/kotlin/dev/debuggings/clickgui/elements/ColorPickerElement.kt]
     // since it's way easier than making a gradient and picking from there
     _create() {
-        this.blockColor = new UIRoundedRectangle(4)
+        this.blockColor = new UIRoundedRectangle(3)
 
         this.textInput = new TextInputElement(this.string)
             ._setPosition(this.x, this.y)
             ._setSize(this.width, this.height)
-            .addOnKeyTypeEvent((text) => {
+            .onKeyTypeEvent((text) => {
                 let colors = ElementUtils.hexToRgb(text)
 
                 if (!text) colors = [ 255, 255, 255 ]
@@ -47,15 +47,15 @@ export default class ColorPickerElement extends BaseElement {
             ._create()
 
         this.hashTagText = new UIText("#")
-            .setX((this.x.value - 6.5).pixels())
+            .setX((1).pixel(false, true))
             .setY(new CenterConstraint())
             .setChildOf(this.textInput)
 
         this.blockColor
-            .setX((this.x.value + this.width.value - 8).percent())
+            .setX((1).pixel(true))
             .setY(new CenterConstraint())
-            .setWidth((12).pixels())
-            .setHeight((12).pixels())
+            .setWidth(new AspectConstraint(1))
+            .setHeight((12).pixel())
             .setChildOf(this.textInput)
 
         return this.textInput

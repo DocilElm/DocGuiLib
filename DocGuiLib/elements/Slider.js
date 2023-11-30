@@ -20,10 +20,6 @@ export default class SliderElement extends BaseElement {
         this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(this.initialPercent) : this.x
         this.isDragging = false
         this.offset = 0
-
-        // Handlers
-        this.onMouseDrag = null
-        this.shouldCancel = false
     }
 
     /**
@@ -32,19 +28,6 @@ export default class SliderElement extends BaseElement {
      */
     getValue() {
         return this.value
-    }
-
-    /**
-     * - The function to trigger whenever this component is dragged (returns [mouseX, mouseY, button, component])
-     * @param {Function} fn 
-     * @param {boolean} shouldCancel Whether to cancel this component's custom event for onMouseDrag
-     * @returns this for method chaining
-     */
-    addOnMouseDragEvent(fn, shouldCancel = false) {
-        this.onMouseDrag = fn
-        this.shouldCancel = shouldCancel
-
-        return this
     }
 
     _create() {
@@ -89,10 +72,8 @@ export default class SliderElement extends BaseElement {
             .onMouseDrag((component, x, y, button) => {
                 if (!this.isDragging) return
 
-                if (this.onMouseDrag) this.onMouseDrag(x, y, button, component)
-
                 // Cancel the custom event for this component
-                if (this.shouldCancel || !this.offset) return
+                if (this._triggerEvent(this.onMouseDrag, x, y, button, component) === 1 || !this.offset) return
 
                 const clamped = (x + component.getLeft()) - this.offset
                 // Rounds the number if it's above max it returns max value
@@ -109,6 +90,8 @@ export default class SliderElement extends BaseElement {
             })
 
         this.sliderBar.onMouseClick((component, event) => {
+            if (this._triggerEvent(this.onMouseClick) === 1) return
+
             const percent = event.relativeX / component.getWidth()
             this.value = parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
 

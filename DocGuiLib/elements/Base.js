@@ -13,13 +13,20 @@ export default class BaseElement {
             width: w,
             height: h
         }
+
+        // Event handlers
+        this.onMouseClick = null
+        this.onMouseEnter = null
+        this.onMouseLeave = null
+        this.onMouseDrag = null
+        this.onKeyType = null
     }
 
     /**
      * - Sets the [x y] position for this element
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Boolean} isPercent Wheather the position is percent or not
+     * @param {Boolean} isPercent Whether the position is percent or not
      * @returns this for method chaining
      */
     setPosition(x, y, isPercent = true) {
@@ -81,5 +88,82 @@ export default class BaseElement {
         this.height = height
 
         return this
+    }
+
+    /**
+     * - Adds a function to be ran whenever this event is triggered
+     * @param {Boolean} shouldCancel Whether it should cancel this component's custom event handler or not
+     * @param {Function} fn The function to be ran whenever this is triggered
+     * @returns this for method chaining
+     */
+    onMouseClickEvent(fn, shouldCancel = false) {
+        this.onMouseClick = [ shouldCancel, fn ]
+
+        return this
+    }
+
+    /**
+     * - Adds a function to be ran whenever this event is triggered
+     * @param {Boolean} shouldCancel Whether it should cancel this component's custom event handler or not
+     * @param {Function} fn The function to be ran whenever this is triggered
+     * @returns this for method chaining
+     */
+    onMouseEnterEvent(fn, shouldCancel = false) {
+        this.onMouseEnter = [ shouldCancel, fn ]
+
+        return this
+    }
+
+    /**
+     * - Adds a function to be ran whenever this event is triggered
+     * @param {Boolean} shouldCancel Whether it should cancel this component's custom event handler or not
+     * @param {Function} fn The function to be ran whenever this is triggered
+     * @returns this for method chaining
+     */
+    onMouseLeaveEvent(fn, shouldCancel = false) {
+        this.onMouseLeave = [ shouldCancel, fn ]
+
+        return this
+    }
+
+    /**
+     * - Adds a function to be ran whenever this event is triggered
+     * @param {Boolean} shouldCancel Whether it should cancel this component's custom event handler or not
+     * @param {Function} fn The function to be ran whenever this is triggered
+     * @returns this for method chaining
+     */
+    onMouseDragEvent(fn, shouldCancel = false) {
+        this.onMouseDrag = [ shouldCancel, fn ]
+
+        return this
+    }
+
+    /**
+     * - Adds a function to be ran whenever this event is triggered
+     * @param {Boolean} shouldCancel Whether it should cancel this component's custom event handler or not
+     * @param {Function} fn The function to be ran whenever this is triggered
+     * @returns this for method chaining
+     */
+    onKeyTypeEvent(fn, shouldCancel = false) {
+        this.onKeyType = [ shouldCancel, fn ]
+
+        return this
+    }
+
+    /**
+     * - Triggers the event handler for the given handler
+     * @param {[Boolean, Function]} handler The handler to trigger from (e.g this.onMouseClick)
+     * @param  {...any} args The arguments to trigger the handler function with
+     * @returns {null|Number}
+     */
+    _triggerEvent(handler, ...args) {
+        // If no handler is given we return [null]
+        if (!handler) return null
+
+        // Trigger the event handler (the function) set by the user
+        handler[1](...args)
+
+        // If [shouldCancel] is enabled we [return 1] so the custom event handler dosen't get triggered
+        if (handler[0]) return 1
     }
 }
