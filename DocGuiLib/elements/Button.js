@@ -1,16 +1,17 @@
-import { AdditiveConstraint, Animations, CenterConstraint, ConstantColorConstraint, SiblingConstraint, UIBlock, UIRoundedRectangle, UIWrappedText, animate } from "../../Elementa"
+import { Animations, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, UIWrappedText, animate } from "../../Elementa"
 import ElementUtils from "../core/Element"
+import BaseElement from "./Base"
 
-export default class ButtonElement {
+export default class ButtonElement extends BaseElement {
     /**
      * @param {String} string The string text to render on the button
      * @param {Function} handler The function to trigger whenever this element is clicked
      * @param {Boolean} toggle The starting toggle value
      */
-    constructor(string = "Placeholder", handler = null, toggle = false) {
+    constructor(string = "Placeholder", toggle = false, x, y, width, height) {
+        super(x, y, width, height)
 
         this.string = string
-        this.handler = handler
         this.toggle = toggle
 
         this.enabledColor = new ElementUtils.JavaColor(255 / 255, 255 / 255, 255 / 255, 80/255)
@@ -60,71 +61,41 @@ export default class ButtonElement {
     }
 
     /**
-     * - Adds the handler for whenever this [Button] is clicked it'll trigger that function
-     * @param {Function} func 
-     * @returns this for method chaining
-     */
-    addHandler(func) {
-        this.handler = func
-
-        return this
-    }
-
-    /**
      * - Creates this [Button] component and returns it
      * @returns {Button}
      */
     _create() {
-        this.btn = new UIRoundedRectangle(5)
-            .setX(new CenterConstraint())
-            .setY(new AdditiveConstraint(new SiblingConstraint(), (3).pixels()))
-            .setWidth((100).pixels())
-            .setHeight((20).pixels())
-
-            .onMouseClick((comp, event) => {
-                if (!this.handler) return
-
-                this.toggle = !this.toggle
-
-                animate(comp, (animation) => {
-                    animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
-                        new ConstantColorConstraint(this.getCurrentColor()),
-                        0
-                        )
-                })
-
-                this.handler(comp, event)
-            })
-
+        this.button = new UIRoundedRectangle(3)
+            .setX(this.x)
+            .setY(this.y)
+            .setWidth(this.width)
+            .setHeight(this.height)
             .setColor(this.getCurrentColor())
 
-        new UIWrappedText(this.string, true, null, true)
-                .setX(new CenterConstraint())
-                .setY(new CenterConstraint())
-                .setWidth((100).pixels())
-                .setChildOf(this.btn)
+        this.text = new UIWrappedText(this.string)
+            .setX(new CenterConstraint())
+            .setY(new CenterConstraint())
+            .setChildOf(this.button)
 
-        return this.btn
+        // Event handlers
+        this.button.onMouseClick((comp, event) => {
+            if (this._triggerEvent(this.onMouseClick) === 1) return
+            
+            animate(comp, (animation) => {
+                animation.setColorAnimation(
+                    Animations.OUT_EXP,
+                    0.5,
+                    new ConstantColorConstraint(this.enabledColor),
+                    0
+                    )
+                
+                animation.onComplete(() => {
+                    comp.setColor(this.disabledColor)
+                })
+            })
+        })
+
+
+        return this.button
     }
 }
-
-// Maybe if i make this better it would actually be useful
-// export class ButtonArrayElement {
-//     constructor(array = []) {
-//         this.btnArray = array
-//     }
-
-//     create() {
-//         if (!(this.btnArray instanceof Array)) return
-
-//         let buttons = []
-
-//         this.btnArray.forEach(button => {
-//             buttons.push(new ButtonElement(button[0], button[1], button[2]))
-//         })
-
-//         return buttons
-//     }
-// }

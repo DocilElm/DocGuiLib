@@ -3,8 +3,8 @@ import BaseElement from "./Base"
 import { CenterConstraint, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
 
 export default class BoxElement extends BaseElement {
-    constructor() {
-        super(10, 10, 20, 50)
+    constructor(x = 10, y = 10, width = 20, height = 50) {
+        super(x, y, width, height)
 
         this.text = "Placeholder"
         this.buttons = new Set()

@@ -34,6 +34,11 @@ export default class SelectionElement extends BaseElement {
             .setHeight(this.height)
             .setColor(new ElementUtils.JavaColor(0 / 255, 0 / 255, 0 / 255, 80 / 255))
 
+        this.textValue = new UIText(this.selections[0])
+            .setX(new CenterConstraint())
+            .setY(new CenterConstraint())
+            .setChildOf(this.box)
+
         this.leftArrow = new UIText("❰")
             .setX((1).pixel())
             .setY(new CenterConstraint())
@@ -41,11 +46,6 @@ export default class SelectionElement extends BaseElement {
 
         this.rightArrow = new UIText("❱")
             .setX((1).pixel(true))
-            .setY(new CenterConstraint())
-            .setChildOf(this.box)
-
-        this.textValue = new UIText(this.selections[0])
-            .setX(new CenterConstraint())
             .setY(new CenterConstraint())
             .setChildOf(this.box)
 

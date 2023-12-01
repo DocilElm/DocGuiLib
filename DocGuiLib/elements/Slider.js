@@ -1,4 +1,4 @@
-import { AspectConstraint, CenterConstraint, RelativeConstraint, UIRoundedRectangle, UIText } from "../../Elementa"
+import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, RelativeConstraint, UIRoundedRectangle, UIText, animate } from "../../Elementa"
 import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
@@ -31,18 +31,22 @@ export default class SliderElement extends BaseElement {
     }
 
     _create() {
-        this.sliderBar = new UIRoundedRectangle(4)
+        // TODO: fix the [sliderBox] going off bound of [sliderBar]
+        // so it dosent let the user drag it back if it's at max [width/value]
+
+        this.sliderBar = new UIRoundedRectangle(3)
             .setX(this.x)
             .setY(this.y)
-            .setWidth((this.cleanValues.width).pixels())
-            .setHeight((2).pixels())
+            .setWidth(this.width)
+            .setHeight((10).pixels())
             .setColor(new ElementUtils.JavaColor(0 / 255, 0 / 255, 0 / 255, 80 / 255))
         
         this.sliderBox = new UIRoundedRectangle(3)
             .setX(this.initialX)
             .setY(new CenterConstraint())
             .setWidth(new AspectConstraint(1))
-            .setHeight((9).pixels())
+            .setHeight((15).pixels())
+            .setColor(new ElementUtils.JavaColor(1, 1, 1, 80 / 255))
             .setChildOf(this.sliderBar)
         
         this.sliderValue = new UIText(this.settings[2])
@@ -53,6 +57,7 @@ export default class SliderElement extends BaseElement {
         this.compBox = new UIRoundedRectangle(3)
             .setWidth(new RelativeConstraint(this.initialPercent))
             .setHeight((100).percent())
+            .setColor(new ElementUtils.JavaColor(1, 1, 1, 80 / 255))
             .setChildOf(this.sliderBar)
 
         // Slider events
@@ -87,6 +92,27 @@ export default class SliderElement extends BaseElement {
                 this.sliderValue.setText(this.value)
                 this.sliderBox.setX(new RelativeConstraint(percent))
                 this.compBox.setWidth(new RelativeConstraint(percent))
+            })
+            .onMouseEnter((comp) => {
+                animate(comp, (animation) => {
+                    animation.setColorAnimation(
+                        Animations.OUT_EXP,
+                        0.5,
+                        new ConstantColorConstraint(new ElementUtils.JavaColor(0, 0, 0, 80 / 255)),
+                        0
+                        )
+                })
+            })
+            
+            .onMouseLeave((comp) => {
+                animate(comp, (animation) => {
+                    animation.setColorAnimation(
+                        Animations.OUT_EXP,
+                        0.5,
+                        new ConstantColorConstraint(new ElementUtils.JavaColor(1, 1, 1, 80 / 255)),
+                        0
+                        )
+                })
             })
 
         this.sliderBar.onMouseClick((component, event) => {

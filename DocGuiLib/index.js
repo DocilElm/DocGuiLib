@@ -10,16 +10,19 @@ import SelectionElement from "./elements/Selection"
 import SwitchComponent from "./elements/Switch"
 
 const gui = new HandleGui().setCommand("testdoc")
-const btn1 = new ButtonElement().setString("test").addHandler((comp, event) => ChatLib.chat("test 1"))
-const btn2 = new ButtonElement().setString("test 2").addHandler((comp, event) => { ChatLib.chat("test 2") })
+const btn1 = new ButtonElement("test", false, 1, 5, 80, 8)
+    .onMouseClickEvent(() => ChatLib.chat("test 1"))
 
-const textInput = new TextInputElement("test 3", 1, 25).onKeyTypeEvent((inputText) => {
+const btn2 = new ButtonElement("test 2", true, 1, 15, 80, 8)
+    .onMouseClickEvent(() => ChatLib.chat("test 2"), true)
+
+const textInput = new TextInputElement("test 3", 1, 25, 80).onKeyTypeEvent((inputText) => {
     ChatLib.chat(inputText)
 })
 
-const pickColor = new ColorPickerElement("Hex color", 1, 35).setSize(100, 20, false)
+const pickColor = new ColorPickerElement("Hex color", 1, 35, 80, 8)
 
-const slider = new SliderElement([0, 10, 0], 1, 50, 100).onMouseDragEvent((x, y, button, component) => {
+const slider = new SliderElement([0, 10, 0], 1, 50, 80, 8).onMouseDragEvent((x, y, button, component) => {
     ChatLib.chat(`slider test`)
 })
 
@@ -33,9 +36,9 @@ const slider2 = new SliderElement([0, 10, 2], 1, 80, 100)
         ChatLib.chat("something")
     }, true)
 
-const selection = new SelectionElement(["a", "test", "same"], 1, 58, 100, 5)
+const selection = new SelectionElement(["a", "test", "same"], 1, 58, 80, 5)
 
-const switchcomp = new SwitchComponent(false, "test 4", "This is a test description", 1, 65, 100, 8)
+const switchcomp = new SwitchComponent(false, "test 4", 1, 65, 80, 8)
     .onMouseClickEvent((comp) => ChatLib.chat(`component clicked ${comp}`))
     .onMouseEnterEvent((comp) => ChatLib.chat(`A: ${comp}`))
     .onMouseLeaveEvent((comp) => ChatLib.chat(`B: ${comp}`))
@@ -57,4 +60,10 @@ instead of the current system where it auto aligns with itself
 \n
 also add default initial values in the params of the components
 so that the user can have a starting point in case they use it for config
+\n
+maybe make the user be able to click the color picker box to select
+common colors from and whenever they want more custom ones just use the hex
+\n
+also make all components be able to have their own coloring on everything
+text scale too in case this is needed
 */

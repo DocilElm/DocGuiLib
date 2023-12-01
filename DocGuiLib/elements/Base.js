@@ -1,7 +1,7 @@
 import ElementUtils from "../core/Element"
 
 export default class BaseElement {
-    constructor(x = 1, y = 1, w = 1, h = 1) {
+    constructor(x = 1, y = 1, w = 1, h = 1, toggle = false) {
         this.x = (x).percent()
         this.y = (y).percent()
         this.width = (w).percent()
@@ -13,6 +13,11 @@ export default class BaseElement {
             width: w,
             height: h
         }
+        this.toggle = toggle
+        this.colors = {
+            enabled: [ 255, 255, 255, 80 ],
+            disabled: [ 0, 0, 0, 80 ]
+        }
 
         // Event handlers
         this.onMouseClick = null
@@ -20,6 +25,10 @@ export default class BaseElement {
         this.onMouseLeave = null
         this.onMouseDrag = null
         this.onKeyType = null
+    }
+
+    _getCurrentColor() {
+        return this.toggle ? ElementUtils.getJavaColor(this.colors.enabled) : ElementUtils.getJavaColor(this.colors.disabled)
     }
 
     /**

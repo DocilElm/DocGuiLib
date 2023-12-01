@@ -36,5 +36,14 @@ export default class ElementUtils {
 
         return rgb
     }
+
+    /**
+     * - Returns the java color for this array [ r, g, b, a ]
+     * @param {[Number,Number,Number,Number]} param0 
+     * @returns {JavaColor}
+     */
+    static getJavaColor([r, g, b, a]) {
+        return new this.JavaColor(r / 255, g / 255, b / 255, a / 255)
+    }
       
 }

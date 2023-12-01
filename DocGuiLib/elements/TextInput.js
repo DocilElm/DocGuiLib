@@ -40,8 +40,8 @@ export default class TextInputElement extends BaseElement {
         this.textInput = new UITextInput(this.string)
             .setX((1).pixels())
             .setY((1).pixels())
-            .setWidth(this.width)
-            .setHeight(this.height)
+            .setWidth((100).percent())
+            .setHeight((100).percent())
             .setChildOf(this.bgBox)
 
         this.textInput.onMouseClick((_, __) => {
