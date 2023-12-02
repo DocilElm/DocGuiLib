@@ -19,7 +19,7 @@ export default class CheckboxElement extends BaseElement {
         this.checkBox.onMouseClick((component) => {
             if (this._triggerEvent(this.onMouseClick, component) === 1) return
 
-            this.toggle = !this.toggle
+            this.value = !this.value
 
             animate(component, (animation) => {
                 animation.setColorAnimation(

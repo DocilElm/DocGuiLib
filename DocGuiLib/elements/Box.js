@@ -4,7 +4,7 @@ import { CenterConstraint, ScrollComponent, UIRoundedRectangle, UIText } from ".
 
 export default class BoxElement extends BaseElement {
     constructor(x = 10, y = 10, width = 20, height = 50) {
-        super(x, y, width, height)
+        super(x, y, width, height, null, null, "Box")
 
         this.text = "Placeholder"
         this.buttons = new Set()

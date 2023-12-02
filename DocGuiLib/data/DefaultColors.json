@@ -1,10 +1,13 @@
 {
     "Button": {
-        "backgroundBox": [0, 0, 0, 0],
+        "backgroundBox": [0, 0, 0, 80],
+        "backgroundBox1": [0, 0, 0, 0],
         "lines": [0, 0, 0, 80],
         "textColor": [255, 255, 255, 255],
         "textScale": 1,
-        "clicked": [255, 255, 255, 80]
+        "mouseClick": [255, 255, 255, 80],
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [0, 0, 0, 0]
     },
     "TextInput": {
         "backgroundBox": [0, 0, 0, 80],

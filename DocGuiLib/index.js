@@ -12,10 +12,10 @@ import SwitchComponent from "./elements/Switch"
 const gui = new HandleGui("data/DefaultColors.json").setCommand("testdoc")
 const colorScheme = gui.getColorScheme()
 
-const btn1 = new ButtonElement("test", false, 1, 5, 80, 8)
+const btn1 = new ButtonElement("test", 1, 5, 80, 8)
     .onMouseClickEvent(() => ChatLib.chat("test 1"))
 
-const btn2 = new ButtonElement("test 2", true, 1, 15, 80, 8)
+const btn2 = new ButtonElement("test 2", 1, 15, 80, 8)
     .onMouseClickEvent(() => ChatLib.chat("test 2"), true)
 
 const textInput = new TextInputElement("test 3", 1, 25, 80).onKeyTypeEvent((inputText) => {

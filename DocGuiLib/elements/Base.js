@@ -1,19 +1,20 @@
 import ElementUtils from "../core/Element"
 
 export default class BaseElement {
-    constructor(x = 1, y = 1, w = 1, h = 1, toggle = false, colorScheme = null, elementType = null) {
+    constructor(x = 1, y = 1, width = 1, height = 1, value, colorScheme = null, elementType = null) {
         this.x = (x).percent()
         this.y = (y).percent()
-        this.width = (w).percent()
-        this.height = (h).percent()
+        this.width = (width).percent()
+        this.height = (height).percent()
 
         this.cleanValues = {
             x: x,
             y: y,
-            width: w,
-            height: h
+            width: width,
+            height: height
         }
-        this.toggle = toggle
+        this.value = value
+        this.string = null
         this.colorScheme = colorScheme
         this.elementType = elementType
 
@@ -27,30 +28,25 @@ export default class BaseElement {
     }
 
     /**
-     * - Gets the current state color of the given element using default colors
-     * @param {String} elementType 
-     * @returns {JavaColor}
+     * - Sets the [value] variable for this component
+     * @param {Any} value 
+     * @returns this for method chaining
      */
-    _getCurrentColor(elementType = "Toggle") {
-        return this.toggle ? ElementUtils.getJavaColor(this.colorScheme[this.elementType ?? elementType].enabled) : ElementUtils.getJavaColor(this.colorScheme[this.elementType ?? elementType].disabled)
+    setValue(value) {
+        this.value = value
+
+        return this
     }
 
     /**
-     * - Gets this element's color scheme for the given colorObject
-     * @param {String} colorObj 
-     * @returns {JavaColor}
+     * - Sets the [string] variable for this component
+     * @param {String} string 
+     * @returns this for method
      */
-    _getColor(colorObj) {
-        return ElementUtils.getJavaColor(this.colorScheme[this.elementType][colorObj])
-    }
+    setString(string) {
+        this.string = string
 
-    /**
-     * - Gets the schemeObject from the color scheme
-     * @param {String} schemeObj 
-     * @returns {Number|String|Array}
-     */
-    _getSchemeValue(schemeObj) {
-        return this.colorScheme[this.elementType][schemeObj]
+        return this
     }
 
     /**
@@ -84,32 +80,32 @@ export default class BaseElement {
      * - Sets the [x y] position for this element
      * @param {Number} x 
      * @param {Number} y 
-     * @param {Boolean} isPercent Whether the position is percent or not
+     * @param {Boolean} isPercent Whether it should be percent values or not (true by default)
+     * @param {Boolean} useCustomPercent Whether to use a custom percent system or the built in elementa one (false by default)
      * @returns this for method chaining
      */
-    setPosition(x, y, isPercent = true) {
-        this.x = isPercent
-            ? (ElementUtils.percentToPixel(x, Renderer.screen.getWidth())).pixels()
-            : (x).pixels()
-        this.y = isPercent
-            ? (ElementUtils.percentToPixel(y, Renderer.screen.getHeight())).pixels()
-            : (y).pixels()
+    setPosition(x, y, isPercent = true, useCustomPercent = false) {
+        if (isPercent && !useCustomPercent) {
+            this.x = (x).percent()
+            this.y = (y).percent()
 
-        this.cleanValues.x = this.x.value
-        this.cleanValues.y = this.y.value
+            this._setCleanValues(x, y)
 
-        return this
-    }
+            return this
+        }
+        else if (isPercent && useCustomPercent) {
+            this.x = (ElementUtils.percentToPixel(x, Renderer.screen.getWidth())).pixels()
+            this.y = (ElementUtils.percentToPixel(y, Renderer.screen.getHeight())).pixels()
 
-    /**
-     * - Force sets the position values to the given ones (dosent automatically assign them to percent or pixels)
-     * @param {Number} x 
-     * @param {Number} y 
-     * @returns this for method chaining
-     */
-    _setPosition(x, y) {
-        this.x = x
-        this.y = y
+            this._setCleanValues(x, y)
+
+            return this
+        }
+
+        this.x = (x).pixels()
+        this.y = (y).pixels()
+
+        this._setCleanValues(x, y)
 
         return this
     }
@@ -118,34 +114,60 @@ export default class BaseElement {
      * Sets the [width, height] for this element
      * @param {Number} width 
      * @param {Number} height 
-     * @param {Boolean} isPercent 
+     * @param {Boolean} isPercent Whether it should be percent values or not (true by default)
+     * @param {Boolean} useCustomPercent Whether to use a custom percent system or the built in elementa one (false by default)
      * @returns this for method chaining
      */
-    setSize(width, height, isPercent = true) {
-        this.width = isPercent
-            ? (ElementUtils.percentToPixel(width, Renderer.screen.getWidth())).pixels()
-            : (width).pixels()
-        this.height = isPercent
-            ? (ElementUtils.percentToPixel(height, Renderer.screen.getHeight())).pixels()
-            : (height).pixels()
+    setSize(width, height, isPercent = true, useCustomPercent = false) {
+        if (isPercent && !useCustomPercent) {
+            this.width = (width).percent()
+            this.height = (height).percent()
 
-        this.cleanValues.width = this.width.value
-        this.cleanValues.height = this.height.value
+            this._setCleanValues(null, null, width, height)
+
+            return this
+        }
+        else if (isPercent && useCustomPercent) {
+            this.width = (ElementUtils.percentToPixel(width, Renderer.screen.getWidth())).pixels()
+            this.height = (ElementUtils.percentToPixel(height, Renderer.screen.getHeight())).pixels()
+
+            this._setCleanValues(null, null, width, height)
+
+            return this
+        }
+
+        this.width = (width).pixels()
+        this.height = (height).pixels()
+
+        this._setCleanValues(null, null, width, height)
 
         return this
     }
 
     /**
-     * - Force sets the size values to the given ones (dosent automatically assign them to percent or pixels)
-     * @param {Number} width 
-     * @param {Number} height 
-     * @returns this for method chaining
+     * - Gets the current toggle state [true/false] if this component uses it
+     * @returns {Boolean|null}
      */
-    _setSize(width, height) {
-        this.width = width
-        this.height = height
+    getToggle() {
+        if (!(this.value instanceof Boolean)) return null
 
-        return this
+        return this.value
+    }
+
+    /**
+     * - Gets the [value] variable for this component
+     * @returns {Any}
+     */
+    getValue() {
+        return this.value
+    }
+
+    /**
+     * - Gets the [string] variable for this component
+     * @returns {String}
+     */
+    getString() {
+        return this.string
     }
 
     /**
@@ -218,6 +240,76 @@ export default class BaseElement {
         this.onKeyType = [ shouldCancel, fn ]
 
         return this
+    }
+
+    /**
+     * - Force sets the size values to the given ones (dosent automatically assign them to percent or pixels)
+     * @param {Number} width 
+     * @param {Number} height 
+     * @returns this for method chaining
+     */
+    _setSize(width, height) {
+        this.width = width
+        this.height = height
+
+        return this
+    }
+
+    /**
+     * - Force sets the position values to the given ones (dosent automatically assign them to percent or pixels)
+     * @param {Number} x 
+     * @param {Number} y 
+     * @returns this for method chaining
+     */
+    _setPosition(x, y) {
+        this.x = x
+        this.y = y
+
+        return this
+    }
+
+    /**
+     * - Sets the clean values for these variables
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} width 
+     * @param {Number} height 
+     * @returns this for method chaining
+     */
+    _setCleanValues(x = null, y = null, width = null, height = null) {
+        this.cleanValues.x = x ?? this.cleanValues.x
+        this.cleanValues.y = y ?? this.cleanValues.y
+        this.cleanValues.width = width ?? this.cleanValues.width
+        this.cleanValues.height = height ?? this.cleanValues.height
+
+        return this
+    }
+
+    /**
+     * - Gets the current state color of the given element using default colors
+     * @param {String} elementType 
+     * @returns {JavaColor}
+     */
+    _getCurrentColor(elementType = "Toggle") {
+        return this.value ? ElementUtils.getJavaColor(this.colorScheme[this.elementType ?? elementType].enabled) : ElementUtils.getJavaColor(this.colorScheme[this.elementType ?? elementType].disabled)
+    }
+
+    /**
+     * - Gets this element's color scheme for the given colorObject
+     * @param {String} colorObj 
+     * @returns {JavaColor}
+     */
+    _getColor(colorObj) {
+        return ElementUtils.getJavaColor(this.colorScheme[this.elementType][colorObj])
+    }
+
+    /**
+     * - Gets the schemeObject from the color scheme
+     * @param {String} schemeObj 
+     * @returns {Number|String|Array}
+     */
+    _getSchemeValue(schemeObj) {
+        return this.colorScheme[this.elementType][schemeObj]
     }
 
     /**
