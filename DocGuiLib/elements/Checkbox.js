@@ -3,10 +3,12 @@ import BaseElement from "./Base"
 
 export default class CheckboxElement extends BaseElement {
     constructor(check = false, x, y, width, height) {
-        super(x, y, width, height, check)
+        super(x, y, width, height, check, null, "Checkbox")
     }
 
-    _create() {
+    _create(colorScheme = {}) {
+        if (!this.colorScheme) this.colorScheme = colorScheme
+
         this.checkBox = new UIRoundedRectangle(3)
             .setX(this.x)
             .setY(this.y)

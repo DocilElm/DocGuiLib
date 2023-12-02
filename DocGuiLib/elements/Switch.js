@@ -1,25 +1,28 @@
 import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, UIText, animate } from "../../Elementa"
-import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class SwitchComponent extends BaseElement {
     constructor(enabled = false, string = "Placeholder", x, y, width, height) {
-        super(x, y, width, height, enabled)
+        super(x, y, width, height, enabled, null, "Switch")
 
         this.string = string
     }
 
-    _create() {
+    _create(colorScheme) {
+        if (!this.colorScheme) this.colorScheme = colorScheme
+
         this.box = new UIRoundedRectangle(3)
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setColor(new ElementUtils.JavaColor(0 / 255, 0 / 255, 0 / 255, 80 / 255))
+            .setColor(this._getColor("backgroundBox"))
 
         this.text = new UIText(this.string)
             .setX((1).pixel())
             .setY(new CenterConstraint())
+            .setTextScale((this._getSchemeValue("textScale")).pixel())
+            .setColor(this._getColor("textColor"))
             .setChildOf(this.box)
 
         this.switchBox = new UIRoundedRectangle(3)

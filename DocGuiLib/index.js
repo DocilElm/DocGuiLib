@@ -9,7 +9,9 @@ import SliderElement from "./elements/Slider"
 import SelectionElement from "./elements/Selection"
 import SwitchComponent from "./elements/Switch"
 
-const gui = new HandleGui().setCommand("testdoc")
+const gui = new HandleGui("data/DefaultColors.json").setCommand("testdoc")
+const colorScheme = gui.getColorScheme()
+
 const btn1 = new ButtonElement("test", false, 1, 5, 80, 8)
     .onMouseClickEvent(() => ChatLib.chat("test 1"))
 
@@ -42,6 +44,15 @@ const switchcomp = new SwitchComponent(false, "test 4", 1, 65, 80, 8)
     .onMouseClickEvent((comp) => ChatLib.chat(`component clicked ${comp}`))
     .onMouseEnterEvent((comp) => ChatLib.chat(`A: ${comp}`))
     .onMouseLeaveEvent((comp) => ChatLib.chat(`B: ${comp}`))
+    // Changing the default [backgroundBox] color scheme
+    .setSchemeValue("backgroundBox", [0, 255, 0, 80], colorScheme)
+    // Changing the text color to blue
+    // see how passing [colorScheme] is no longer necessary
+    // that's because the above method already set it up for us
+    .setSchemeValue("textColor", [0, 0, 255, 255])
+    // Changing the text scale
+    // This will always translate into pixels
+    .setSchemeValue("textScale", 0.7)
 
 const element = new BoxElement()
 

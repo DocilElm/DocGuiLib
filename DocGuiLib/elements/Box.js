@@ -25,7 +25,9 @@ export default class BoxElement extends BaseElement {
      * - Makes a tab component with the given values [x, y, w, h]
      * @returns UI block component
      */
-    _create() {
+    _create(colorScheme = {}) {
+        if (!this.colorScheme) this.colorScheme = colorScheme
+
         this.mainBlock = new UIRoundedRectangle(5)
             .setX(this.x)
             .setY(this.y)
@@ -49,7 +51,7 @@ export default class BoxElement extends BaseElement {
         this.buttons?.forEach(button => {
             // Creates a button
             button
-                ._create()
+                ._create(this.colorScheme)
                 .setChildOf(this.scrollableContainer)
         })
         

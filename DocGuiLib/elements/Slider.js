@@ -70,6 +70,8 @@ export default class SliderElement extends BaseElement {
             })
 
             .onMouseRelease(() => {
+                if (this._triggerEvent(this.onMouseRelease, this.getValue()) === 1) return
+
                 this.isDragging = false
                 this.offset = 0
             })
