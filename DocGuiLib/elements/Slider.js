@@ -1,5 +1,4 @@
 import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, RelativeConstraint, UIRoundedRectangle, UIText, animate } from "../../Elementa"
-import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class SliderElement extends BaseElement {
@@ -11,9 +10,8 @@ export default class SliderElement extends BaseElement {
      * @param {Number} height 
      */
     constructor(settings = [ 1, 10, 2 ], x, y, width, height) {
-        super(x, y, width, height)
+        super(x, y, width, height, settings, null, "Slider")
 
-        this.value = null
         this.settings = settings
 
         this.initialPercent = settings[2] / 10
@@ -22,15 +20,9 @@ export default class SliderElement extends BaseElement {
         this.offset = 0
     }
 
-    /**
-     * - Gets the current slider's value
-     * @returns {Number}
-     */
-    getValue() {
-        return this.value
-    }
+    _create(colorScheme = {}) {
+        if (!this.colorScheme) this.setColorScheme(colorScheme)
 
-    _create() {
         // TODO: fix the [sliderBox] going off bound of [sliderBar]
         // so it dosent let the user drag it back if it's at max [width/value]
 
@@ -39,25 +31,27 @@ export default class SliderElement extends BaseElement {
             .setY(this.y)
             .setWidth(this.width)
             .setHeight((10).pixels())
-            .setColor(new ElementUtils.JavaColor(0 / 255, 0 / 255, 0 / 255, 80 / 255))
+            .setColor(this._getColor("backgroundBar"))
         
         this.sliderBox = new UIRoundedRectangle(3)
             .setX(this.initialX)
             .setY(new CenterConstraint())
             .setWidth(new AspectConstraint(1))
             .setHeight((15).pixels())
-            .setColor(new ElementUtils.JavaColor(1, 1, 1, 80 / 255))
+            .setColor(this._getColor("backgroundBox"))
             .setChildOf(this.sliderBar)
         
         this.sliderValue = new UIText(this.settings[2])
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
+            .setTextScale((this._getSchemeValue("textScale").pixels()))
+            .setColor(this._getColor("textColor"))
             .setChildOf(this.sliderBox)
 
         this.compBox = new UIRoundedRectangle(3)
             .setWidth(new RelativeConstraint(this.initialPercent))
             .setHeight((100).percent())
-            .setColor(new ElementUtils.JavaColor(1, 1, 1, 80 / 255))
+            .setColor(this._getColor("backgroundBox"))
             .setChildOf(this.sliderBar)
 
         // Slider events
@@ -100,7 +94,7 @@ export default class SliderElement extends BaseElement {
                     animation.setColorAnimation(
                         Animations.OUT_EXP,
                         0.5,
-                        new ConstantColorConstraint(new ElementUtils.JavaColor(0, 0, 0, 80 / 255)),
+                        new ConstantColorConstraint(this._getColor("mouseEnter")),
                         0
                         )
                 })
@@ -111,7 +105,7 @@ export default class SliderElement extends BaseElement {
                     animation.setColorAnimation(
                         Animations.OUT_EXP,
                         0.5,
-                        new ConstantColorConstraint(new ElementUtils.JavaColor(1, 1, 1, 80 / 255)),
+                        new ConstantColorConstraint(this._getColor("mouseLeave")),
                         0
                         )
                 })

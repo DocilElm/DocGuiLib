@@ -23,6 +23,8 @@ const textInput = new TextInputElement("test 3", 1, 25, 80).onKeyTypeEvent((inpu
 })
 
 const pickColor = new ColorPickerElement("Hex color", 1, 35, 80, 8)
+    .setSchemeValue("backgroundBox", [0, 255, 0, 80], colorScheme)
+    .setSchemeValue("textColor", [0, 255, 0, 255])
 
 const slider = new SliderElement([0, 10, 0], 1, 50, 80, 8).onMouseDragEvent((x, y, button, component) => {
     ChatLib.chat(`slider test`)
@@ -38,7 +40,7 @@ const slider2 = new SliderElement([0, 10, 2], 1, 80, 100)
         ChatLib.chat("something")
     }, true)
 
-const selection = new SelectionElement(["a", "test", "same"], 1, 58, 80, 5)
+const selection = new SelectionElement(["a", "test", "a part 2"], 1, 58, 80, 5)
 
 const switchcomp = new SwitchComponent(false, "test 4", 1, 65, 80, 8)
     .onMouseClickEvent((comp) => ChatLib.chat(`component clicked ${comp}`))
@@ -69,12 +71,10 @@ change the [Button] and [Box] classes to either their own thing
 or make them be able to set manual positions and stuff so others can use it
 instead of the current system where it auto aligns with itself
 \n
-also add default initial values in the params of the components
-so that the user can have a starting point in case they use it for config
-\n
 maybe make the user be able to click the color picker box to select
 common colors from and whenever they want more custom ones just use the hex
 \n
-also make all components be able to have their own coloring on everything
-text scale too in case this is needed
+make all of the component events pass in the params
+(component, event) so they can have full customizability if they want to cancel
+the custom event handler of the component
 */

@@ -8,7 +8,7 @@ export default class SwitchComponent extends BaseElement {
         this.string = string
     }
 
-    _create(colorScheme) {
+    _create(colorScheme = {}) {
         if (!this.colorScheme) this.colorScheme = colorScheme
 
         this.box = new UIRoundedRectangle(3)
@@ -37,7 +37,7 @@ export default class SwitchComponent extends BaseElement {
         this.switchBox.onMouseClick((component) => {
             if (this._triggerEvent(this.onMouseClick, component) === 1) return
 
-            this.toggle = !this.toggle
+            this.value = !this.value
 
             animate(component, (animation) => {
                 animation.setColorAnimation(

@@ -17,7 +17,7 @@ export default class Button1Element extends BaseElement {
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setColor(this._getColor("backgroundBox"))
+            .setColor(this._getColor("backgroundBox1"))
 
         // Vertical line
         this.line1 = new UIRoundedRectangle(3)
@@ -48,8 +48,8 @@ export default class Button1Element extends BaseElement {
 
         // Events handler
         this.backgroundBox
-            .onMouseEnter((comp) => {
-                if (this._triggerEvent(this.onMouseEnter) === 1) return
+            .onMouseEnter((comp, event) => {
+                if (this._triggerEvent(this.onMouseEnter, comp, event) === 1) return
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
@@ -60,8 +60,8 @@ export default class Button1Element extends BaseElement {
                         )
                 })
             })
-            .onMouseLeave((comp) => {
-                if (this._triggerEvent(this.onMouseLeave) === 1) return
+            .onMouseLeave((comp, event) => {
+                if (this._triggerEvent(this.onMouseLeave, comp, event) === 1) return
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
@@ -72,8 +72,8 @@ export default class Button1Element extends BaseElement {
                         )
                 })
             })
-            .onMouseClick((comp) => {
-                if (this._triggerEvent(this.onMouseClick) === 1) return
+            .onMouseClick((comp, event) => {
+                if (this._triggerEvent(this.onMouseClick, comp, event) === 1) return
                 
                 animate(comp, (animation) => {
                     animation.setColorAnimation(

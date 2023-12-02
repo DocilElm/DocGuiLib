@@ -11,7 +11,10 @@
     },
     "TextInput": {
         "backgroundBox": [0, 0, 0, 80],
-        "textColor": [255, 255, 255, 255]
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [255, 255, 255, 255]
     },
     "Checkbox": {
         "enabled": [255, 255, 255, 80],
@@ -23,5 +26,29 @@
         "textScale": 1,
         "enabled": [255, 255, 255, 80],
         "disabled": [0, 0, 0, 80]
+    },
+    "Slider": {
+        "backgroundBar": [0, 0, 0, 80],
+        "backgroundBox": [255, 255, 255, 80],
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [255, 255, 255, 80]
+    },
+    "Selection": {
+        "backgroundBar": [0, 0, 0, 80],
+        "leftArrow": "<",
+        "rightArrow": ">",
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [255, 255, 255, 255]
+    },
+    "ColorPicker": {
+        "backgroundBox": [0, 0, 0, 80],
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseEnter": [0, 0, 0, 80],
+        "mouseLeave": [255, 255, 255, 255]
     }
 }
