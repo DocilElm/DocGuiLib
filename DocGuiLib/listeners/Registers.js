@@ -52,11 +52,7 @@ export default class HandleRegisters {
      * - Unregisters and deletes the list
      */
     _stop() {
-        this.eventsList.forEach(event => {
-            event.unregister()
-            this.eventsList.delete(event)
-        })
-
+        this.eventsList.forEach(event => event.unregister())
         this.eventsList.clear()
     }
 }

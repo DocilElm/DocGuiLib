@@ -1,5 +1,6 @@
 import { Animations, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, UIWrappedText, animate } from "../../Elementa"
 import BaseElement from "./Base"
+import TextElement from "./Text"
 
 export default class Button1Element extends BaseElement {
     constructor(string = "Placeholder", x, y, width, height) {
@@ -38,12 +39,17 @@ export default class Button1Element extends BaseElement {
             .setChildOf(this.backgroundBox)
 
         // Centered to lines text
-        this.text = new UIWrappedText(this.string)
-            .setX((5).pixel())
-            .setY((20).percent())
-            .setWidth((70).percent())
-            .setTextScale((this._getSchemeValue("textScale")).pixel())
-            .setColor(this._getColor("textColor"))
+        const [ x, y, width, height ] = [
+            (5).pixel(),
+            (20).percent(),
+            (80).percent(),
+            this.height
+        ]
+
+        this.text = new TextElement(this.getString())
+            ._setPosition(x, y)
+            ._setSize(width, height)
+            ._create(this.colorScheme)
             .setChildOf(this.backgroundBox)
 
         // Events handler
@@ -88,6 +94,7 @@ export default class Button1Element extends BaseElement {
                     })
                 })
             })
+
         return this.backgroundBox
     }
 }

@@ -83,7 +83,9 @@ export default class HandleGui {
      * @returns this for method chaining
      */
     setCommand(name) {
-        register("command", () => this.ctGui.open()).setName(name)
+        register("command", () => {
+            this.ctGui.open()
+        }).setName(name)
 
         return this
     }

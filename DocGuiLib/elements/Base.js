@@ -14,7 +14,7 @@ export default class BaseElement {
             height: height
         }
         this.value = value
-        this.string = null
+        this.string = "null"
         this.colorScheme = colorScheme
         this.elementType = elementType
 

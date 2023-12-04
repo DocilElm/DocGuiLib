@@ -1,5 +1,6 @@
-import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, RelativeConstraint, UIRoundedRectangle, UIText, animate } from "../../Elementa"
+import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, CramSiblingConstraint, RelativeConstraint, UIRoundedRectangle, UIText, UIWrappedText, animate } from "../../Elementa"
 import BaseElement from "./Base"
+import TextElement from "./Text"
 
 export default class SliderElement extends BaseElement {
     /**
@@ -14,7 +15,7 @@ export default class SliderElement extends BaseElement {
 
         this.settings = settings
 
-        this.initialPercent = settings[2] / 10
+        this.initialPercent = settings[2] / settings[1]
         this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(this.initialPercent) : this.x
         this.isDragging = false
         this.offset = 0
@@ -26,12 +27,33 @@ export default class SliderElement extends BaseElement {
         // TODO: fix the [sliderBox] going off bound of [sliderBar]
         // so it dosent let the user drag it back if it's at max [width/value]
 
-        this.sliderBar = new UIRoundedRectangle(3)
+        this.backgroundBox = new UIRoundedRectangle(3)
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
-            .setHeight((10).pixels())
+            .setHeight(this.height)
             .setColor(this._getColor("backgroundBar"))
+
+        const [ x, y, width, height ] = [
+            (1).pixel(),
+            (1).pixel(),
+            this.width,
+            this.height
+        ]
+
+        this.textComponent = new TextElement(this.getString(), true)
+            ._setPosition(x, y,)
+            ._setSize(width, height)
+            ._create(this.colorScheme)
+            .setChildOf(this.backgroundBox)
+
+        this.sliderBar = new UIRoundedRectangle(3)
+            .setX(new CenterConstraint())
+            .setY(new CramSiblingConstraint())
+            .setWidth(this.width)
+            .setHeight((10).pixels())
+            .setColor(this._getColor("sliderBox"))
+            .setChildOf(this.backgroundBox)
         
         this.sliderBox = new UIRoundedRectangle(3)
             .setX(this.initialX)
@@ -124,6 +146,6 @@ export default class SliderElement extends BaseElement {
             this.isDragging = true
         })
 
-        return this.sliderBar
+        return this.backgroundBox
     }
 }

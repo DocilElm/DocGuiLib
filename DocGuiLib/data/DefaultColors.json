@@ -28,8 +28,9 @@
         "disabled": [0, 0, 0, 80]
     },
     "Slider": {
-        "backgroundBar": [0, 0, 0, 80],
+        "backgroundBar": [0, 0, 0, 0],
         "backgroundBox": [255, 255, 255, 80],
+        "sliderBox": [0, 0, 0, 80],
         "textColor": [255, 255, 255, 255],
         "textScale": 1,
         "mouseEnter": [0, 0, 0, 80],
@@ -50,5 +51,9 @@
         "textScale": 1,
         "mouseEnter": [0, 0, 0, 80],
         "mouseLeave": [255, 255, 255, 255]
+    },
+    "Text": {
+        "textScale": 1,
+        "textColor": [255, 255, 255, 255]
     }
 }
