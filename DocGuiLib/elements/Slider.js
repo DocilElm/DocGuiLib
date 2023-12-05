@@ -41,7 +41,8 @@ export default class SliderElement extends BaseElement {
             this.height
         ]
 
-        this.textComponent = new TextElement(this.getString(), true)
+        this.textComponent = new TextElement("", true)
+            .setString(this.getString())
             ._setPosition(x, y,)
             ._setSize(width, height)
             ._create(this.colorScheme)
