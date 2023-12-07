@@ -37,6 +37,19 @@ export default class HandleGui {
     }
 
     /**
+     * - Sets the command to open this gui
+     * @param {String} name 
+     * @returns this for method chaining
+     */
+    setCommand(name) {
+        register("command", () => {
+            this.ctGui.open()
+        }).setName(name)
+
+        return this
+    }
+
+    /**
      * - Gets the current color scheme and returns the object
      * @returns {Object}
      */
@@ -45,14 +58,11 @@ export default class HandleGui {
     }
 
     /**
-     * - Draws the given components on this window but without calling [_create()] method
-     * @param {Array|Any} components 
-     * @returns 
+     * - Gets this element's window
+     * @returns the window
      */
-    _drawNormal(components) {
-        if (!(components instanceof Array)) return components.setChildOf(this.window)
-
-        components.forEach(element => element.setChildOf(this.window))
+    getWindow() {
+        return this.window
     }
 
     /**
@@ -70,23 +80,13 @@ export default class HandleGui {
     }
 
     /**
-     * - Gets this element's window
-     * @returns the window
+     * - Draws the given components on this window but without calling [_create()] method
+     * @param {Array|Any} components 
+     * @returns 
      */
-    getWindow() {
-        return this.window
-    }
+    _drawNormal(components) {
+        if (!(components instanceof Array)) return components.setChildOf(this.window)
 
-    /**
-     * - Sets the command to open this gui
-     * @param {String} name 
-     * @returns this for method chaining
-     */
-    setCommand(name) {
-        register("command", () => {
-            this.ctGui.open()
-        }).setName(name)
-
-        return this
+        components.forEach(element => element.setChildOf(this.window))
     }
 }

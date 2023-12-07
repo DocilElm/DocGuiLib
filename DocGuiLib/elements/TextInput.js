@@ -38,7 +38,7 @@ export default class TextInputElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBox"))
 
-        this.textInput = new UITextInput(this.value)
+        this.textInput = new UITextInput(this.getValue())
             .setX((1).pixels())
             .setY((1).pixels())
             .setWidth((80).percent())
@@ -48,10 +48,11 @@ export default class TextInputElement extends BaseElement {
             .setChildOf(this.bgBox)
 
         this.textInput
-            .onMouseClick((_, __) => {
-                if (this._triggerEvent(this.onMouseClick) === 1) return
+            .onMouseClick((component, __) => {
+                if (this._triggerEvent(this.onMouseClick, component) === 1) return
 
-                this.textInput.grabWindowFocus()
+                component.setText(this.getValue())
+                component.grabWindowFocus()
             })
             .onMouseEnter((comp, event) => {
                 if (this._triggerEvent(this.onMouseEnter, comp, event) === 1) return

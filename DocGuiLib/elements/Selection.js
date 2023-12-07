@@ -10,10 +10,11 @@ export default class SelectionElement extends BaseElement {
      * @param {Number} width 
      * @param {Number} height 
      */
-    constructor(selections = [], x, y, width, height) {
+    constructor(selections = [], defaultValue = 0, x, y, width, height) {
         super(x, y, width, height, null, null, "Selection")
 
         this.selections = selections
+        this.value = defaultValue
         this.maxLength = (this.selections.length - 1)
     }
 
@@ -38,13 +39,21 @@ export default class SelectionElement extends BaseElement {
      * @returns 
      */
     _hideArrows(index) {
-        if (index === 0) return this.leftArrow.hide()
-        if (index === this.maxLength) return this.rightArrow.hide()
+        if (index === 0) {
+            this.leftArrow.hide()
+            this.rightArrow.unhide(true)
+
+            return
+        }
+        else if (index === this.maxLength) {
+            this.rightArrow.hide()
+            this.leftArrow.unhide(true)
+
+            return
+        }
 
         this.leftArrow.unhide(true)
         this.rightArrow.unhide(true)
-
-        return
     }
 
     /**
@@ -62,7 +71,7 @@ export default class SelectionElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBar"))
 
-        this.textValue = new UIText(this.selections[0])
+        this.textValue = new UIText(this.selections[this.getValue()])
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
             .setTextScale((this._getSchemeValue("textScale").pixel()))
@@ -115,7 +124,6 @@ export default class SelectionElement extends BaseElement {
                         )
                 })
             })
-            .hide()
 
         this.rightArrow
             .onMouseClick((comp, event) => {
@@ -148,6 +156,8 @@ export default class SelectionElement extends BaseElement {
                         )
                 })
             })
+
+        this._hideArrows(this.getValue())
 
         return this.box
     }

@@ -7,7 +7,7 @@ import TextInputElement from "./elements/TextInput"
 import ColorPickerElement from "./elements/ColorPicker"
 import SliderElement from "./elements/Slider"
 import SelectionElement from "./elements/Selection"
-import SwitchComponent from "./elements/Switch"
+// import SwitchComponent from "./elements/Switch"
 
 const gui = new HandleGui("data/DefaultColors.json").setCommand("testdoc")
 const colorScheme = gui.getColorScheme()
@@ -26,12 +26,12 @@ const pickColor = new ColorPickerElement("Hex color", 1, 35, 80, 8)
     .setSchemeValue("backgroundBox", [0, 255, 0, 80], colorScheme)
     .setSchemeValue("textColor", [0, 255, 0, 255])
 
-const slider = new SliderElement([0, 10, 0], 1, 50, 80, 8).onMouseDragEvent((x, y, button, component) => {
+const slider = new SliderElement([0, 10], 1, 1, 50, 80, 8).onMouseDragEvent((x, y, button, component) => {
     ChatLib.chat(`slider test`)
 })
 
 // This is an example with the slider's built-in event being cancelled
-const slider2 = new SliderElement([0, 10, 2], 1, 80, 100)
+const slider2 = new SliderElement([0, 10], 2, 1, 80, 100)
     .onMouseDragEvent((x, y, button, component) => {
         // you can make your custom animation for it here if you want to
         component.setX((x).pixel())
@@ -40,28 +40,31 @@ const slider2 = new SliderElement([0, 10, 2], 1, 80, 100)
         ChatLib.chat("something")
     }, true)
 
-const selection = new SelectionElement(["a", "test", "a part 2"], 1, 58, 80, 5)
+const selection = new SelectionElement(["a", "test", "a part 2"], 1, 1, 58, 80, 5)
 
-const switchcomp = new SwitchComponent(false, "test 4", 1, 65, 80, 8)
-    .onMouseClickEvent((comp) => ChatLib.chat(`component clicked ${comp}`))
-    .onMouseEnterEvent((comp) => ChatLib.chat(`A: ${comp}`))
-    .onMouseLeaveEvent((comp) => ChatLib.chat(`B: ${comp}`))
-    // Changing the default [backgroundBox] color scheme
-    .setSchemeValue("backgroundBox", [0, 255, 0, 80], colorScheme)
-    // Changing the text color to blue
-    // see how passing [colorScheme] is no longer necessary
-    // that's because the above method already set it up for us
-    .setSchemeValue("textColor", [0, 0, 255, 255])
-    // Changing the text scale
-    // This will always translate into pixels
-    .setSchemeValue("textScale", 0.7)
+// Disabling this since it's pretty much the exact same thing as checkbox
+// maybe later i make it an actual switch component
+
+// const switchcomp = new SwitchComponent(false, "test 4", 1, 65, 80, 8)
+//     .onMouseClickEvent((comp) => ChatLib.chat(`component clicked ${comp}`))
+//     .onMouseEnterEvent((comp) => ChatLib.chat(`A: ${comp}`))
+//     .onMouseLeaveEvent((comp) => ChatLib.chat(`B: ${comp}`))
+//     // Changing the default [backgroundBox] color scheme
+//     .setSchemeValue("backgroundBox", [0, 255, 0, 80], colorScheme)
+//     // Changing the text color to blue
+//     // see how passing [colorScheme] is no longer necessary
+//     // that's because the above method already set it up for us
+//     .setSchemeValue("textColor", [0, 0, 255, 255])
+//     // Changing the text scale
+//     // This will always translate into pixels
+//     .setSchemeValue("textScale", 0.7)
 
 const element = new BoxElement()
 
 element
     .setPosition(10, 10)
     .setText("testing block")
-    .addButton([btn1, btn2, textInput, pickColor, slider, selection, switchcomp])
+    .addButton([btn1, btn2, textInput, pickColor, slider, selection])
 
 gui.draw(element)
 

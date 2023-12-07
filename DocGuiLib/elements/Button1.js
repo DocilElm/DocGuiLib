@@ -1,4 +1,4 @@
-import { Animations, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, UIWrappedText, animate } from "../../Elementa"
+import { Animations, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, animate } from "../../Elementa"
 import BaseElement from "./Base"
 import TextElement from "./Text"
 

@@ -26,7 +26,7 @@ export default class ColorPickerElement extends BaseElement {
 
         this.blockColor = new UIRoundedRectangle(3)
 
-        this.textInput = new TextInputElement(this.value)
+        this.textInput = new TextInputElement(this.getValue())
             ._setPosition(this.x, this.y)
             ._setSize(this.width, this.height)
             .onKeyTypeEvent((text) => {
@@ -45,11 +45,11 @@ export default class ColorPickerElement extends BaseElement {
                     new ElementUtils.JavaColor(r / 255, g / 255, b / 255, 1)
                 )
             })
-            ._create(colorScheme, this.elementType)
+            ._create(this.colorScheme, this.elementType)
 
         this.hashTagText = new UIText("#")
             .setX((1).pixel(false, true))
-            .setY(new CenterConstraint())
+            .setY(this.y)
             .setTextScale((this._getSchemeValue("textScale")).pixel())
             .setColor(this._getColor("textColor"))
             .setChildOf(this.textInput)

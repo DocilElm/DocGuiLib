@@ -1,6 +1,5 @@
-import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, CramSiblingConstraint, RelativeConstraint, UIRoundedRectangle, UIText, UIWrappedText, animate } from "../../Elementa"
+import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, RelativeConstraint, UIRoundedRectangle, UIText, animate } from "../../Elementa"
 import BaseElement from "./Base"
-import TextElement from "./Text"
 
 export default class SliderElement extends BaseElement {
     /**
@@ -10,12 +9,13 @@ export default class SliderElement extends BaseElement {
      * @param {Number} width The width in pixels
      * @param {Number} height 
      */
-    constructor(settings = [ 1, 10, 2 ], x, y, width, height) {
+    constructor(settings = [ 0, 10 ], defaultValue = 1, x, y, width, height) {
         super(x, y, width, height, settings, null, "Slider")
 
         this.settings = settings
+        this.defaultValue = defaultValue
 
-        this.initialPercent = settings[2] / settings[1]
+        this.initialPercent = this.defaultValue / this.settings[1]
         this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(this.initialPercent) : this.x
         this.isDragging = false
         this.offset = 0
@@ -34,23 +34,9 @@ export default class SliderElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBar"))
 
-        const [ x, y, width, height ] = [
-            (1).pixel(),
-            (1).pixel(),
-            this.width,
-            this.height
-        ]
-
-        this.textComponent = new TextElement("", true)
-            .setString(this.getString())
-            ._setPosition(x, y,)
-            ._setSize(width, height)
-            ._create(this.colorScheme)
-            .setChildOf(this.backgroundBox)
-
         this.sliderBar = new UIRoundedRectangle(3)
             .setX(new CenterConstraint())
-            .setY(new CramSiblingConstraint())
+            .setY(new CenterConstraint())
             .setWidth(this.width)
             .setHeight((10).pixels())
             .setColor(this._getColor("sliderBox"))
@@ -64,7 +50,7 @@ export default class SliderElement extends BaseElement {
             .setColor(this._getColor("backgroundBox"))
             .setChildOf(this.sliderBar)
         
-        this.sliderValue = new UIText(this.settings[2])
+        this.sliderValue = new UIText(this.defaultValue)
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
             .setTextScale((this._getSchemeValue("textScale").pixels()))
