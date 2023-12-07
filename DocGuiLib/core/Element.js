@@ -42,8 +42,20 @@ export default class ElementUtils {
      * @param {[Number,Number,Number,Number]} param0 
      * @returns {JavaColor}
      */
-    static getJavaColor([r, g, b, a]) {
+    static getJavaColor([r, g, b, a = 255]) {
         return new this.JavaColor(r / 255, g / 255, b / 255, a / 255)
+    }
+
+    /**
+     * - Converts the given [r, g, b] array into [Hex] string
+     * @param {[Number, Number, Number]} rgb 
+     * @returns {String}
+     */
+    static rgbToHex([r, g, b]) {
+        return [r, g, b].map(x => {
+            const hex = x.toString(16).toUpperCase()
+            return hex.length === 1 ? "0" + hex : hex
+          }).join("")
     }
       
 }

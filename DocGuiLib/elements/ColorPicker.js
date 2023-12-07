@@ -1,4 +1,4 @@
-import { AspectConstraint, CenterConstraint, UIRoundedRectangle, UIText } from "../../Elementa"
+import { AspectConstraint, CenterConstraint, UIRoundedRectangle } from "../../Elementa"
 import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 import TextInputElement from "./TextInput"
@@ -26,7 +26,7 @@ export default class ColorPickerElement extends BaseElement {
 
         this.blockColor = new UIRoundedRectangle(3)
 
-        this.textInput = new TextInputElement(this.getValue())
+        this.textInput = new TextInputElement(ElementUtils.rgbToHex(this.getValue()))
             ._setPosition(this.x, this.y)
             ._setSize(this.width, this.height)
             .onKeyTypeEvent((text) => {
@@ -40,6 +40,8 @@ export default class ColorPickerElement extends BaseElement {
                 this.currentRGB = colors
 
                 const [ r, g, b ] = colors
+
+                if (this._triggerEvent(this.onKeyType, [r, g, b]) === 1) return
     
                 this.blockColor.setColor(
                     new ElementUtils.JavaColor(r / 255, g / 255, b / 255, 1)
@@ -47,18 +49,12 @@ export default class ColorPickerElement extends BaseElement {
             })
             ._create(this.colorScheme, this.elementType)
 
-        this.hashTagText = new UIText("#")
-            .setX((1).pixel(false, true))
-            .setY(this.y)
-            .setTextScale((this._getSchemeValue("textScale")).pixel())
-            .setColor(this._getColor("textColor"))
-            .setChildOf(this.textInput)
-
         this.blockColor
             .setX((1).pixel(true))
             .setY(new CenterConstraint())
             .setWidth(new AspectConstraint(1))
             .setHeight((12).pixel())
+            .setColor(ElementUtils.getJavaColor(this.getValue()))
             .setChildOf(this.textInput)
 
         return this.textInput

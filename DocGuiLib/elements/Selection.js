@@ -39,6 +39,8 @@ export default class SelectionElement extends BaseElement {
      * @returns 
      */
     _hideArrows(index) {
+        if (this._triggerEvent(this.onMouseClick, index) === 1) return
+        
         if (index === 0) {
             this.leftArrow.hide()
             this.rightArrow.unhide(true)

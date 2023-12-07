@@ -51,7 +51,8 @@ export default class TextInputElement extends BaseElement {
             .onMouseClick((component, __) => {
                 if (this._triggerEvent(this.onMouseClick, component) === 1) return
 
-                component.setText(this.getValue())
+                if (!component.getText()) component.setText(this.getValue())
+                
                 component.grabWindowFocus()
             })
             .onMouseEnter((comp, event) => {
