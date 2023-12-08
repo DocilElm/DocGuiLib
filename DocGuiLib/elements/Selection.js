@@ -1,4 +1,4 @@
-import { Animations, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, UIText, animate } from "../../Elementa"
+import { Animations, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, UIText, UIWrappedText, animate } from "../../Elementa"
 import BaseElement from "./Base"
 
 export default class SelectionElement extends BaseElement {
@@ -73,9 +73,10 @@ export default class SelectionElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBar"))
 
-        this.textValue = new UIText(this.selections[this.getValue()])
-            .setX(new CenterConstraint())
-            .setY(new CenterConstraint())
+        this.textValue = new UIWrappedText(this.selections[this.getValue()], true, null, false, true, 10, "...")
+            .setX((1).pixel())
+            .setY((new CenterConstraint()))
+            .setWidth(this.width)
             .setTextScale((this._getSchemeValue("textScale").pixel()))
             .setColor(this._getColor("textColor"))
             .setChildOf(this.box)
