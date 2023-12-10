@@ -89,4 +89,15 @@ export default class HandleGui {
 
         components.forEach(element => element.setChildOf(this.window))
     }
+
+    /**
+     * - Sets the [JSON] object for this window's color scheme
+     * @param {Object} json 
+     * @returns this for method chaining
+     */
+    _setColorScheme(json) {
+        this.colorScheme = json
+
+        return this
+    }
 }

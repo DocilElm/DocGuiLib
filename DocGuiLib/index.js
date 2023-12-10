@@ -67,17 +67,3 @@ element
     .addButton([btn1, btn2, textInput, pickColor, slider, selection])
 
 gui.draw(element)
-
-/**
-TODO:
-change the [Button] and [Box] classes to either their own thing
-or make them be able to set manual positions and stuff so others can use it
-instead of the current system where it auto aligns with itself
-\n
-maybe make the user be able to click the color picker box to select
-common colors from and whenever they want more custom ones just use the hex
-\n
-make all of the component events pass in the params
-(component, event) so they can have full customizability if they want to cancel
-the custom event handler of the component
-*/
