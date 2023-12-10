@@ -1,4 +1,4 @@
-import { CramSiblingConstraint, SiblingConstraint, UIWrappedText } from "../../Elementa"
+import { UIWrappedText } from "../../Elementa"
 import BaseElement from "./Base"
 
 export default class TextDescriptionElement extends BaseElement {
@@ -27,7 +27,7 @@ export default class TextDescriptionElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setTextScale((this._getSchemeValue("textScale")).pixel())
-            .setColor(this._getColor("textColor"))
+            .setColor(this._getColor("textColor").darker())
             .setChildOf(this.text)
 
         return this.text
