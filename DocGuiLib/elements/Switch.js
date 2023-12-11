@@ -10,8 +10,13 @@ export default class SwitchElement extends BaseElement {
         return this.getValue() ? (1).pixel(true) : (1).pixel()
     }
 
-    _create(colorScheme = {}) {
+    _getColorByState() {
+        return this.getValue() ? this._getColor("switchBoxEnabled") : this._getColor("switchBoxDisabled")
+    }
+
+    _create(colorScheme = {}, elementType = null) {
         if (!this.colorScheme) this.colorScheme = colorScheme
+        if (elementType) this.elementType = elementType
 
         this.box = new UIRoundedRectangle(3)
             .setX(this.x)
@@ -25,7 +30,7 @@ export default class SwitchElement extends BaseElement {
             .setY(new CenterConstraint())
             .setWidth(new AspectConstraint(1))
             .setHeight((12).pixel())
-            .setColor(this._getColor("backgroundBox"))
+            .setColor(this._getColorByState())
             .setChildOf(this.box)
 
         this.switchBox
@@ -33,7 +38,9 @@ export default class SwitchElement extends BaseElement {
                 if (this._triggerEvent(this.onMouseClick, component) === 1) return
 
                 this.value = !this.value
+
                 this.box.setColor(this._getCurrentColor())
+                component.setColor(this._getColorByState())
 
                 animate(component, (animation) => {
                     animation.setXAnimation(
