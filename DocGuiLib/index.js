@@ -7,6 +7,7 @@ import TextInputElement from "./elements/TextInput"
 import ColorPickerElement from "./elements/ColorPicker"
 import SliderElement from "./elements/Slider"
 import SelectionElement from "./elements/Selection"
+import DividerElement from "./elements/Divider"
 // import SwitchComponent from "./elements/Switch"
 
 const gui = new HandleGui("data/DefaultColors.json").setCommand("testdoc")
@@ -42,6 +43,8 @@ const slider2 = new SliderElement([0, 10], 2, 1, 80, 100)
 
 const selection = new SelectionElement(["a", "test", "a part 2"], 1, 1, 58, 80, 5)
 
+const dividerA = new DividerElement("SOMETHING ABOUT THIS ASKDHJBAKSJBDJKA", 1, 65, 100, 5)
+
 // Disabling this since it's pretty much the exact same thing as checkbox
 // maybe later i make it an actual switch component
 
@@ -64,6 +67,6 @@ const element = new BoxElement()
 element
     .setPosition(10, 10)
     .setText("testing block")
-    .addButton([btn1, btn2, textInput, pickColor, slider, selection])
+    .addButton([btn1, btn2, textInput, pickColor, slider, selection, dividerA])
 
 gui.draw(element)
