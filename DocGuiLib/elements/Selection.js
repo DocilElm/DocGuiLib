@@ -73,7 +73,7 @@ export default class SelectionElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBar"))
 
-        this.textValue = new UIWrappedText(this.selections[this.getValue()], true, null, false, true, 10, "...")
+        this.textValue = new UIWrappedText(this.selections[this.getValue()], true, null, true, true, 10, "...")
             .setX((1).pixel())
             .setY((new CenterConstraint()))
             .setWidth(this.width)
