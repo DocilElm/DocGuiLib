@@ -54,6 +54,7 @@ export default class TextInputElement extends BaseElement {
                 if (!component.getText()) component.setText(this.getValue())
                 
                 component.grabWindowFocus()
+                component.focus()
             })
             .onMouseEnter((comp, event) => {
                 if (this._triggerEvent(this.onMouseEnter, comp, event) === 1) return
@@ -79,8 +80,8 @@ export default class TextInputElement extends BaseElement {
                         )
                 })
             })
-            .onKeyType((input, _, __) => {
-                if (this._triggerEvent(this.onKeyType, input.getText()) === 1) return
+            .onKeyType((input, char, keycode) => {
+                if (this._triggerEvent(this.onKeyType, input.getText(), char, keycode) === 1) return
 
                 this.text = input.getText()
             })

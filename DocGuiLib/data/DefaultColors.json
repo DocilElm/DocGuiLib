@@ -60,5 +60,9 @@
         "line": [255, 255, 255, 80],
         "textScale": 1,
         "textColor": [255, 255, 255, 255]
+    },
+    "Markdown": {
+        "backgroundBox": [0, 0, 0, 80],
+        "textScale": 1
     }
 }
