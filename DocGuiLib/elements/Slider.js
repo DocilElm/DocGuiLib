@@ -1,4 +1,5 @@
-import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, RelativeConstraint, UIRoundedRectangle, UIText, animate } from "../../Elementa"
+import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, OutlineEffect, RelativeConstraint, UIRoundedRectangle, UIText, animate } from "../../Elementa"
+import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class SliderElement extends BaseElement {
@@ -33,6 +34,7 @@ export default class SliderElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBar"))
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
         this.sliderBar = new UIRoundedRectangle(3)
             .setX(new CenterConstraint())

@@ -1,4 +1,5 @@
-import { Animations, ConstantColorConstraint, UIRoundedRectangle, animate } from "../../Elementa"
+import { Animations, ConstantColorConstraint, OutlineEffect, UIRoundedRectangle, animate } from "../../Elementa"
+import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class CheckboxElement extends BaseElement {
@@ -15,6 +16,7 @@ export default class CheckboxElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getCurrentColor())
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
         this.checkBox.onMouseClick((component) => {
             if (this._triggerEvent(this.onMouseClick, component) === 1) return

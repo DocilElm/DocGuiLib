@@ -1,4 +1,5 @@
-import { Animations, AspectConstraint, CenterConstraint, UIRoundedRectangle, animate } from "../../Elementa"
+import { Animations, AspectConstraint, CenterConstraint, OutlineEffect, UIRoundedRectangle, animate } from "../../Elementa"
+import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class SwitchElement extends BaseElement {
@@ -24,6 +25,7 @@ export default class SwitchElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getCurrentColor())
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
         this.switchBox = new UIRoundedRectangle(3)
             .setX(this._getPosition())

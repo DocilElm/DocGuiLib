@@ -1,4 +1,5 @@
-import { Animations, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, UIWrappedText, animate } from "../../Elementa"
+import { Animations, CenterConstraint, ConstantColorConstraint, OutlineEffect, UIRoundedRectangle, UIWrappedText, animate } from "../../Elementa"
+import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class ButtonElement extends BaseElement {
@@ -22,6 +23,7 @@ export default class ButtonElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBox"))
+            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
         this.text = new UIWrappedText(this.value)
             .setX(new CenterConstraint())
