@@ -3,8 +3,8 @@ import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class SwitchElement extends BaseElement {
-    constructor(enabled = false, x, y, width, height) {
-        super(x, y, width, height, enabled, null, "Switch")
+    constructor(enabled = false, x, y, width, height, outline = false) {
+        super(x, y, width, height, enabled, null, "Switch", outline)
     }
 
     _getPosition() {
@@ -25,7 +25,8 @@ export default class SwitchElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getCurrentColor())
-            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
+
+        if (this.outline) this.box.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
         this.switchBox = new UIRoundedRectangle(3)
             .setX(this._getPosition())

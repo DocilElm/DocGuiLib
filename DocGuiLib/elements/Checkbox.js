@@ -3,8 +3,8 @@ import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class CheckboxElement extends BaseElement {
-    constructor(check = false, x, y, width, height) {
-        super(x, y, width, height, check, null, "Checkbox")
+    constructor(check = false, x, y, width, height, outline = false) {
+        super(x, y, width, height, check, null, "Checkbox", outline)
     }
 
     _create(colorScheme = {}) {
@@ -16,7 +16,8 @@ export default class CheckboxElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getCurrentColor())
-            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
+            
+        if (this.outline) this.checkBox.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
         this.checkBox.onMouseClick((component) => {
             if (this._triggerEvent(this.onMouseClick, component) === 1) return

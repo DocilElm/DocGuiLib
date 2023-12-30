@@ -10,8 +10,8 @@ export default class SliderElement extends BaseElement {
      * @param {Number} width The width in pixels
      * @param {Number} height 
      */
-    constructor(settings = [ 0, 10 ], defaultValue = 1, x, y, width, height) {
-        super(x, y, width, height, settings, null, "Slider")
+    constructor(settings = [ 0, 10 ], defaultValue = 1, x, y, width, height, outline = false) {
+        super(x, y, width, height, settings, null, "Slider", outline)
 
         this.settings = settings
         this.defaultValue = defaultValue
@@ -34,7 +34,8 @@ export default class SliderElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBar"))
-            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
+            
+        if (this.outline) this.backgroundBox.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
         this.sliderBar = new UIRoundedRectangle(3)
             .setX(new CenterConstraint())

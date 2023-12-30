@@ -1,7 +1,7 @@
 import ElementUtils from "../core/Element"
 
 export default class BaseElement {
-    constructor(x = 1, y = 1, width = 1, height = 1, value, colorScheme = null, elementType = null) {
+    constructor(x = 1, y = 1, width = 1, height = 1, value, colorScheme = null, elementType = null, outline = false) {
         this.x = (x).percent()
         this.y = (y).percent()
         this.width = (width).percent()
@@ -17,6 +17,7 @@ export default class BaseElement {
         this.string = null
         this.colorScheme = colorScheme
         this.elementType = elementType
+        this.outline = outline
 
         // Event handlers
         this.onMouseClick = null

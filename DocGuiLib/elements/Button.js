@@ -6,8 +6,8 @@ export default class ButtonElement extends BaseElement {
     /**
      * @param {String} string The string text to render on the button
      */
-    constructor(string = "Placeholder", x, y, width, height) {
-        super(x, y, width, height, string, null, "Button")
+    constructor(string = "Placeholder", x, y, width, height, outline = false) {
+        super(x, y, width, height, string, null, "Button", outline)
     }
 
     /**
@@ -23,7 +23,8 @@ export default class ButtonElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBox"))
-            .enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
+        
+        if (this.outline) this.button.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
         this.text = new UIWrappedText(this.value)
             .setX(new CenterConstraint())
