@@ -32,19 +32,19 @@ export default class ColorPickerElement extends BaseElement {
             .onKeyTypeEvent((text) => {
                 let colors = ElementUtils.hexToRgb(text)
 
-                if (!text) colors = [ 255, 255, 255 ]
+                if (!text) colors = [ 255, 255, 255, 255 ]
 
                 if (!colors) return this.currentRGB = null
     
                 this.currentHex = text
                 this.currentRGB = colors
 
-                const [ r, g, b ] = colors
+                const [ r, g, b, a ] = colors
 
-                if (this._triggerEvent(this.onKeyType, [r, g, b]) === 1) return
+                if (this._triggerEvent(this.onKeyType, [r, g, b, a]) === 1) return
     
                 this.blockColor.setColor(
-                    new ElementUtils.JavaColor(r / 255, g / 255, b / 255, 1)
+                    new ElementUtils.JavaColor(r / 255, g / 255, b / 255, a / 255)
                 )
             })
             ._create(this.colorScheme, this.elementType)
