@@ -1,4 +1,4 @@
-import { UIRoundedRectangle, UIWrappedText } from "../../Elementa"
+import { CenterConstraint, UIRoundedRectangle, UIText } from "../../Elementa"
 import BaseElement from "./Base"
 
 export default class DividerElement extends BaseElement {
@@ -16,18 +16,25 @@ export default class DividerElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBox"))
 
-        this.textValue = new UIWrappedText(this.getValue(), true, null, true, true, 10, "...")
-            .setX((1).pixel())
-            .setY((1).pixel())
-            .setWidth(this.width)
-            .setHeight(this.height)
+        this.textValue = new UIText(this.getValue())
+            .setX(new CenterConstraint())
+            .setY(new CenterConstraint())
             .setTextScale((this._getSchemeValue("textScale")).pixel())
             .setColor(this._getColor("textColor"))
             .setChildOf(this.backgroundBox)
 
+        // this.textValue = new UIWrappedText(this.getValue(), true, null, true, true, 10, "...")
+        //     .setX((1).pixel())
+        //     .setY((1).pixel())
+        //     .setWidth(this.width)
+        //     .setHeight(this.height)
+        //     .setTextScale((this._getSchemeValue("textScale")).pixel())
+        //     .setColor(this._getColor("textColor"))
+        //     .setChildOf(this.backgroundBox)
+
         this.line = new UIRoundedRectangle(3)
             .setX((1).pixel())
-            .setY((10).pixel())
+            .setY((11).pixel())
             .setWidth((99.5).percent())
             .setHeight((2).pixel())
             .setColor(this._getColor("line"))
