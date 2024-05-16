@@ -17,16 +17,13 @@ export default class SliderElement extends BaseElement {
         this.defaultValue = defaultValue
 
         this.initialPercent = this.defaultValue / this.settings[1]
-        this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(this.initialPercent) : this.x
+        this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(Math.min(this.initialPercent, 1 - 0.25)) : this.x
         this.isDragging = false
         this.offset = 0
     }
 
     _create(colorScheme = {}) {
         if (!this.colorScheme) this.setColorScheme(colorScheme)
-
-        // TODO: fix the [sliderBox] going off bound of [sliderBar]
-        // so it dosent let the user drag it back if it's at max [width/value]
 
         this.backgroundBox = new UIRoundedRectangle(3)
             .setX(this.x)
@@ -38,9 +35,9 @@ export default class SliderElement extends BaseElement {
         if (this.outline) this.backgroundBox.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
         this.sliderBar = new UIRoundedRectangle(3)
-            .setX(new CenterConstraint())
+            .setX((1).pixels())
             .setY(new CenterConstraint())
-            .setWidth(this.width)
+            .setWidth((98).percent())
             .setHeight((10).pixels())
             .setColor(this._getColor("sliderBox"))
             .setChildOf(this.backgroundBox)
@@ -69,19 +66,17 @@ export default class SliderElement extends BaseElement {
         // Slider events
         // Taking the same approach as [https://github.com/EssentialGG/Vigilance/blob/master/src/main/kotlin/gg/essential/vigilance/gui/settings/Slider.kt]
         // since the slider was flickering a lot with the previous code
-        this.sliderBox
-            .onMouseClick((component, event) => {
+        this.sliderBar
+            .onMouseClick(() => {
                 this.isDragging = true
-                this.offset = event.relativeX - (component.getWidth() / 2)
+                this.offset = 1
             })
-
             .onMouseRelease(() => {
                 if (this._triggerEvent(this.onMouseRelease, this.getValue()) === 1) return
 
                 this.isDragging = false
                 this.offset = 0
             })
-
             .onMouseDrag((component, x, y, button) => {
                 if (!this.isDragging) return
 
@@ -94,15 +89,22 @@ export default class SliderElement extends BaseElement {
                 const roundNumber = Math.min(Math.max(clamped, this.sliderBar.getLeft()), this.sliderBar.getRight())
                 // Makes the round number a percent basing it off of the parent
                 const percent = (roundNumber - this.sliderBar.getLeft()) / this.sliderBar.getWidth()
+
+                // Fix [sliderBox] going off bound
+                const roundNumberBox = Math.min(Math.max(clamped, this.sliderBar.getLeft()), this.sliderBar.getRight() - this.sliderBox.getWidth())
+                const sliderBoxPercent = (roundNumberBox - this.sliderBar.getLeft()) / this.sliderBar.getWidth()
+
                 // Makes the rounded number into an actual slider value
                 this.value = this.settings[0] % 1 !== 0
                     ? ((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0]).toFixed(2)
                     : parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
 
                 this.sliderValue.setText(this.value)
-                this.sliderBox.setX(new RelativeConstraint(percent))
+                this.sliderBox.setX(new RelativeConstraint(sliderBoxPercent))
                 this.compBox.setWidth(new RelativeConstraint(percent))
             })
+
+        this.sliderBox
             .onMouseEnter((comp) => {
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
@@ -113,7 +115,6 @@ export default class SliderElement extends BaseElement {
                         )
                 })
             })
-            
             .onMouseLeave((comp) => {
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
@@ -124,19 +125,6 @@ export default class SliderElement extends BaseElement {
                         )
                 })
             })
-
-        this.sliderBar.onMouseClick((component, event) => {
-            if (this._triggerEvent(this.onMouseClick) === 1) return
-
-            const percent = event.relativeX / component.getWidth()
-            this.value = parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
-
-            this.sliderValue.setText(this.value)
-            this.sliderBox.setX(new RelativeConstraint(percent))
-            this.compBox.setWidth(new RelativeConstraint(percent))
-
-            this.isDragging = true
-        })
 
         return this.backgroundBox
     }
