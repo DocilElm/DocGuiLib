@@ -1,4 +1,4 @@
-import { Animations, ConstantColorConstraint, OutlineEffect, UIRoundedRectangle, animate } from "../../Elementa"
+import { Animations, CenterConstraint, ConstantColorConstraint, OutlineEffect, UIRoundedRectangle, UIText, animate } from "../../Elementa"
 import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
@@ -16,6 +16,15 @@ export default class CheckboxElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getCurrentColor())
+
+        const text = new UIText("✓")
+            .setX(new CenterConstraint())
+            .setY(new CenterConstraint())
+            .setChildOf(this.checkBox)
+
+        if (!this.value) {
+            text.hide()
+        }
             
         if (this.outline) this.checkBox.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
 
@@ -32,6 +41,12 @@ export default class CheckboxElement extends BaseElement {
                     0
                     )
             })
+
+            if (this.value) {
+                text.unhide(true)
+            } else {
+                text.hide()
+            }
         })
 
         return this.checkBox
