@@ -18,7 +18,7 @@ export default class DividerElement extends BaseElement {
 
         this.textValue = new UIText(this.getValue())
             .setX(new CenterConstraint())
-            .setY(new CenterConstraint())
+            .setY((10).percent())
             .setTextScale((this._getSchemeValue("textScale")).pixel())
             .setColor(this._getColor("textColor"))
             .setChildOf(this.backgroundBox)
