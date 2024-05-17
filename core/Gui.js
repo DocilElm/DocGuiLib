@@ -39,12 +39,13 @@ export default class HandleGui {
     /**
      * - Sets the command to open this gui
      * @param {String} name 
+     * @param {String[]} aliases
      * @returns this for method chaining
      */
-    setCommand(name) {
+    setCommand(name, aliases = []) {
         register("command", () => {
             this.ctGui.open()
-        }).setName(name)
+        }).setName(name).setAliases(...aliases)
 
         return this
     }
