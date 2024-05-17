@@ -1,6 +1,18 @@
 import { Animations, ConstantColorConstraint, UIRoundedRectangle, UIText, UITextInput, animate } from "../../Elementa"
 import BaseElement from "./Base"
 
+let ticksDown = 0
+let keybindEvents = []
+
+register("tick", () => {
+    if (!World.isLoaded() || !Keyboard.isKeyDown(Keyboard.KEY_BACK)) return ticksDown = 0
+
+    ticksDown++
+    if (ticksDown <= 10) return
+
+    keybindEvents.forEach(it => it("", Keyboard.KEY_BACK))
+})
+
 export default class TextInputElement extends BaseElement {
     /**
      * @param {String} string The placeholder text
@@ -65,6 +77,12 @@ export default class TextInputElement extends BaseElement {
                 .setY((1).pixels())
                 .setChildOf(this.textInput)
         }
+
+        keybindEvents.push((keyChar, keyCode) => {
+            if (!this.textInput.hasFocus()) return
+
+            this.textInput.keyType(keyChar, keyCode)
+        })
 
         this.textInput
             .onFocus(() => this.placeholderText?.hide(true))
