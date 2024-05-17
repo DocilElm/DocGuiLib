@@ -61,7 +61,7 @@ export default class ElementUtils {
         return [r, g, b].map(x => {
             const hex = x.toString(16).toUpperCase()
             return hex.length === 1 ? "0" + hex : hex
-          }).join("") + Math.round((a / 255) * 100)
+          }).join("") + Math.round((a ?? 255 / 255) * 100)
     }
       
 }

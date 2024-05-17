@@ -27,6 +27,7 @@ export default class ColorPickerElement extends BaseElement {
         this.blockColor = new UIRoundedRectangle(3)
 
         this.textInput = new TextInputElement(ElementUtils.rgbToHex(this.getValue()))
+            .setPlaceHolder(ElementUtils.rgbToHex(this.getValue()))
             ._setPosition(this.x, this.y)
             ._setSize(this.width, this.height)
             .onKeyTypeEvent((text) => {
