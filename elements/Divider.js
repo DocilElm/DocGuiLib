@@ -34,7 +34,7 @@ export default class DividerElement extends BaseElement {
 
         this.line = new UIRoundedRectangle(3)
             .setX((1).pixel())
-            .setY((11).pixel())
+            .setY((80).percent())
             .setWidth((99.5).percent())
             .setHeight((2).pixel())
             .setColor(this._getColor("line"))
