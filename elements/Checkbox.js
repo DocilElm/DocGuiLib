@@ -1,5 +1,4 @@
 import { Animations, CenterConstraint, ConstantColorConstraint, OutlineEffect, UIRoundedRectangle, UIText, animate } from "../../Elementa"
-import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class CheckboxElement extends BaseElement {
@@ -17,16 +16,12 @@ export default class CheckboxElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getCurrentColor())
 
-        const text = new UIText("✓")
+        this.checkMark = new UIText(this.value ? this._getSchemeValue("enabledCheck") : this._getSchemeValue("disabledCheck"))
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
             .setChildOf(this.checkBox)
-
-        if (!this.value) {
-            text.hide()
-        }
             
-        if (this.outline) this.checkBox.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
+        if (this.outline) this.checkBox.enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.checkBox.onMouseClick((component) => {
             if (this._triggerEvent(this.onMouseClick, component) === 1) return
@@ -35,18 +30,17 @@ export default class CheckboxElement extends BaseElement {
 
             animate(component, (animation) => {
                 animation.setColorAnimation(
-                    Animations.OUT_EXP,
-                    0.5,
+                    Animations[this._getSchemeValue("mouseClickAnimation")],
+                    this._getSchemeValue("animationTime"),
                     new ConstantColorConstraint(this._getCurrentColor()),
                     0
                     )
             })
 
-            if (this.value) {
-                text.unhide(true)
-            } else {
-                text.hide()
-            }
+            this.checkMark.setText(this.value    
+                ? this._getSchemeValue("enabledCheck")
+                : this._getSchemeValue("disabledCheck")
+                )
         })
 
         return this.checkBox

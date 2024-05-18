@@ -1,5 +1,4 @@
 import { Animations, CenterConstraint, ConstantColorConstraint, OutlineEffect, UIRoundedRectangle, UIWrappedText, animate } from "../../Elementa"
-import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class ButtonElement extends BaseElement {
@@ -24,7 +23,7 @@ export default class ButtonElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBox"))
         
-        if (this.outline) this.button.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
+        if (this.outline) this.button.enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.text = new UIWrappedText(this.value)
             .setX(new CenterConstraint())
@@ -37,8 +36,8 @@ export default class ButtonElement extends BaseElement {
             
             animate(comp, (animation) => {
                 animation.setColorAnimation(
-                    Animations.OUT_EXP,
-                    0.2,
+                    Animations[this._getSchemeValue("mouseClickAnimation")],
+                    this._getSchemeValue("animationTime"),
                     new ConstantColorConstraint(this._getColor("mouseClick")),
                     0
                     )

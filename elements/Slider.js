@@ -1,5 +1,4 @@
 import { Animations, AspectConstraint, CenterConstraint, ConstantColorConstraint, OutlineEffect, RelativeConstraint, UIRoundedRectangle, UIText, animate } from "../../Elementa"
-import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class SliderElement extends BaseElement {
@@ -32,7 +31,7 @@ export default class SliderElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBar"))
             
-        if (this.outline) this.backgroundBox.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
+        if (this.outline) this.backgroundBox.enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.sliderBar = new UIRoundedRectangle(3)
             .setX((1).pixels())
@@ -108,8 +107,8 @@ export default class SliderElement extends BaseElement {
             .onMouseEnter((comp) => {
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("mouseAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseEnter")),
                         0
                         )
@@ -118,8 +117,8 @@ export default class SliderElement extends BaseElement {
             .onMouseLeave((comp) => {
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("mouseAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseLeave")),
                         0
                         )

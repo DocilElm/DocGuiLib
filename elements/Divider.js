@@ -23,15 +23,6 @@ export default class DividerElement extends BaseElement {
             .setColor(this._getColor("textColor"))
             .setChildOf(this.backgroundBox)
 
-        // this.textValue = new UIWrappedText(this.getValue(), true, null, true, true, 10, "...")
-        //     .setX((1).pixel())
-        //     .setY((1).pixel())
-        //     .setWidth(this.width)
-        //     .setHeight(this.height)
-        //     .setTextScale((this._getSchemeValue("textScale")).pixel())
-        //     .setColor(this._getColor("textColor"))
-        //     .setChildOf(this.backgroundBox)
-
         this.line = new UIRoundedRectangle(3)
             .setX((1).pixel())
             .setY((80).percent())

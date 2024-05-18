@@ -108,8 +108,8 @@ export default class TextInputElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("mouseAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseEnter")),
                         0
                         )
@@ -120,8 +120,8 @@ export default class TextInputElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("mouseAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseLeave")),
                         0
                         )
@@ -143,8 +143,8 @@ export default class TextInputElement extends BaseElement {
                 
                     animate(comp, (animation) => {
                         animation.setColorAnimation(
-                            Animations.OUT_EXP,
-                            0.5,
+                            Animations[this._getSchemeValue("mouseAnimation")],
+                            this._getSchemeValue("animationTime"),
                             new ConstantColorConstraint(this._getColor("mouseEnter")),
                             0
                             )
@@ -155,8 +155,8 @@ export default class TextInputElement extends BaseElement {
                 
                     animate(comp, (animation) => {
                         animation.setColorAnimation(
-                            Animations.OUT_EXP,
-                            0.5,
+                            Animations[this._getSchemeValue("mouseAnimation")],
+                            this._getSchemeValue("animationTime"),
                             new ConstantColorConstraint(this._getColor("mouseLeave")),
                             0
                             )

@@ -74,24 +74,24 @@ export default class SelectionElement extends BaseElement {
             .setColor(this._getColor("backgroundBar"))
 
         this.textValue = new UIWrappedText(this.selections[this.getValue()], true, null, true, true, 10, "...")
-            .setX((1).pixel())
+            .setX((1).pixels())
             .setY((new CenterConstraint()))
             .setWidth(this.width)
-            .setTextScale((this._getSchemeValue("textScale").pixel()))
+            .setTextScale((this._getSchemeValue("textScale").pixels()))
             .setColor(this._getColor("textColor"))
             .setChildOf(this.box)
 
         this.leftArrow = new UIText(this._getSchemeValue("leftArrow"))
-            .setX((1).pixel())
+            .setX((1).pixels())
             .setY(new CenterConstraint())
-            .setTextScale((this._getSchemeValue("textScale").pixel()))
+            .setTextScale((this._getSchemeValue("textScale").pixels()))
             .setColor(this._getColor("textColor"))
             .setChildOf(this.box)
 
         this.rightArrow = new UIText(this._getSchemeValue("rightArrow"))
-            .setX((1).pixel(true))
+            .setX((1).pixels(true))
             .setY(new CenterConstraint())
-            .setTextScale((this._getSchemeValue("textScale").pixel()))
+            .setTextScale((this._getSchemeValue("textScale").pixels()))
             .setColor(this._getColor("textColor"))
             .setChildOf(this.box)
 
@@ -108,8 +108,8 @@ export default class SelectionElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("arrowClickAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseEnter")),
                         0
                         )
@@ -120,8 +120,8 @@ export default class SelectionElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("arrowClickAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseLeave")),
                         0
                         )
@@ -140,8 +140,8 @@ export default class SelectionElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("arrowClickAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseEnter")),
                         0
                         )
@@ -152,8 +152,8 @@ export default class SelectionElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("arrowClickAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseLeave")),
                         0
                         )

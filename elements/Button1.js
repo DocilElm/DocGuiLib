@@ -59,8 +59,8 @@ export default class Button1Element extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("mouseClickAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseEnter")),
                         0
                         )
@@ -71,8 +71,8 @@ export default class Button1Element extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("mouseClickAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseLeave")),
                         0
                         )
@@ -83,8 +83,8 @@ export default class Button1Element extends BaseElement {
                 
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations.OUT_EXP,
-                        0.2,
+                        Animations[this._getSchemeValue("mouseClickAnimation")],
+                        this._getSchemeValue("animationTime"),
                         new ConstantColorConstraint(this._getColor("mouseClick")),
                         0
                         )

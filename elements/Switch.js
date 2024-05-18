@@ -1,5 +1,4 @@
 import { Animations, AspectConstraint, CenterConstraint, OutlineEffect, UIRoundedRectangle, animate } from "../../Elementa"
-import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class SwitchElement extends BaseElement {
@@ -26,7 +25,7 @@ export default class SwitchElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getCurrentColor())
 
-        if (this.outline) this.box.enableEffect(new OutlineEffect(ElementUtils.getJavaColor([255, 255, 255, 255]), 0.5))
+        if (this.outline) this.box.enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.switchBox = new UIRoundedRectangle(3)
             .setX(this._getPosition())
@@ -47,8 +46,8 @@ export default class SwitchElement extends BaseElement {
 
                 animate(component, (animation) => {
                     animation.setXAnimation(
-                        Animations.OUT_EXP,
-                        0.5,
+                        Animations[this._getSchemeValue("mouseClickAnimation")],
+                        this._getSchemeValue("animationTime"),
                         this._getPosition()
                     )
                 })
