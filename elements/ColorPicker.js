@@ -146,7 +146,7 @@ export default class ColorPickerElement extends BaseElement {
             ._create(this.colorScheme, this.elementType)
             .setChildOf(this.generalBg)
 
-        this.arrowText = new UIText(this._getSchemeValue("unhideArrowText"))
+        this.arrowText = new UIText(this._getSchemeValue("hideArrowText"))
             .setX(new CramSiblingConstraint(5))
             .setY(new CenterConstraint())
             .setTextScale((this._getSchemeValue("arrowTextScale")).pixels())
@@ -158,7 +158,7 @@ export default class ColorPickerElement extends BaseElement {
             .setWidth((80).percent())
             .setHeight((65).percent())
             .setColor(this._getColor("colorPickerBackgroundBox"))
-            // .enableEffect(new OutlineEffect(new Color(1, 1, 1), 0.5))
+            .enableEffect(new OutlineEffect(this._getColor("colorPickerBackgroundBoxOutlineColor"), this._getSchemeValue("colorPickerBackgroundBoxOutlineThickness")))
             .setChildOf(this.generalBg)
 
         this.gradient = new UICustomGradient(new Color(Color.HSBtoRGB(this.currentHue, 1, 1)))
@@ -174,7 +174,7 @@ export default class ColorPickerElement extends BaseElement {
             .setWidth((70).percent())
             .setHeight((65).percent())
             .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
-            // .enableEffect(new OutlineEffect(new Color(1, 1, 1), 0.5))
+            .enableEffect(new OutlineEffect(this._getColor("gradientBackgroundBoxOutlineColor"), this._getSchemeValue("gradientBackgroundBoxOutlineThickness")))
             .setChildOf(this.bgBox)
 
         this.gradientPointer = new UIContainer()
@@ -206,7 +206,7 @@ export default class ColorPickerElement extends BaseElement {
             .setY((1).pixels())
             .setWidth((68).percent())
             .setHeight((100).percent())
-            // .enableEffect(new OutlineEffect(new Color(1, 1, 1), 0.5))
+            .enableEffect(new OutlineEffect(this._getColor("hueBackgroundBoxOutlineColor"), this._getSchemeValue("hueBackgroundBoxOutlineThickness")))
             .setChildOf(this.genHueBg)
 
         this.huePointer = new UIContainer()
