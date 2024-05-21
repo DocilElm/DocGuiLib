@@ -66,42 +66,14 @@ export default class SliderElement extends BaseElement {
         // Taking the same approach as [https://github.com/EssentialGG/Vigilance/blob/master/src/main/kotlin/gg/essential/vigilance/gui/settings/Slider.kt]
         // since the slider was flickering a lot with the previous code
         this.sliderBar
-            .onMouseClick(() => {
-                this.isDragging = true
-                this.offset = 1
-            })
-            .onMouseRelease(() => {
-                if (this._triggerEvent(this.onMouseRelease, this.getValue()) === 1) return
+            .onMouseClick(this._onMouseClick.bind(this))
+            .onMouseRelease(this._onMouseRelease.bind(this))
+            .onMouseDrag(this._onMouseDrag.bind(this))
 
-                this.isDragging = false
-                this.offset = 0
-            })
-            .onMouseDrag((component, x, y, button) => {
-                if (!this.isDragging) return
-
-                // Cancel the custom event for this component
-                if (this._triggerEvent(this.onMouseDrag, x, y, button, component) === 1 || !this.offset) return
-
-                const clamped = (x + component.getLeft()) - this.offset
-                // Rounds the number if it's above max it returns max value
-                // if it's below min it reutnrs min value
-                const roundNumber = Math.min(Math.max(clamped, this.sliderBar.getLeft()), this.sliderBar.getRight())
-                // Makes the round number a percent basing it off of the parent
-                const percent = (roundNumber - this.sliderBar.getLeft()) / this.sliderBar.getWidth()
-
-                // Fix [sliderBox] going off bound
-                const roundNumberBox = Math.min(Math.max(clamped, this.sliderBar.getLeft()), this.sliderBar.getRight() - this.sliderBox.getWidth())
-                const sliderBoxPercent = (roundNumberBox - this.sliderBar.getLeft()) / this.sliderBar.getWidth()
-
-                // Makes the rounded number into an actual slider value
-                this.value = this.settings[0] % 1 !== 0
-                    ? ((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0]).toFixed(2)
-                    : parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
-
-                this.sliderValue.setText(this.value)
-                this.sliderBox.setX(new RelativeConstraint(sliderBoxPercent))
-                this.compBox.setWidth(new RelativeConstraint(percent))
-            })
+        this.backgroundBox
+            .onMouseClick(this._onMouseClick.bind(this))
+            .onMouseRelease(this._onMouseRelease.bind(this))
+            .onMouseDrag(this._onMouseDrag.bind(this))
 
         this.sliderBox
             .onMouseEnter((comp) => {
@@ -126,5 +98,46 @@ export default class SliderElement extends BaseElement {
             })
 
         return this.backgroundBox
+    }
+
+    _onMouseClick(component, event) {
+        if (this._triggerEvent(this.onMouseClick, component, event) === 1) return
+
+        this.isDragging = true
+        this.offset = 1
+    }
+
+    _onMouseRelease() {
+        if (this._triggerEvent(this.onMouseRelease, this.getValue()) === 1) return
+
+        this.isDragging = false
+        this.offset = 0
+    }
+
+    _onMouseDrag(component, x, y, button) {
+        if (!this.isDragging) return
+
+        // Cancel the custom event for this component
+        if (this._triggerEvent(this.onMouseDrag, x, y, button, component) === 1 || !this.offset) return
+
+        const clamped = (x + component.getLeft()) - this.offset
+        // Rounds the number if it's above max it returns max value
+        // if it's below min it reutnrs min value
+        const roundNumber = Math.min(Math.max(clamped, this.sliderBar.getLeft()), this.sliderBar.getRight())
+        // Makes the round number a percent basing it off of the parent
+        const percent = (roundNumber - this.sliderBar.getLeft()) / this.sliderBar.getWidth()
+
+        // Fix [sliderBox] going off bound
+        const roundNumberBox = Math.min(Math.max(clamped, this.sliderBar.getLeft()), this.sliderBar.getRight() - this.sliderBox.getWidth())
+        const sliderBoxPercent = (roundNumberBox - this.sliderBar.getLeft()) / this.sliderBar.getWidth()
+
+        // Makes the rounded number into an actual slider value
+        this.value = this.settings[0] % 1 !== 0
+            ? ((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0]).toFixed(2)
+            : parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
+
+        this.sliderValue.setText(this.value)
+        this.sliderBox.setX(new RelativeConstraint(sliderBoxPercent))
+        this.compBox.setWidth(new RelativeConstraint(percent))
     }
 }
