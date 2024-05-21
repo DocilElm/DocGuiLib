@@ -95,6 +95,8 @@ export default class ColorPickerElement extends BaseElement {
         this.hidden = true
         this.parentHeight = null
         this.firstExpandHeight = null
+
+        this._shouldResizeParent = true
     }
 
     /**
@@ -105,6 +107,19 @@ export default class ColorPickerElement extends BaseElement {
         return this.currentRGB
     }
 
+    /**
+     * - Whether the hide/unhide logic should re-size the parent of this component
+     * - it makes the parent component the height of the color picker background box height
+     * - this is to ensure that it can fit the component properly
+     * @param {Boolean} bool `true` by default
+     * @returns this for method chaining
+     */
+    shouldResizeParent(bool) {
+        this._shouldResizeParent = bool
+
+        return this
+    }
+
     // This element will be taking the same approach as [https://github.com/EssentialGG/Vigilance/blob/master/src/main/kotlin/gg/essential/vigilance/gui/settings/ColorPicker.kt]
     _create(colorScheme = {}) {
         if (!this.colorScheme) this.setColorScheme(colorScheme)
@@ -112,7 +127,7 @@ export default class ColorPickerElement extends BaseElement {
         this.generalBg = new UIRoundedRectangle(3)
             .setX(this.x)
             .setY(this.y)
-            .setColor(ElementUtils.getJavaColor([255, 255, 255, 0]))
+            .setColor(this._getColor("generalBackgroundBox"))
             .setWidth((30).percent())
             .setHeight((98).percent())
 
@@ -131,10 +146,10 @@ export default class ColorPickerElement extends BaseElement {
             ._create(this.colorScheme, this.elementType)
             .setChildOf(this.generalBg)
 
-        this.arrowText = new UIText("⬍")
+        this.arrowText = new UIText(this._getSchemeValue("unhideArrowText"))
             .setX(new CramSiblingConstraint(5))
             .setY(new CenterConstraint())
-            .setTextScale((1.5).pixels())
+            .setTextScale((this._getSchemeValue("arrowTextScale")).pixels())
             .setChildOf(this.generalBg)
 
         this.bgBox = new UIRoundedRectangle(3)
@@ -142,7 +157,7 @@ export default class ColorPickerElement extends BaseElement {
             .setY(new CramSiblingConstraint(5))
             .setWidth((80).percent())
             .setHeight((65).percent())
-            .setColor(new Color(0, 0, 0, 80 / 255))
+            .setColor(this._getColor("colorPickerBackgroundBox"))
             // .enableEffect(new OutlineEffect(new Color(1, 1, 1), 0.5))
             .setChildOf(this.generalBg)
 
@@ -158,16 +173,16 @@ export default class ColorPickerElement extends BaseElement {
             .setY((1).percent())
             .setWidth((70).percent())
             .setHeight((65).percent())
-            .setColor(new Color(0, 0, 0, 0))
+            .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
             // .enableEffect(new OutlineEffect(new Color(1, 1, 1), 0.5))
             .setChildOf(this.bgBox)
 
-        this.gradientPicker = new UIContainer()
+        this.gradientPointer = new UIContainer()
             .setX(new RelativeConstraint(minMax(0, 0.96, this.currentSaturation)))
             .setY(new RelativeConstraint(minMax(0, 0.96, 1 - this.currentBrightness)))
             .setWidth((3).pixels())
             .setHeight((3).pixels())
-            .enableEffect(new OutlineEffect(new Color(1, 1, 1), 0.5))
+            .enableEffect(new OutlineEffect(this._getColor("gradientPointerOutlineColor"), this._getSchemeValue("gradientPointerOutlineThickness")))
             .setChildOf(this.fakeGradient)
 
         this.genHueBg = new UIBlock(ElementUtils.getJavaColor([0, 0, 0, 0]))
@@ -199,7 +214,7 @@ export default class ColorPickerElement extends BaseElement {
             .setY(new RelativeConstraint(this.currentHue))
             .setWidth((100).percent())
             .setHeight((3).percent())
-            .enableEffect(new OutlineEffect(new Color(1, 1, 1), 0.5))
+            .enableEffect(new OutlineEffect(this._getColor("huePointerOutlineColor"), this._getSchemeValue("huePointerOutlineThickness")))
             .setChildOf(this.fakeHueLine)
 
         this.alphaSlider = new SliderElement([0.1, 1], parseFloat(this.currentAlpha.toFixed(2)))
@@ -219,8 +234,6 @@ export default class ColorPickerElement extends BaseElement {
 
         // Events
         // Arrow text events
-        // TODO: add different arrows when hide/unhide
-        // so that the dev can have freedom here
         this.arrowText.onMouseClick((comp) => {
             if (this.hidden) return this.unhideColorPicker(comp)
 
@@ -249,7 +262,7 @@ export default class ColorPickerElement extends BaseElement {
             this.currentBrightness = hsb[2]
 
             this.huePointer.setY(new RelativeConstraint(minMax(0, 1, this.currentHue)))
-            this.gradientPicker
+            this.gradientPointer
                 .setX(new RelativeConstraint(minMax(0, 0.96, this.currentSaturation)))
                 .setY(new RelativeConstraint(minMax(0, 0.96, 1 - this.currentBrightness)))
             this.updateColor(true)
@@ -263,7 +276,7 @@ export default class ColorPickerElement extends BaseElement {
                 this.currentSaturation = event.relativeX / comp.getWidth()
                 this.currentBrightness = 1 - (event.relativeY / comp.getHeight())
 
-                this.gradientPicker
+                this.gradientPointer
                     .setX(new RelativeConstraint(minMax(0, 0.94, this.currentSaturation)))
                     .setY(new RelativeConstraint(minMax(0, 1, 1 - this.currentBrightness)))
 
@@ -275,7 +288,7 @@ export default class ColorPickerElement extends BaseElement {
                 this.currentSaturation = minMax(0, 1, x / comp.getWidth())
                 this.currentBrightness = minMax(0, 1, 1 - (y / comp.getHeight()))
 
-                this.gradientPicker
+                this.gradientPointer
                     .setX(new RelativeConstraint(minMax(0, 0.94, this.currentSaturation)))
                     .setY(new RelativeConstraint(minMax(0, 0.9, 1 - this.currentBrightness)))
 
@@ -347,10 +360,19 @@ export default class ColorPickerElement extends BaseElement {
      * @param {UIText} comp THe text (arrow) component
      */
     hideColorPicker(comp) {
+        comp.setText(this._getSchemeValue("hideArrowText"))
+
+        if (!this._shouldResizeParent) {
+            this.hidden = true
+            this.bgBox.hide(true)
+
+            return
+        }
+
         animate(this.generalBg, (animation) => {
             animation.setHeightAnimation(
-                Animations.OUT_SIN,
-                0.5,
+                Animations[this._getSchemeValue("heightAnimationOut")],
+                this._getSchemeValue("heightAnimationOutTime"),
                 (this.parentHeight).pixels()
                 )
             animation.onComplete(() => {
@@ -369,20 +391,22 @@ export default class ColorPickerElement extends BaseElement {
      * @param {UIText} comp The text (arrow) component
      */
     unhideColorPicker(comp) {
-        // Set the parent height to be used once we hide this element
-        this.parentHeight = this.generalBg.parent.getHeight()
+        comp.setText(this._getSchemeValue("unhideArrowText"))
 
         this.hidden = false
         this.bgBox.unhide(true)
 
+        if (!this._shouldResizeParent) return
+
+        // Set the parent height to be used once we hide this element
+        this.parentHeight = this.generalBg.parent.getHeight()
+
         const height = this.firstExpandHeight ?? (this.generalBg.getHeight() + this.textInput.bgBox.getHeight() + this.bgBox.getHeight()).pixels()
 
-        // TODO: add check for this since not everyone will want the color picker
-        // to change the height of the main parent
         animate(this.generalBg, (animation) => {
             animation.setHeightAnimation(
-                Animations.IN_SIN,
-                0.5,
+                Animations[this._getSchemeValue("heightAnimationIn")],
+                this._getSchemeValue("heightAnimationInTime"),
                 height
                 )
         })
@@ -392,8 +416,6 @@ export default class ColorPickerElement extends BaseElement {
         this.textInput.bgBox.setY((1).pixels())
         comp.setY((1).pixels())
         this.generalBg.parent.setHeight(height)
-
-        this.bgBox.grabWindowFocus()
     }
 
     // im too lazy to change the other systems for now

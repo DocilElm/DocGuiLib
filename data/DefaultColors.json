@@ -67,13 +67,19 @@
         "animationTime": 0.5
     },
     "ColorPicker": {
-        "backgroundBox": [0, 0, 0, 80],
-        "textColor": [255, 255, 255, 255],
-        "textScale": 1,
-        "mouseEnter": [0, 0, 0, 80],
-        "mouseLeave": [255, 255, 255, 255],
-        "mouseAnimation": "OUT_EXP",
-        "animationTime": 0.5
+        "generalBackgroundBox": [0, 0, 0, 0],
+        "unhideArrowText": "⬍",
+        "hideArrowText": "⬍",
+        "arrowTextScale": 1.5,
+        "colorPickerBackgroundBox": [0, 0, 0, 80],
+        "gradientPointerOutlineColor": [255, 255, 255],
+        "gradientPointerOutlineThickness": 0.5,
+        "huePointerOutlineColor": [255, 255, 255],
+        "huePointerOutlineThickness": 0.5,
+        "heightAnimationIn": "IN_SIN",
+        "heightAnimationInTime": 0.5,
+        "heightAnimationOut": "OUT_SIN",
+        "heightAnimationOutTime": 0.5
     },
     "Text": {
         "textScale": 1,
