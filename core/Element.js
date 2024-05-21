@@ -1,6 +1,4 @@
-// Matches hex color with alpha if it's given
-// e.g "00ffff100" will match ["00ffff", "100"]
-const hexColorRegex = /^([\w]{6})(\d{1,3})?$/
+const hexColorRegex = /^([abcdef0123456789]{6})$/gi
 
 export default class ElementUtils {
     static JavaColor = java.awt.Color
@@ -32,15 +30,11 @@ export default class ElementUtils {
     static hexToRgb(hex) {
         if (!this.isHexColor(hex)) return null
 
-        const [ _, mhex, malpha ] = hex.match(hexColorRegex)
-
-        const rgb = mhex.match(/[\w]{2}/g)?.map(value => parseInt(value, 16))
+        const rgb = hex.match(/[A-Za-z0-9]{2}/g)?.map(value => parseInt(value, 16))
 
         if (!rgb.length) return null
 
-        const alpha = isNaN(malpha) ? 255 : Math.round(malpha * 2.55)
-
-        return [...rgb, Math.min(255, alpha)]
+        return rgb
     }
 
     /**
@@ -57,11 +51,11 @@ export default class ElementUtils {
      * @param {[Number, Number, Number]} rgb 
      * @returns {String}
      */
-    static rgbToHex([r, g, b, a]) {
+    static rgbToHex([r, g, b]) {
         return [r, g, b].map(x => {
             const hex = x.toString(16).toUpperCase()
             return hex.length === 1 ? "0" + hex : hex
-          }).join("") + Math.round((a ?? 255 / 255) * 100)
+          }).join("")
     }
       
 }
