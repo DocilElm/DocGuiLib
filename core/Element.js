@@ -1,4 +1,4 @@
-const hexColorRegex = /^([abcdef0123456789]{6})$/gi
+const hexColorRegex = /^([a-f0-9]{6})/i
 
 export default class ElementUtils {
     static JavaColor = java.awt.Color
@@ -30,9 +30,9 @@ export default class ElementUtils {
     static hexToRgb(hex) {
         if (!this.isHexColor(hex)) return null
 
-        const rgb = hex.match(/[A-Za-z0-9]{2}/g)?.map(value => parseInt(value, 16))
+        const rgb = hex.match(/[a-f0-9]{2}/gi)?.map(value => parseInt(value, 16))
 
-        if (!rgb.length) return null
+        if (rgb?.length !== 3) return null
 
         return rgb
     }
@@ -57,5 +57,4 @@ export default class ElementUtils {
             return hex.length === 1 ? "0" + hex : hex
           }).join("")
     }
-      
 }
