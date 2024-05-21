@@ -26,6 +26,8 @@ export default class TextInputElement extends BaseElement {
 
         this.text = null
         this.placeHolder = null
+        // Only used by public methods [#unhidePlaceHolder/#hidePlaceHolder]
+        this.placeHolderHidden = false
     }
 
     /**
@@ -85,11 +87,15 @@ export default class TextInputElement extends BaseElement {
         })
 
         this.textInput
-            .onFocus(() => this.placeholderText?.hide(true))
+            .onFocus(() => {
+                this.placeholderText?.hide(true)
+                this.placeHolderHidden = true
+            })
             .onFocusLost(() => {
                 if (this.text) return
 
                 this.placeholderText?.unhide(true)
+                this.placeHolderHidden = false
             })
             .onMouseClick((component, __) => {
                 if (this._triggerEvent(this.onMouseClick, component) === 1) return
@@ -101,7 +107,10 @@ export default class TextInputElement extends BaseElement {
                 
                 component.grabWindowFocus()
                 component.focus()
-                if (this.placeholderText) this.placeholderText.hide(true)
+                if (this.placeholderText) {
+                    this.placeholderText.hide(true)
+                    this.placeHolderHidden = true
+                }
             })
             .onMouseEnter((comp, event) => {
                 if (this._triggerEvent(this.onMouseEnter, comp, event) === 1) return
@@ -132,8 +141,15 @@ export default class TextInputElement extends BaseElement {
 
                 this.text = input.getText()
                 
-                if (this.placeholderText && input.getText() == "") return this.placeholderText.unhide(true)
-                if (this.placeholderText) this.placeholderText.hide(true)
+                if (this.placeholderText && input.getText() == "") {
+                    this.placeholderText.unhide(true)
+                    this.placeHolderHidden = false
+                }
+                
+                if (this.placeholderText) {
+                    this.placeholderText.hide(true)
+                    this.placeHolderHidden = true
+                }
             })
 
         if (this.placeholderText) {
@@ -165,5 +181,33 @@ export default class TextInputElement extends BaseElement {
         }
 
         return this.bgBox
+    }
+
+    /**
+     * - Hides the place holder text for this [TextInput]
+     * - If the placeholder has already been hidden it won't attempt to hide it again
+     * @returns this for method chaining
+     */
+    hidePlaceHolder() {
+        if (!this.placeHolder || this.placeHolderHidden) return this
+
+        this.placeholderText.hide(true)
+        this.placeHolderHidden = true
+
+        return this
+    }
+
+    /**
+     * - Unhides the place holder text for this [TextInput]
+     * - If the placeholder has already been unhidden it won't attempt to unhide it again
+     * @returns this for method chaining
+     */
+    unhidePlaceHolder() {
+        if (!this.placeHolder || !this.placeHolderHidden) return this
+
+        this.placeholderText.unhide(true)
+        this.placeHolderHidden = false
+
+        return this
     }
 }
