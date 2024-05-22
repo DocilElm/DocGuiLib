@@ -218,7 +218,7 @@ export default class ColorPickerElement extends BaseElement {
             .enableEffect(new OutlineEffect(this._getColor("huePointerOutlineColor"), this._getSchemeValue("huePointerOutlineThickness")))
             .setChildOf(this.fakeHueLine)
 
-        this.alphaSlider = new SliderElement([0.001, 1], parseFloat(this.currentAlpha.toFixed(2)))
+        this.alphaSlider = new SliderElement([0.001, 1], parseFloat(this.currentAlpha).toFixed(2))
             ._setPosition(
                 (5).percent(),
                 (80).percent()
