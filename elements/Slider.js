@@ -16,7 +16,7 @@ export default class SliderElement extends BaseElement {
         this.defaultValue = defaultValue
 
         this.initialPercent = this.defaultValue / this.settings[1]
-        this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(Math.min(this.initialPercent, 1 - 0.25)) : this.x
+        this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(Math.min(this.initialPercent, 0.75)) : this.x
         this.isDragging = false
         this.offset = 0
     }
@@ -118,7 +118,7 @@ export default class SliderElement extends BaseElement {
         if (!this.isDragging) return
 
         // Cancel the custom event for this component
-        if (this._triggerEvent(this.onMouseDrag, x, y, button, component) === 1 || !this.offset) return
+        if (this._triggerEvent(this.onMouseDrag, x, y, button, component, this.getValue()) === 1 || !this.offset) return
 
         const clamped = (x + component.getLeft()) - this.offset
         // Rounds the number if it's above max it returns max value

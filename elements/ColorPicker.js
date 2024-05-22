@@ -95,6 +95,7 @@ export default class ColorPickerElement extends BaseElement {
         this.hidden = true
         this.parentHeight = null
         this.firstExpandHeight = null
+        this.textInputHeight = null
 
         this._shouldResizeParent = true
     }
@@ -138,8 +139,8 @@ export default class ColorPickerElement extends BaseElement {
                 new CenterConstraint()
                 )
             ._setSize(
-                (70).percent(),
-                (15).pixels()
+                (60).percent(),
+                (30).percent()
             )
             
         this.textInput
@@ -153,7 +154,7 @@ export default class ColorPickerElement extends BaseElement {
             .setChildOf(this.generalBg)
 
         this.bgBox = new UIRoundedRectangle(3)
-            .setX(new CenterConstraint())
+            .setX(this.textInput.x)
             .setY(new CramSiblingConstraint(5))
             .setWidth((80).percent())
             .setHeight((65).percent())
@@ -217,7 +218,7 @@ export default class ColorPickerElement extends BaseElement {
             .enableEffect(new OutlineEffect(this._getColor("huePointerOutlineColor"), this._getSchemeValue("huePointerOutlineThickness")))
             .setChildOf(this.fakeHueLine)
 
-        this.alphaSlider = new SliderElement([0.1, 1], parseFloat(this.currentAlpha.toFixed(2)))
+        this.alphaSlider = new SliderElement([0.001, 1], parseFloat(this.currentAlpha.toFixed(2)))
             ._setPosition(
                 (5).percent(),
                 (80).percent()
@@ -230,7 +231,14 @@ export default class ColorPickerElement extends BaseElement {
         this.alphaSlider
             ._create(this.colorScheme)
             .setChildOf(this.bgBox)
-
+        
+        this.rgbaBox = new UIRoundedRectangle(5)
+            .setX((80).percent())
+            .setY((75).percent())
+            .setWidth((15).percent())
+            .setHeight((15).percent())
+            .setColor(this.defaultColor)
+            .setChildOf(this.bgBox)
 
         // Events
         // Arrow text events
@@ -241,9 +249,8 @@ export default class ColorPickerElement extends BaseElement {
         })
 
         // Textinput (hex input)
-        // TODO: add alpha support to hex
         this.textInput.onKeyTypeEvent((text) => {
-            if (text.length !== 6) return
+            if (text.length < 6 || text.length > 8) return
 
             let colors = ElementUtils.hexToRgb(text)
 
@@ -252,9 +259,17 @@ export default class ColorPickerElement extends BaseElement {
             this.currentHex = text
             this.currentRGB = colors
 
-            const [ r, g, b ] = colors
+            const [ r, g, b, a ] = colors
 
-            if (this._triggerEvent(this.onKeyType, [r, g, b, Math.floor(this.currentAlpha * 255)]) === 1) return
+            if (this._triggerEvent(this.onKeyType, [r, g, b, a]) === 1) return
+
+            this.currentAlpha = a / 255
+
+            const newVal = minMax(0, 1, parseFloat(this.currentAlpha.toFixed(2)))
+            
+            this.alphaSlider.sliderValue.setText(newVal)
+            this.alphaSlider.sliderBox.setX(new RelativeConstraint(minMax(0, 0.75, newVal)))
+            this.alphaSlider.compBox.setWidth(new RelativeConstraint(newVal))
 
             const hsb = Color.RGBtoHSB(r, g, b, null)
             this.currentHue = hsb[0]
@@ -315,12 +330,14 @@ export default class ColorPickerElement extends BaseElement {
             .onMouseRelease(() => this.draggingHue = false)
 
         // Alpha slider
-        this.alphaSlider.onMouseReleaseEvent((value) => {
-            if (!this.alphaSlider.isDragging) return
+        this.alphaSlider
+            .onMouseDragEvent((_, __, ___, ____, value) => {
+                this.currentAlpha = parseFloat(value)
 
-            this.currentAlpha = parseFloat(value)
-            this._triggerKeyEvent()
-        })
+                this._setTextHexInput()
+                this._recolorRgbaBox()
+                this._triggerKeyEvent()
+            })
 
         // Background box click
         this.bgBox.onMouseClick((comp, event) => {
@@ -342,17 +359,13 @@ export default class ColorPickerElement extends BaseElement {
     updateColor(internal = false) {
         this.defaultColor = new Color(Color.HSBtoRGB(this.currentHue, this.currentSaturation, this.currentBrightness))
         this.gradient.setStartColor(new Color(Color.HSBtoRGB(this.currentHue, 1, 1)))
-
+        
         this._triggerKeyEvent()
-
+        this._recolorRgbaBox()
+        
         if (internal) return
-
-        this.textInput.hidePlaceHolder()
-        this.textInput.textInput.setText(ElementUtils.rgbToHex([
-            this.defaultColor.getRed(),
-            this.defaultColor.getGreen(),
-            this.defaultColor.getBlue()
-        ]))
+        
+        this._setTextHexInput()
     }
 
     /**
@@ -396,6 +409,9 @@ export default class ColorPickerElement extends BaseElement {
         this.hidden = false
         this.bgBox.unhide(true)
 
+        if (!this.textInputHeight) this.textInputHeight = this.textInput.bgBox.getHeight()
+        this.textInput.bgBox.setHeight((this.textInputHeight).pixels())
+
         if (!this._shouldResizeParent) return
 
         // Set the parent height to be used once we hide this element
@@ -413,8 +429,9 @@ export default class ColorPickerElement extends BaseElement {
 
         if (!this.firstExpandHeight) this.firstExpandHeight = height
 
-        this.textInput.bgBox.setY((1).pixels())
-        comp.setY((1).pixels())
+        this.textInput.bgBox.setY((3).pixels())
+        const textHeight = this.textInput.textInput.getHeight()
+        comp.setY((textHeight - (this._getSchemeValue("arrowTextScale") * (textHeight / 3.5))).pixels())
         this.generalBg.parent.setHeight(height)
     }
 
@@ -427,5 +444,25 @@ export default class ColorPickerElement extends BaseElement {
             this.defaultColor.getBlue(),
             Math.floor(this.currentAlpha * 255)
         ])
+    }
+
+    _setTextHexInput() {
+        this.textInput.hidePlaceHolder()
+        this.textInput.textInput.setText(ElementUtils.rgbToHex([
+            this.defaultColor.getRed(),
+            this.defaultColor.getGreen(),
+            this.defaultColor.getBlue(),
+            Math.floor(this.currentAlpha * 255)
+        ]))
+    }
+
+    _recolorRgbaBox() {
+        this.rgbaBox.setColor(ElementUtils.getJavaColor([
+            this.defaultColor.getRed(),
+            this.defaultColor.getGreen(),
+            this.defaultColor.getBlue(),
+            Math.floor(this.currentAlpha * 255)
+            ]
+        ))
     }
 }

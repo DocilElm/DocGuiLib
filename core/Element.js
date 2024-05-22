@@ -1,4 +1,4 @@
-const hexColorRegex = /^([a-f0-9]{6})/i
+const hexColorRegex = /^([a-f0-9]{6})([a-f0-9]{2})?/i
 
 export default class ElementUtils {
     static JavaColor = java.awt.Color
@@ -30,11 +30,9 @@ export default class ElementUtils {
     static hexToRgb(hex) {
         if (!this.isHexColor(hex)) return null
 
-        const rgb = hex.match(/[a-f0-9]{2}/gi)?.map(value => parseInt(value, 16))
+        const [ r, g, b, a ] = hex.match(/[a-f0-9]{2}/gi)?.map(value => parseInt(value, 16))
 
-        if (rgb?.length !== 3) return null
-
-        return rgb
+        return [ r, g, b, a ?? 255 ]
     }
 
     /**
@@ -47,13 +45,13 @@ export default class ElementUtils {
     }
 
     /**
-     * - Converts the given [r, g, b] array into [Hex] string
-     * @param {[Number, Number, Number]} rgb 
+     * - Converts the given [r, g, b, a] array into [Hex] string
+     * @param {[Number, Number, Number, Number]} rgb 
      * @returns {String}
      */
-    static rgbToHex([r, g, b]) {
-        return [r, g, b].map(x => {
-            const hex = x.toString(16).toUpperCase()
+    static rgbToHex([r, g, b, a]) {
+        return [r, g, b, a].map(x => {
+            const hex = (x ?? 255).toString(16).toUpperCase()
             return hex.length === 1 ? "0" + hex : hex
           }).join("")
     }
