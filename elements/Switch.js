@@ -35,16 +35,16 @@ export default class SwitchElement extends BaseElement {
             .setColor(this._getColorByState())
             .setChildOf(this.box)
 
-        this.switchBox
+        this.box
             .onMouseClick((component) => {
                 if (this._triggerEvent(this.onMouseClick, component) === 1) return
 
                 this.value = !this.value
 
                 this.box.setColor(this._getCurrentColor())
-                component.setColor(this._getColorByState())
+                this.switchBox.setColor(this._getColorByState())
 
-                animate(component, (animation) => {
+                animate(this.switchBox, (animation) => {
                     animation.setXAnimation(
                         Animations[this._getSchemeValue("mouseClickAnimation")],
                         this._getSchemeValue("animationTime"),
