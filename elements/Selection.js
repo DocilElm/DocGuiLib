@@ -1,4 +1,5 @@
 import { Animations, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, UIText, UIWrappedText, animate } from "../../Elementa"
+import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class SelectionElement extends BaseElement {
@@ -14,8 +15,9 @@ export default class SelectionElement extends BaseElement {
         super(x, y, width, height, null, null, "Selection")
 
         this.selections = selections
-        this.value = defaultValue
         this.maxLength = (this.selections.length - 1)
+        this.defaultValue = defaultValue
+        this.value = ElementUtils.miniMax(0, this.maxLength, defaultValue)
     }
 
     /**
@@ -65,6 +67,12 @@ export default class SelectionElement extends BaseElement {
      */
     _create(colorScheme = {}) {
         if (!this.colorScheme) this.setColorScheme(colorScheme)
+
+        // If default value is under/over the min/max length of the array
+        // call [onMouseClick] event with the correct fixed values
+        if (this.defaultValue < 0 || this.defaultValue > this.maxLength) {
+            this._triggerEvent(this.onMouseClick, this.value)
+        }
 
         this.box = new UIRoundedRectangle(3)
             .setX(this.x)
