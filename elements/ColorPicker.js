@@ -9,16 +9,6 @@ const UGraphics = Java.type("gg.essential.universal.UGraphics")
 const Color = Java.type("java.awt.Color")
 const hueColors = new Array(50).fill(null).map((_, idx) => new Color(Color.HSBtoRGB(idx / 50, 1, 0.7)))
 
-/**
- * - Gets a number that's between the given min and the given max
- * - without letting the value go under min or over max
- * @param {Number} min 
- * @param {Number} max 
- * @param {Number} value 
- * @returns {Number}
- */
-const minMax = (min, max, value) => Math.min(Math.max(value, min), max)
-
 function UICustomGradient(color1) {
     return new JavaAdapter(GradientComponent, {
       draw() {
@@ -179,8 +169,8 @@ export default class ColorPickerElement extends BaseElement {
             .setChildOf(this.bgBox)
 
         this.gradientPointer = new UIContainer()
-            .setX(new RelativeConstraint(minMax(0, 0.96, this.currentSaturation)))
-            .setY(new RelativeConstraint(minMax(0, 0.96, 1 - this.currentBrightness)))
+            .setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.96, this.currentSaturation)))
+            .setY(new RelativeConstraint(ElementUtils.miniMax(0, 0.96, 1 - this.currentBrightness)))
             .setWidth((3).pixels())
             .setHeight((3).pixels())
             .enableEffect(new OutlineEffect(this._getColor("gradientPointerOutlineColor"), this._getSchemeValue("gradientPointerOutlineThickness")))
@@ -265,10 +255,10 @@ export default class ColorPickerElement extends BaseElement {
 
             this.currentAlpha = a / 255
 
-            const newVal = minMax(0, 1, parseFloat(this.currentAlpha.toFixed(2)))
+            const newVal = ElementUtils.miniMax(0, 1, parseFloat(this.currentAlpha.toFixed(2)))
             
             this.alphaSlider.sliderValue.setText(newVal)
-            this.alphaSlider.sliderBox.setX(new RelativeConstraint(minMax(0, 0.75, newVal)))
+            this.alphaSlider.sliderBox.setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.75, newVal)))
             this.alphaSlider.compBox.setWidth(new RelativeConstraint(newVal))
 
             const hsb = Color.RGBtoHSB(r, g, b, null)
@@ -276,10 +266,10 @@ export default class ColorPickerElement extends BaseElement {
             this.currentSaturation = hsb[1]
             this.currentBrightness = hsb[2]
 
-            this.huePointer.setY(new RelativeConstraint(minMax(0, 1, this.currentHue)))
+            this.huePointer.setY(new RelativeConstraint(ElementUtils.miniMax(0, 1, this.currentHue)))
             this.gradientPointer
-                .setX(new RelativeConstraint(minMax(0, 0.96, this.currentSaturation)))
-                .setY(new RelativeConstraint(minMax(0, 0.96, 1 - this.currentBrightness)))
+                .setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.96, this.currentSaturation)))
+                .setY(new RelativeConstraint(ElementUtils.miniMax(0, 0.96, 1 - this.currentBrightness)))
             this.updateColor(true)
         })
 
@@ -292,20 +282,20 @@ export default class ColorPickerElement extends BaseElement {
                 this.currentBrightness = 1 - (event.relativeY / comp.getHeight())
 
                 this.gradientPointer
-                    .setX(new RelativeConstraint(minMax(0, 0.94, this.currentSaturation)))
-                    .setY(new RelativeConstraint(minMax(0, 1, 1 - this.currentBrightness)))
+                    .setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.94, this.currentSaturation)))
+                    .setY(new RelativeConstraint(ElementUtils.miniMax(0, 1, 1 - this.currentBrightness)))
 
                 this.updateColor()
             })
             .onMouseDrag((comp, x, y) => {
                 if (!this.draggingPicker) return
 
-                this.currentSaturation = minMax(0, 1, x / comp.getWidth())
-                this.currentBrightness = minMax(0, 1, 1 - (y / comp.getHeight()))
+                this.currentSaturation = ElementUtils.miniMax(0, 1, x / comp.getWidth())
+                this.currentBrightness = ElementUtils.miniMax(0, 1, 1 - (y / comp.getHeight()))
 
                 this.gradientPointer
-                    .setX(new RelativeConstraint(minMax(0, 0.94, this.currentSaturation)))
-                    .setY(new RelativeConstraint(minMax(0, 0.9, 1 - this.currentBrightness)))
+                    .setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.94, this.currentSaturation)))
+                    .setY(new RelativeConstraint(ElementUtils.miniMax(0, 0.9, 1 - this.currentBrightness)))
 
                 this.updateColor()
             })
@@ -315,15 +305,15 @@ export default class ColorPickerElement extends BaseElement {
         this.fakeHueLine
             .onMouseClick((comp, event) => {
                 this.draggingHue = true
-                this.currentHue = minMax(0, 1, (event.relativeY - 1) / comp.getHeight())
-                this.huePointer.setY(new RelativeConstraint(minMax(0, 1, this.currentHue)))
+                this.currentHue = ElementUtils.miniMax(0, 1, (event.relativeY - 1) / comp.getHeight())
+                this.huePointer.setY(new RelativeConstraint(ElementUtils.miniMax(0, 1, this.currentHue)))
                 this.updateColor()
             })
             .onMouseDrag((comp, x, y) => {
                 if (!this.draggingHue) return
             
-                this.currentHue = minMax(0, 1, (y - 1) / comp.getHeight())
-                this.huePointer.setY(new RelativeConstraint(minMax(0, 1, this.currentHue)))
+                this.currentHue = ElementUtils.miniMax(0, 1, (y - 1) / comp.getHeight())
+                this.huePointer.setY(new RelativeConstraint(ElementUtils.miniMax(0, 1, this.currentHue)))
                 
                 this.updateColor()
             })

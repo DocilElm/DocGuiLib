@@ -55,4 +55,16 @@ export default class ElementUtils {
             return hex.length === 1 ? "0" + hex : hex
           }).join("")
     }
+
+    /**
+     * - Gets a number that's between the given [min] and [max]
+     * - without letting the value go under [min] or over [max]
+     * @param {Number} min 
+     * @param {Number} max 
+     * @param {Number} value 
+     * @returns {Number}
+     */
+    static miniMax(min, max, value) {
+        return Math.min(Math.max(value, min), max)
+    }
 }
