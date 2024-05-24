@@ -1,7 +1,16 @@
 {
     "Button": {
         "backgroundBox": [0, 0, 0, 80],
-        "backgroundBox1": [0, 0, 0, 0],
+        "textColor": [255, 255, 255, 255],
+        "textScale": 1,
+        "mouseClick": [255, 255, 255, 80],
+        "mouseClickAnimation": "OUT_EXP",
+        "animationTime": 0.2,
+        "outlineColor": [255, 255, 255, 255],
+        "outlineThickness": 0.5
+    },
+    "Button1": {
+        "backgroundBox": [0, 0, 0, 0],
         "lines": [0, 0, 0, 80],
         "textColor": [255, 255, 255, 255],
         "textScale": 1,
@@ -9,9 +18,14 @@
         "mouseEnter": [0, 0, 0, 80],
         "mouseLeave": [0, 0, 0, 0],
         "mouseClickAnimation": "OUT_EXP",
-        "animationTime": 0.5,
+        "mouseClickAnimationTime": 0.2,
+        "mouseEnterAnimation": "OUT_EXP",
+        "mouseEnterAnimationTime": 0.5,
+        "mouseLeaveAnimation": "OUT_EXP",
+        "mouseLeaveAnimationTime": 0.5,
         "outlineColor": [255, 255, 255, 255],
-        "outlineThickness": 0.5
+        "outlineThickness": 0,
+        "centered": false
     },
     "TextInput": {
         "backgroundBox": [0, 0, 0, 80],
