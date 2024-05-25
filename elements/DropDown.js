@@ -69,7 +69,9 @@ export default class DropDownElement extends BaseElement {
                 .setColor(this._getColor("optionsBackgroundBox"))
                 .enableEffect(new OutlineEffect(this._getColor("optionsBackgroundBoxOutlineColor"), this._getSchemeValue("optionsBackgroundBoxOutlineThickness")))
                 .setChildOf(this.dropDownScrollable)
-                .onMouseClick(() => {
+                .onMouseClick((comp, event) => {
+                    if (event.mouseButton !== 0) return
+                    
                     this.value = idx
                     if (this._triggerEvent(this.onMouseClick, this.getValue()) === 1) return
 
