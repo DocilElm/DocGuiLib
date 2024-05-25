@@ -1,4 +1,4 @@
-import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText } from "../../Elementa"
+import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText, UIWrappedText } from "../../Elementa"
 import BaseElement from "./Base"
 
 export default class DropDownElement extends BaseElement {
@@ -30,9 +30,8 @@ export default class DropDownElement extends BaseElement {
             .setColor(this._getColor("selectionBackgroundBox"))
             .setChildOf(this.bgBox)
 
-        this.currentSelectionText = new UIText(this.options[this.value])
-            .setX(new CenterConstraint())
-            .setY(new CenterConstraint())
+        this.currentSelectionText = new UIWrappedText(this.options[this.value], true, null, true, true)
+            .setWidth((100).percent())
             .setColor(this._getColor("selectionTextColor"))
             .setTextScale((this._getSchemeValue("selectionTextScale")).pixels())
             .setChildOf(this.currentSelection)
@@ -71,7 +70,7 @@ export default class DropDownElement extends BaseElement {
                 .setChildOf(this.dropDownScrollable)
                 .onMouseClick((comp, event) => {
                     if (event.mouseButton !== 0) return
-                    
+
                     this.value = idx
                     if (this._triggerEvent(this.onMouseClick, this.getValue()) === 1) return
 
@@ -79,9 +78,10 @@ export default class DropDownElement extends BaseElement {
                     this._hideDropDown()
                 })
 
-            const mainBoxText = new UIText(name)
+            const mainBoxText = new UIWrappedText(name, true, null, true, true)
                 .setX(new CenterConstraint())
                 .setY(new CenterConstraint())
+                .setWidth((100).percent())
                 .setColor(this._getColor("optionsTextColor"))
                 .setTextScale((this._getSchemeValue("optionsTextScale")).pixels())
                 .setChildOf(mainBox)
