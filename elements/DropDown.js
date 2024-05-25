@@ -30,7 +30,9 @@ export default class DropDownElement extends BaseElement {
             .setColor(this._getColor("selectionBackgroundBox"))
             .setChildOf(this.bgBox)
 
-        this.currentSelectionText = new UIWrappedText(this.options[this.value], true, null, true, true)
+        this.currentSelectionText = new UIWrappedText(this.options[this.value], true, null, true, true, 10)
+            .setX((1).pixels())
+            .setY((new CenterConstraint()))
             .setWidth((100).percent())
             .setColor(this._getColor("selectionTextColor"))
             .setTextScale((this._getSchemeValue("selectionTextScale")).pixels())
