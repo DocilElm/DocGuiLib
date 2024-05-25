@@ -6,8 +6,9 @@ export default class DividerElement extends BaseElement {
         super(x, y, width, height, text, null, "Divider")
     }
 
-    _create(colorScheme = {}) {
+    _create(colorScheme = {}, elementType = null) {
         if (!this.colorScheme) this.colorScheme = colorScheme
+        if (elementType) this.elementType = elementType
 
         this.backgroundBox = new UIRoundedRectangle(3)
             .setX(this.x)
