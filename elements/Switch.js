@@ -31,7 +31,7 @@ export default class SwitchElement extends BaseElement {
             .setX(this._getPosition())
             .setY(new CenterConstraint())
             .setWidth(new AspectConstraint(1))
-            .setHeight((12).pixel())
+            .setHeight((80).percent())
             .setColor(this._getColorByState())
             .setChildOf(this.box)
 
