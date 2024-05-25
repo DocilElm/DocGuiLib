@@ -114,5 +114,27 @@
     "Markdown": {
         "backgroundBox": [0, 0, 0, 80],
         "textScale": 1
+    },
+    "DropDown": {
+        "backgroundBox": [0, 0, 0, 0],
+        "backgroundBoxOutlineColor": [255, 255, 255, 255],
+        "backgroundBoxOutlineThickness": 0,
+        "dropDownBackgroundBox": [0, 0, 0, 80],
+        "dropDownBackgroundBoxOutlineColor": [255, 255, 255, 255],
+        "dropDownBackgroundBoxOutlineThickness": 0,
+        "selectionBackgroundBox": [0, 0, 0, 80],
+        "selectionTextScale": 1,
+        "selectionTextColor": [255, 255, 255, 255],
+        "selectionBackgroundBoxOutlineColor": [255, 255, 255, 255],
+        "selectionBackgroundBoxOutlineThickness": 0,
+        "arrowTextScale": 1.7,
+        "arrowTextColor": [255, 255, 255, 255],
+        "hideArrowText": "§l↓",
+        "unhideArrowText": "§l↑",
+        "optionsBackgroundBox": [0, 0, 0, 80],
+        "optionsBackgroundBoxOutlineColor": [255, 255, 255, 255],
+        "optionsBackgroundBoxOutlineThickness": 0,
+        "optionsTextScale": 1,
+        "optionsTextColor": [255, 255, 255, 255]
     }
 }
