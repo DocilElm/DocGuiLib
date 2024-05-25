@@ -19,6 +19,9 @@ export default class BaseElement {
         this.elementType = elementType
         this.outline = outline
 
+        // Default colorScheme in case the user does not add one
+        this.defaultColorScheme = JSON.parse(FileLib.read("DocGuiLib", "data/DefaultColors.json"))
+
         // Event handlers
         this.onMouseClick = null
         this.onMouseEnter = null
@@ -292,7 +295,9 @@ export default class BaseElement {
      * @returns {JavaColor}
      */
     _getCurrentColor(elementType = "Toggle") {
-        return this.value ? ElementUtils.getJavaColor(this.colorScheme[this.elementType ?? elementType].enabled) : ElementUtils.getJavaColor(this.colorScheme[this.elementType ?? elementType].disabled)
+        const scheme = this.colorScheme?.[this.elementType ?? elementType]?.enabled ? this.colorScheme : this.defaultColorScheme
+
+        return this.value ? ElementUtils.getJavaColor(scheme[this.elementType ?? elementType].enabled) : ElementUtils.getJavaColor(scheme[this.elementType ?? elementType].disabled)
     }
 
     /**
@@ -301,7 +306,9 @@ export default class BaseElement {
      * @returns {JavaColor}
      */
     _getColor(colorObj) {
-        return ElementUtils.getJavaColor(this.colorScheme[this.elementType][colorObj])
+        const scheme = this.colorScheme?.[this.elementType]?.[colorObj] ? this.colorScheme : this.defaultColorScheme
+
+        return ElementUtils.getJavaColor(scheme[this.elementType][colorObj])
     }
 
     /**
@@ -310,7 +317,9 @@ export default class BaseElement {
      * @returns {Number|String|Array}
      */
     _getSchemeValue(schemeObj) {
-        return this.colorScheme[this.elementType][schemeObj]
+        const scheme = this.colorScheme?.[this.elementType]?.[schemeObj] ? this.colorScheme : this.defaultColorScheme
+
+        return scheme[this.elementType][schemeObj]
     }
 
     /**
