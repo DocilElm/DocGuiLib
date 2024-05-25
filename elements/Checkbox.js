@@ -6,8 +6,9 @@ export default class CheckboxElement extends BaseElement {
         super(x, y, width, height, check, null, "Checkbox", outline)
     }
 
-    _create(colorScheme = {}) {
+    _create(colorScheme = {}, elementType = null) {
         if (!this.colorScheme) this.colorScheme = colorScheme
+        if (elementType) this.elementType = elementType
 
         this.checkBox = new UIRoundedRectangle(3)
             .setX(this.x)
@@ -24,9 +25,9 @@ export default class CheckboxElement extends BaseElement {
         if (this.outline) this.checkBox.enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.checkBox.onMouseClick((component) => {
-            if (this._triggerEvent(this.onMouseClick, component) === 1) return
-
             this.value = !this.value
+
+            if (this._triggerEvent(this.onMouseClick, this.getValue()) === 1) return
 
             animate(component, (animation) => {
                 animation.setColorAnimation(
