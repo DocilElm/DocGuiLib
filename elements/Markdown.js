@@ -15,7 +15,7 @@ export default class MarkdownElement extends BaseElement {
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setTextScale((this._getSchemeValue("textScale")).pixel())
+            .setTextScale((this._getSchemeValue("textScale")).pixels())
             .setColor(this._getColor("backgroundBox"))
 
         return this.markDown

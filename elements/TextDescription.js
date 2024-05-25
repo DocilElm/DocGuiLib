@@ -18,7 +18,7 @@ export default class TextDescriptionElement extends BaseElement {
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setTextScale((this._getSchemeValue("textScale")).pixel())
+            .setTextScale((this._getSchemeValue("textScale")).pixels())
             .setColor(this._getColor("textColor"))
 
         this.descriptionElement = new UIWrappedText(this.description, true, null, this.centered, true, 10, "...")
@@ -26,7 +26,7 @@ export default class TextDescriptionElement extends BaseElement {
             .setY((11).pixel())
             .setWidth(this.width)
             .setHeight(this.height)
-            .setTextScale((this._getSchemeValue("textScale")).pixel())
+            .setTextScale((this._getSchemeValue("textScale")).pixels())
             .setColor(this._getColor("textColor").darker())
             .setChildOf(this.text)
 

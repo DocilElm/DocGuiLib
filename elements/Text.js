@@ -17,7 +17,7 @@ export default class TextElement extends BaseElement {
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setTextScale((this._getSchemeValue("textScale")).pixel())
+            .setTextScale((this._getSchemeValue("textScale")).pixels())
             .setColor(this._getColor("textColor"))
 
         this.hover = new UIWrappedText("", true, null, true)

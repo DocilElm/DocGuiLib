@@ -53,7 +53,7 @@ export default class Button1Element extends BaseElement {
         this.text = new TextElement(this.getString(), this._getSchemeValue("centered"))
             ._setPosition(x, y)
             ._setSize(width, height)
-            ._create(this.colorScheme)
+            ._create(this.colorScheme, "Button1")
             .setChildOf(this.backgroundBox)
 
         // Events handler

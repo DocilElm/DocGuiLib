@@ -28,6 +28,8 @@ export default class ButtonElement extends BaseElement {
         this.text = new UIWrappedText(this.value)
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
+            .setTextScale((this._getSchemeValue("textScale")).pixels())
+            .setColor(this._getColor("textColor"))
             .setChildOf(this.button)
 
         // Event handlers

@@ -69,7 +69,7 @@ export default class TextInputElement extends BaseElement {
             .setY((1).pixels())
             .setWidth((80).percent())
             .setHeight((80).percent())
-            .setTextScale((this._getSchemeValue("textScale")).pixel())
+            .setTextScale((this._getSchemeValue("textScale")).pixels())
             .setColor(this._getColor("textColor"))
             .setChildOf(this.bgBox)
 
