@@ -1,17 +1,25 @@
 import { CenterConstraint, CramSiblingConstraint, OutlineEffect, ScrollComponent, UIRoundedRectangle, UIText, UIWrappedText } from "../../Elementa"
+import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
 export default class DropDownElement extends BaseElement {
     constructor(options = [], value = 0, x, y, width, height) {
         super(x, y, width, height, value, null, "DropDown")
 
+        this.defaultValue = value
         this.options = options
+        this.maxOptLength = this.options.length - 1
+        this.value = ElementUtils.miniMax(0, this.maxOptLength, value)
         this.hidden = true
     }
 
     _create(colorScheme = {}, elementType = null) {
         if (!this.colorScheme) this.colorScheme = colorScheme
         if (elementType) this.elementType = elementType
+
+        if (this.defaultValue < 0 || this.defaultValue > this.maxOptLength) {
+            this._triggerEvent(this.onMouseClick, this.value)
+        }
 
         this.bgBox = new UIRoundedRectangle(5)
             .setX(this.x)
