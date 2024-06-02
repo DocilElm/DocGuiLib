@@ -2,6 +2,6 @@
   "name": "DocGuiLib",
   "creator": "DocilElm",
   "description": "doc is the best.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "requires": ["Elementa"]
 }

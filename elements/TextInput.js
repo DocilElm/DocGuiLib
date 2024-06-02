@@ -36,6 +36,7 @@ export default class TextInputElement extends BaseElement {
      * @returns this for method chaining
      */
     setPlaceHolder(str) {
+        if (!str) return this
         this.placeHolder = str
 
         return this
@@ -64,7 +65,7 @@ export default class TextInputElement extends BaseElement {
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBox"))
 
-        this.textInput = new UITextInput("")
+        this.textInput = new UITextInput(this.placeHolder ? "" : this.getValue())
             .setX((3).pixels())
             .setY((1).pixels())
             .setWidth((80).percent())
