@@ -1,4 +1,4 @@
-import { Animations, ConstantColorConstraint, UIRoundedRectangle, UIText, UITextInput, animate } from "../../Elementa"
+import { Animations, ConstantColorConstraint, OutlineEffect, UIRoundedRectangle, UIText, UITextInput, animate } from "../../Elementa"
 import BaseElement from "./Base"
 
 let ticksDown = 0
@@ -64,6 +64,7 @@ export default class TextInputElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBox"))
+            .enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.textInput = new UITextInput(this.placeHolder ? "" : this.getValue())
             .setX((3).pixels())

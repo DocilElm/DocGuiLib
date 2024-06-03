@@ -34,7 +34,9 @@
         "mouseEnter": [0, 0, 0, 80],
         "mouseLeave": [255, 255, 255, 255],
         "mouseAnimation": "OUT_EXP",
-        "animationTime": 0.5
+        "animationTime": 0.5,
+        "outlineColor": [255, 255, 255, 255],
+        "outlineThickness": 0
     },
     "Checkbox": {
         "enabled": [255, 255, 255, 80],
@@ -54,7 +56,7 @@
         "mouseClickAnimation": "OUT_EXP",
         "animationTime": 0.5,
         "outlineColor": [255, 255, 255, 255],
-        "outlineThickness": 0.5
+        "outlineThickness": 0
     },
     "Slider": {
         "backgroundBar": [0, 0, 0, 0],
@@ -67,7 +69,7 @@
         "mouseAnimation": "OUT_EXP",
         "animationTime": 0.5,
         "outlineColor": [255, 255, 255, 255],
-        "outlineThickness": 0.5
+        "outlineThickness": 0
     },
     "Selection": {
         "backgroundBar": [0, 0, 0, 80],
@@ -99,7 +101,9 @@
         "heightAnimationIn": "IN_SIN",
         "heightAnimationInTime": 0.5,
         "heightAnimationOut": "OUT_SIN",
-        "heightAnimationOutTime": 0.5
+        "heightAnimationOutTime": 0.5,
+        "outlineColor": [255, 255, 255, 255],
+        "outlineThickness": 0
     },
     "Text": {
         "textScale": 1,
@@ -109,7 +113,9 @@
         "backgroundBox": [0, 0, 0, 80],
         "line": [255, 255, 255, 80],
         "textScale": 1,
-        "textColor": [255, 255, 255, 255]
+        "textColor": [255, 255, 255, 255],
+        "outlineColor": [255, 255, 255, 255],
+        "outlineThickness": 0
     },
     "Markdown": {
         "backgroundBox": [0, 0, 0, 80],

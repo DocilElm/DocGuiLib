@@ -306,7 +306,7 @@ export default class BaseElement {
      * @returns {JavaColor}
      */
     _getColor(colorObj) {
-        const scheme = this.colorScheme?.[this.elementType]?.[colorObj] ? this.colorScheme : this.defaultColorScheme
+        const scheme = this.colorScheme?.[this.elementType]?.[colorObj] != null ? this.colorScheme : this.defaultColorScheme
 
         return ElementUtils.getJavaColor(scheme[this.elementType][colorObj])
     }
@@ -317,7 +317,7 @@ export default class BaseElement {
      * @returns {Number|String|Array}
      */
     _getSchemeValue(schemeObj) {
-        const scheme = this.colorScheme?.[this.elementType]?.[schemeObj] ? this.colorScheme : this.defaultColorScheme
+        const scheme = this.colorScheme?.[this.elementType]?.[schemeObj] != null ? this.colorScheme : this.defaultColorScheme
 
         return scheme[this.elementType][schemeObj]
     }

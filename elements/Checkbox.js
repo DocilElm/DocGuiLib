@@ -16,13 +16,12 @@ export default class CheckboxElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getCurrentColor())
+            .enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.checkMark = new UIText(this.value ? this._getSchemeValue("enabledCheck") : this._getSchemeValue("disabledCheck"))
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
             .setChildOf(this.checkBox)
-            
-        if (this.outline) this.checkBox.enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.checkBox.onMouseClick((component) => {
             this.value = !this.value

@@ -24,8 +24,7 @@ export default class SwitchElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getCurrentColor())
-
-        if (this.outline) this.box.enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
+            .enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.switchBox = new UIRoundedRectangle(3)
             .setX(this._getPosition())

@@ -39,8 +39,6 @@ export default class SliderElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBar"))
-            
-        if (this.outline) this.backgroundBox.enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.sliderBar = new UIRoundedRectangle(3)
             .setX((1).pixels())
@@ -49,6 +47,12 @@ export default class SliderElement extends BaseElement {
             .setHeight((10).pixels())
             .setColor(this._getColor("sliderBox"))
             .setChildOf(this.backgroundBox)
+
+        this.compBox = new UIRoundedRectangle(3)
+            .setWidth(new RelativeConstraint(this.initialPercent))
+            .setHeight((100).percent())
+            .setColor(this._getColor("backgroundBox"))
+            .setChildOf(this.sliderBar)
         
         this.sliderBox = new UIRoundedRectangle(3)
             .setX(this.initialX)
@@ -56,6 +60,7 @@ export default class SliderElement extends BaseElement {
             .setWidth(new AspectConstraint(1))
             .setHeight((15).pixels())
             .setColor(this._getColor("backgroundBox"))
+            .enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
             .setChildOf(this.sliderBar)
         
         this.sliderValue = new UIText(this.defaultValue)
@@ -64,12 +69,6 @@ export default class SliderElement extends BaseElement {
             .setTextScale((this._getSchemeValue("textScale").pixels()))
             .setColor(this._getColor("textColor"))
             .setChildOf(this.sliderBox)
-
-        this.compBox = new UIRoundedRectangle(3)
-            .setWidth(new RelativeConstraint(this.initialPercent))
-            .setHeight((100).percent())
-            .setColor(this._getColor("backgroundBox"))
-            .setChildOf(this.sliderBar)
 
         // Slider events
         // Taking the same approach as [https://github.com/EssentialGG/Vigilance/blob/master/src/main/kotlin/gg/essential/vigilance/gui/settings/Slider.kt]

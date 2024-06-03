@@ -1,4 +1,4 @@
-import { CenterConstraint, UIRoundedRectangle, UIText } from "../../Elementa"
+import { CenterConstraint, OutlineEffect, UIRoundedRectangle, UIText } from "../../Elementa"
 import BaseElement from "./Base"
 
 export default class DividerElement extends BaseElement {
@@ -16,6 +16,7 @@ export default class DividerElement extends BaseElement {
             .setWidth(this.width)
             .setHeight(this.height)
             .setColor(this._getColor("backgroundBox"))
+            .enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
 
         this.textValue = new UIText(this.getValue())
             .setX(new CenterConstraint())
