@@ -22,6 +22,9 @@ export default class SliderElement extends BaseElement {
         this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(ElementUtils.miniMax(0, 0.75, this.initialPercent)) : this.x
         this.isDragging = false
         this.offset = 0
+
+        // Check for decimal pointers and if they should be there add them
+        if (this.settings[0] % 1 !== 0) this.defaultValue = this.defaultValue.toFixed(2)
     }
 
     _create(colorScheme = {}) {
