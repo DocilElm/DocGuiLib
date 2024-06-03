@@ -59,9 +59,14 @@
         "outlineThickness": 0
     },
     "Slider": {
-        "backgroundBar": [0, 0, 0, 0],
-        "backgroundBox": [255, 255, 255, 80],
+        "backgroundBox": [0, 0, 0, 0],
+        "enabledBar": [255, 255, 255, 200],
+        "disabledBar": [255, 255, 255, 80],
+        "sliderBarOutlineColor": [255, 255, 255, 255],
+        "sliderBarOutlineThickness": 0,
         "sliderBox": [0, 0, 0, 80],
+        "sliderBoxOutlineColor": [255, 255, 255, 255],
+        "sliderBoxOutlineThickness": 0,
         "textColor": [255, 255, 255, 255],
         "textScale": 1,
         "mouseEnter": [0, 0, 0, 80],
