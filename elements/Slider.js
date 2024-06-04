@@ -143,7 +143,7 @@ export default class SliderElement extends BaseElement {
 
         // Makes the rounded number into an actual slider value
         this.value = this.settings[0] % 1 !== 0
-            ? ((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0]).toFixed(2)
+            ? parseFloat(((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0]).toFixed(2))
             : parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
 
         this.sliderValue.setText(this.value)
