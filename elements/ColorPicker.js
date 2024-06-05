@@ -421,7 +421,7 @@ export default class ColorPickerElement extends BaseElement {
 
         this.textInput.bgBox.setY((3).pixels())
         const textHeight = this.textInput.textInput.getHeight()
-        comp.setY((textHeight - (this._getSchemeValue("arrowTextScale") * (textHeight / 3.5))).pixels())
+        comp.setY((textHeight - (comp.getHeight() / 2)).pixels())
         this.generalBg.parent.setHeight(height)
     }
 
