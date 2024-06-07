@@ -17,20 +17,20 @@ export default class KeybindElement extends BaseElement {
     _create(colorScheme) {
         if (!this.colorScheme) this.setColorScheme(colorScheme)
 
-        this.bgbox = new UIRoundedRectangle(3)
+        this.bgbox = new UIRoundedRectangle(this._getSchemeValue("background", "roundness"))
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .enableEffect(new OutlineEffect(this._getColor("backgroundBoxOutlineColor"), this._getSchemeValue("backgroundBoxOutlineThickness")))
-            .setColor(this._getColor("backgroundBox"))
+            .setColor(this._getColor("background", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
         this.keyText = new UIWrappedText(this._getKeyName(), true, null, true, true, 10)
             .setX((1).pixels())
             .setY((new CenterConstraint()))
             .setWidth((100).percent())
-            .setColor(this._getColor("keyTextColor"))
-            .setTextScale((this._getSchemeValue("keyTextScale")).pixels())
+            .setColor(this._getColor("text", "color"))
+            .setTextScale((this._getSchemeValue("text", "scale")).pixels())
             .setChildOf(this.bgbox)
 
         // Events
@@ -51,7 +51,7 @@ export default class KeybindElement extends BaseElement {
                 if (event.mouseButton !== 0) return
 
                 this.enabled = true
-                this.keyText.setText(this._getSchemeValue("enabledText"))
+                this.keyText.setText(this._getSchemeValue("text", "enabled"))
             })
             .onFocusLost(() => this.enabled = false)
 

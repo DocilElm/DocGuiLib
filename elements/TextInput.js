@@ -67,7 +67,7 @@ export default class TextInputElement extends BaseElement {
             .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
         this.textInput = new UITextInput(this.placeHolder ? "" : this.getValue(), true)
-            .setX((3).pixels())
+            .setX((this._getSchemeValue("text", "padding")).percent())
             .setY(new CenterConstraint())
             .setWidth(new FillConstraint(useSiblings = false))
             .setHeight((10).pixels())

@@ -16,45 +16,45 @@ export default class MultiCheckboxElement extends BaseElement {
         if (!this.colorScheme) this.colorScheme = colorScheme
         if (elementType) this.elementType = elementType
 
-        this.bgBox = new UIRoundedRectangle(5)
+        this.bgBox = new UIRoundedRectangle(this._getSchemeValue("background", "roundness"))
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .enableEffect(new OutlineEffect(this._getColor("backgroundBoxOutlineColor"), this._getSchemeValue("backgroundBoxOutlineThickness")))
-            .setColor(this._getColor("backgroundBox"))
+            .setColor(this._getColor("background", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
-        this.textBgBox = new UIRoundedRectangle(5)
+        this.textBgBox = new UIRoundedRectangle(this._getSchemeValue("placeholderbackground", "roundness"))
             .setX((1).pixels())
             .setY(new CenterConstraint())
             .setWidth((75).percent())
             .setHeight((100).percent())
-            .enableEffect(new OutlineEffect(this._getColor("textBackgroundBoxOutlineColor"), this._getSchemeValue("textBackgroundBoxOutlineThickness")))
-            .setColor(this._getColor("textBackgroundBox"))
+            .setColor(this._getColor("placeholderbackground", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("placeholderbackground", "outlineColor"), this._getSchemeValue("placeholderbackground", "outlineSize")))
             .setChildOf(this.bgBox)
 
         this.placeholderText = new UIWrappedText(this.placeholder, true, null, true, true, 10)
             .setX((1).pixels())
             .setY((new CenterConstraint()))
             .setWidth((100).percent())
-            .setColor(this._getColor("placeholderTextColor"))
-            .setTextScale((this._getSchemeValue("placeholderTextScale")).pixels())
+            .setColor(this._getColor("placeholdertext", "color"))
+            .setTextScale((this._getSchemeValue("placeholdertext", "scale")).pixels())
             .setChildOf(this.textBgBox)
 
-        this.arrowText = new UIText(this._getSchemeValue("hideArrowText"))
+        this.arrowText = new UIText(this._getSchemeValue("text", "openArrow"))
             .setX(new CramSiblingConstraint(5))
             .setY(new CenterConstraint())
-            .setColor(this._getColor("arrowTextColor"))
-            .setTextScale((this._getSchemeValue("arrowTextScale")).pixels())
+            .setColor(this._getColor("text", "color"))
+            .setTextScale((this._getSchemeValue("text", "scale")).pixels())
             .setChildOf(this.bgBox)
 
-        this.dropDownBg = new UIRoundedRectangle(5)
+        this.dropDownBg = new UIRoundedRectangle(this._getSchemeValue("dropdownbackground", "roundness"))
             .setX(new CenterConstraint())
             .setY(new CramSiblingConstraint(5))
             .setWidth((200).percent())
             .setHeight((600).percent())
-            .enableEffect(new OutlineEffect(this._getColor("dropDownBackgroundBoxOutlineColor"), this._getSchemeValue("dropDownBackgroundBoxOutlineThickness")))
-            .setColor(this._getColor("dropDownBackgroundBox"))
+            .enableEffect(new OutlineEffect(this._getColor("dropdownbackground", "outlineColor"), this._getSchemeValue("dropdownbackground", "outlineSize")))
+            .setColor(this._getColor("dropdownbackground", "color"))
             .setChildOf(this.bgBox)
 
         this.dropDownScrollable = new ScrollComponent("", 5)
@@ -80,21 +80,21 @@ export default class MultiCheckboxElement extends BaseElement {
                 ._create(this.colorScheme[this.elementType])
                 .setChildOf(optionBg)
 
-            const mainBox = new UIRoundedRectangle(5)
+            const mainBox = new UIRoundedRectangle(this._getSchemeValue("optionsbackground", "roundness"))
                 .setX((22).percent())
                 .setY((0).pixels())
                 .setWidth((75).percent())
                 .setHeight((100).percent())
-                .setColor(this._getColor("optionsBackgroundBox"))
-                .enableEffect(new OutlineEffect(this._getColor("optionsBackgroundBoxOutlineColor"), this._getSchemeValue("optionsBackgroundBoxOutlineThickness")))
+                .setColor(this._getColor("optionsbackground", "color"))
+                .enableEffect(new OutlineEffect(this._getColor("optionsbackground", "outlineColor"), this._getSchemeValue("optionsbackground", "outlineSize")))
                 .setChildOf(optionBg)
 
             const mainBoxText = new UIWrappedText(obj.title, true, null, true, true)
                 .setX(new CenterConstraint())
                 .setY(new CenterConstraint())
                 .setWidth((100).percent())
-                .setColor(this._getColor("optionsTextColor"))
-                .setTextScale((this._getSchemeValue("optionsTextScale")).pixels())
+                .setColor(this._getColor("optionstext", "color"))
+                .setTextScale((this._getSchemeValue("optionstext", "scale")).pixels())
                 .setChildOf(mainBox)
         })
 
@@ -123,7 +123,7 @@ export default class MultiCheckboxElement extends BaseElement {
     _hideDropDown() {
         if (this.hidden) return
 
-        this.arrowText.setText(this._getSchemeValue("hideArrowText"))
+        this.arrowText.setText(this._getSchemeValue("text", "openArrow"))
         this.dropDownBg.hide(true)
         this.dropDownBg.setFloating(false)
         this.hidden = true
@@ -132,7 +132,7 @@ export default class MultiCheckboxElement extends BaseElement {
     _unhideDropDown() {
         if (!this.hidden) return
 
-        this.arrowText.setText(this._getSchemeValue("unhideArrowText"))
+        this.arrowText.setText(this._getSchemeValue("text", "closeArrow"))
         this.dropDownBg.unhide(true)
         this.dropDownBg.setFloating(true)
         this.hidden = false

@@ -147,6 +147,7 @@ export default class SliderElement extends BaseElement {
             ? parseFloat(((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0]).toFixed(2))
             : parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
 
+        // TODO: make this more precise so people can have values whenever the max is higher than 2 digits
         this.sliderValue.setText(this.value)
         this.sliderBox.setX(new RelativeConstraint(sliderBoxPercent))
         this.compBox.setWidth(new RelativeConstraint(percent))

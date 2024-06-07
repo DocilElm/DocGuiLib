@@ -15,8 +15,9 @@ export default class MarkdownElement extends BaseElement {
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setTextScale((this._getSchemeValue("textScale")).pixels())
-            .setColor(this._getColor("backgroundBox"))
+            // TODO: maybe figure this out and fix the issues with MD component
+            // .setTextScale((this._getSchemeValue("textScale")).pixels())
+            // .setColor(this._getColor("backgroundBox"))
 
         return this.markDown
     }

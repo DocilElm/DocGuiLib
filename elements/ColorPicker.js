@@ -115,12 +115,13 @@ export default class ColorPickerElement extends BaseElement {
     _create(colorScheme = {}) {
         if (!this.colorScheme) this.setColorScheme(colorScheme)
 
-        this.generalBg = new UIRoundedRectangle(3)
+        this.generalBg = new UIRoundedRectangle(this._getSchemeValue("background", "roundness"))
             .setX(this.x)
             .setY(this.y)
-            .setColor(this._getColor("generalBackgroundBox"))
+            .setColor(this._getColor("background", "color"))
             .setWidth((30).percent())
             .setHeight((98).percent())
+            .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
         this.textInput = new TextInputElement(ElementUtils.rgbToHex(this.getValue()))
             .setPlaceHolder(ElementUtils.rgbToHex(this.getValue()))
@@ -136,23 +137,20 @@ export default class ColorPickerElement extends BaseElement {
         this.textInput
             ._create(this.colorScheme[this.elementType])
             .setChildOf(this.generalBg)
-
-        // TODO: make this a padding option in scheme
-        // this.textInput.textInput.setX((10).percent())
             
-        this.arrowText = new UIText(this._getSchemeValue("hideArrowText"))
+        this.arrowText = new UIText(this._getSchemeValue("text", "openArrow"))
             .setX(new CramSiblingConstraint(5))
             .setY(new CenterConstraint())
-            .setTextScale((this._getSchemeValue("arrowTextScale")).pixels())
+            .setTextScale((this._getSchemeValue("text", "scale")).pixels())
             .setChildOf(this.generalBg)
 
-        this.bgBox = new UIRoundedRectangle(3)
+        this.bgBox = new UIRoundedRectangle(this._getSchemeValue("colorpickerbackground", "roundness"))
             .setX(this.textInput.x)
             .setY(new CramSiblingConstraint(5))
             .setWidth((80).percent())
             .setHeight((65).percent())
-            .setColor(this._getColor("colorPickerBackgroundBox"))
-            .enableEffect(new OutlineEffect(this._getColor("colorPickerBackgroundBoxOutlineColor"), this._getSchemeValue("colorPickerBackgroundBoxOutlineThickness")))
+            .setColor(this._getColor("colorpickerbackground", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("colorpickerbackground", "outlineColor"), this._getSchemeValue("colorpickerbackground", "outlineSize")))
             .setChildOf(this.generalBg)
 
         this.gradient = new UICustomGradient(new Color(Color.HSBtoRGB(this.currentHue, 1, 1)))
@@ -162,13 +160,13 @@ export default class ColorPickerElement extends BaseElement {
             .setHeight((65).percent())
             .setChildOf(this.bgBox)
 
-        this.fakeGradient = new UIRoundedRectangle(3)
+        this.fakeGradient = new UIRoundedRectangle(this._getSchemeValue("gradientbackground", "roundness"))
             .setX((5).percent())
             .setY((1).percent())
             .setWidth((70).percent())
             .setHeight((65).percent())
-            .setColor(ElementUtils.getJavaColor([0, 0, 0, 0]))
-            .enableEffect(new OutlineEffect(this._getColor("gradientBackgroundBoxOutlineColor"), this._getSchemeValue("gradientBackgroundBoxOutlineThickness")))
+            .setColor(this._getColor("gradientbackground", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("gradientbackground", "outlineColor"), this._getSchemeValue("gradientbackground", "outlineSize")))
             .setChildOf(this.bgBox)
 
         this.gradientPointer = new UIContainer()
@@ -176,7 +174,7 @@ export default class ColorPickerElement extends BaseElement {
             .setY(new RelativeConstraint(ElementUtils.miniMax(0, 0.96, 1 - this.currentBrightness)))
             .setWidth((3).pixels())
             .setHeight((3).pixels())
-            .enableEffect(new OutlineEffect(this._getColor("gradientPointerOutlineColor"), this._getSchemeValue("gradientPointerOutlineThickness")))
+            .enableEffect(new OutlineEffect(this._getColor("gradientpointer", "outlineColor"), this._getSchemeValue("gradientpointer", "outlineSize")))
             .setChildOf(this.fakeGradient)
 
         this.genHueBg = new UIBlock(ElementUtils.getJavaColor([0, 0, 0, 0]))
@@ -195,12 +193,12 @@ export default class ColorPickerElement extends BaseElement {
             .setHeight((100).percent())
             .setChildOf(this.genHueBg)
 
-        this.fakeHueLine = new UIBlock(ElementUtils.getJavaColor([0, 0, 0, 0]))
+        this.fakeHueLine = new UIBlock(this._getColor("huebackground", "color"))
             .setX((1).pixels())
             .setY((1).pixels())
             .setWidth((68).percent())
             .setHeight((100).percent())
-            .enableEffect(new OutlineEffect(this._getColor("hueBackgroundBoxOutlineColor"), this._getSchemeValue("hueBackgroundBoxOutlineThickness")))
+            .enableEffect(new OutlineEffect(this._getColor("huebackground", "outlineColor"), this._getSchemeValue("huebackground", "outlineSize")))
             .setChildOf(this.genHueBg)
 
         this.huePointer = new UIContainer()
@@ -208,7 +206,7 @@ export default class ColorPickerElement extends BaseElement {
             .setY(new RelativeConstraint(this.currentHue))
             .setWidth((100).percent())
             .setHeight((3).percent())
-            .enableEffect(new OutlineEffect(this._getColor("huePointerOutlineColor"), this._getSchemeValue("huePointerOutlineThickness")))
+            .enableEffect(new OutlineEffect(this._getColor("huepointer", "outlineColor"), this._getSchemeValue("huepointer", "outlineSize")))
             .setChildOf(this.fakeHueLine)
 
         this.alphaSlider = new SliderElement([0.001, 1], parseFloat(this.currentAlpha).toFixed(2))
@@ -222,7 +220,7 @@ export default class ColorPickerElement extends BaseElement {
             )
 
         this.alphaSlider
-            ._create(this.colorScheme)
+            ._create(this.colorScheme[this.elementType])
             .setChildOf(this.bgBox)
         
         this.rgbaBox = new UIRoundedRectangle(5)
@@ -366,7 +364,7 @@ export default class ColorPickerElement extends BaseElement {
      * @param {UIText} comp THe text (arrow) component
      */
     hideColorPicker(comp) {
-        comp.setText(this._getSchemeValue("hideArrowText"))
+        comp.setText(this._getSchemeValue("text", "openArrow"))
 
         if (!this._shouldResizeParent) {
             this.hidden = true
@@ -377,8 +375,8 @@ export default class ColorPickerElement extends BaseElement {
 
         animate(this.generalBg, (animation) => {
             animation.setHeightAnimation(
-                Animations[this._getSchemeValue("heightAnimationOut")],
-                this._getSchemeValue("heightAnimationOutTime"),
+                Animations[this._getSchemeValue("heightAnimationOut", "type")],
+                this._getSchemeValue("heightAnimationOut", "time"),
                 (this.parentHeight).pixels()
                 )
             animation.onComplete(() => {
@@ -397,7 +395,7 @@ export default class ColorPickerElement extends BaseElement {
      * @param {UIText} comp The text (arrow) component
      */
     unhideColorPicker(comp) {
-        comp.setText(this._getSchemeValue("unhideArrowText"))
+        comp.setText(this._getSchemeValue("text", "closeArrow"))
 
         this.hidden = false
         this.bgBox.unhide(true)
@@ -414,8 +412,8 @@ export default class ColorPickerElement extends BaseElement {
 
         animate(this.generalBg, (animation) => {
             animation.setHeightAnimation(
-                Animations[this._getSchemeValue("heightAnimationIn")],
-                this._getSchemeValue("heightAnimationInTime"),
+                Animations[this._getSchemeValue("heightAnimationIn", "type")],
+                this._getSchemeValue("heightAnimationIn", "time"),
                 height
                 )
         })
