@@ -6,52 +6,57 @@ export default class SwitchElement extends BaseElement {
         super(x, y, width, height, enabled, null, "Switch", outline)
     }
 
-    _getPosition() {
-        return this.getValue() ? (1).pixel(true) : (1).pixel()
-    }
-
-    _getColorByState() {
-        return this.getValue() ? this._getColor("switchBoxEnabled") : this._getColor("switchBoxDisabled")
-    }
-
     _create(colorScheme = {}, elementType = null) {
         if (!this.colorScheme) this.colorScheme = colorScheme
         if (elementType) this.elementType = elementType
 
-        this.box = new UIRoundedRectangle(3)
+        this.backgroundBox = new UIRoundedRectangle(this._getSchemeValue("background", "roundness"))
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setColor(this._getCurrentColor())
-            .enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
+            .setColor(this._getColorByStateBackground())
+            .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
-        this.switchBox = new UIRoundedRectangle(3)
+        this.switchBox = new UIRoundedRectangle(this._getSchemeValue("switchbox", "roundness"))
             .setX(this._getPosition())
             .setY(new CenterConstraint())
             .setWidth(new AspectConstraint(1))
             .setHeight((80).percent())
             .setColor(this._getColorByState())
-            .setChildOf(this.box)
+            .enableEffect(new OutlineEffect(this._getColor("switchbox", "outlineColor"), this._getSchemeValue("switchbox", "outlineSize")))
+            .setChildOf(this.backgroundBox)
 
-        this.box
+        this.backgroundBox
             .onMouseClick((component) => {
                 if (this._triggerEvent(this.onMouseClick, component) === 1) return
 
                 this.value = !this.value
 
-                this.box.setColor(this._getCurrentColor())
+                this.backgroundBox.setColor(this._getColorByStateBackground())
                 this.switchBox.setColor(this._getColorByState())
 
                 animate(this.switchBox, (animation) => {
                     animation.setXAnimation(
-                        Animations[this._getSchemeValue("mouseClickAnimation")],
-                        this._getSchemeValue("animationTime"),
+                        Animations[this._getSchemeValue("mouseClickAnimation", "type")],
+                        this._getSchemeValue("mouseClickAnimation", "time"),
                         this._getPosition()
                     )
                 })
             })
 
-        return this.box
+        return this.backgroundBox
+    }
+
+    _getPosition() {
+        return this.getValue() ? (1).pixel(true) : (1).pixel()
+    }
+
+    _getColorByState() {
+        return this.getValue() ? this._getColor("switchbox", "enabledColor") : this._getColor("switchbox", "disabledColor")
+    }
+
+    _getColorByStateBackground() {
+        return this.getValue() ? this._getColor("background", "enabledColor") : this._getColor("background", "disabledColor")
     }
 }

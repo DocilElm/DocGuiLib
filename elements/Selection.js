@@ -1,4 +1,4 @@
-import { Animations, CenterConstraint, ConstantColorConstraint, UIRoundedRectangle, UIText, UIWrappedText, animate } from "../../Elementa"
+import { Animations, CenterConstraint, ConstantColorConstraint, OutlineEffect, UIRoundedRectangle, UIText, UIWrappedText, animate } from "../../Elementa"
 import ElementUtils from "../core/Element"
 import BaseElement from "./Base"
 
@@ -74,34 +74,35 @@ export default class SelectionElement extends BaseElement {
             this._triggerEvent(this.onMouseClick, this.value)
         }
 
-        this.box = new UIRoundedRectangle(3)
+        this.backgroundBox = new UIRoundedRectangle(this._getSchemeValue("background", "roundness"))
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setColor(this._getColor("backgroundBar"))
+            .setColor(this._getColor("background", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
         this.textValue = new UIWrappedText(this.selections[this.getValue()], true, null, true, true, 10, "...")
             .setX((1).pixels())
             .setY((new CenterConstraint()))
             .setWidth(this.width)
-            .setTextScale((this._getSchemeValue("textScale").pixels()))
-            .setColor(this._getColor("textColor"))
-            .setChildOf(this.box)
+            .setTextScale((this._getSchemeValue("text", "scale").pixels()))
+            .setColor(this._getColor("text", "color"))
+            .setChildOf(this.backgroundBox)
 
-        this.leftArrow = new UIText(this._getSchemeValue("leftArrow"))
+        this.leftArrow = new UIText(this._getSchemeValue("text", "leftArrow"))
             .setX((1).pixels())
             .setY(new CenterConstraint())
-            .setTextScale((this._getSchemeValue("textScale").pixels()))
-            .setColor(this._getColor("textColor"))
-            .setChildOf(this.box)
+            .setTextScale((this._getSchemeValue("text", "scale").pixels()))
+            .setColor(this._getColor("text", "color"))
+            .setChildOf(this.backgroundBox)
 
-        this.rightArrow = new UIText(this._getSchemeValue("rightArrow"))
+        this.rightArrow = new UIText(this._getSchemeValue("text", "rightArrow"))
             .setX((1).pixels(true))
             .setY(new CenterConstraint())
-            .setTextScale((this._getSchemeValue("textScale").pixels()))
-            .setColor(this._getColor("textColor"))
-            .setChildOf(this.box)
+            .setTextScale((this._getSchemeValue("text", "scale").pixels()))
+            .setColor(this._getColor("text", "color"))
+            .setChildOf(this.backgroundBox)
 
         // Event handlers
         this.leftArrow
@@ -116,9 +117,9 @@ export default class SelectionElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations[this._getSchemeValue("arrowClickAnimation")],
-                        this._getSchemeValue("animationTime"),
-                        new ConstantColorConstraint(this._getColor("mouseEnter")),
+                        Animations[this._getSchemeValue("mouseEnterAnimation", "type")],
+                        this._getSchemeValue("mouseEnterAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "color")),
                         0
                         )
                 })
@@ -128,9 +129,9 @@ export default class SelectionElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations[this._getSchemeValue("arrowClickAnimation")],
-                        this._getSchemeValue("animationTime"),
-                        new ConstantColorConstraint(this._getColor("mouseLeave")),
+                        Animations[this._getSchemeValue("mouseLeaveAnimation", "type")],
+                        this._getSchemeValue("mouseLeaveAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "color")),
                         0
                         )
                 })
@@ -148,9 +149,9 @@ export default class SelectionElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations[this._getSchemeValue("arrowClickAnimation")],
-                        this._getSchemeValue("animationTime"),
-                        new ConstantColorConstraint(this._getColor("mouseEnter")),
+                        Animations[this._getSchemeValue("mouseEnterAnimation", "type")],
+                        this._getSchemeValue("mouseEnterAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "color")),
                         0
                         )
                 })
@@ -160,9 +161,9 @@ export default class SelectionElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations[this._getSchemeValue("arrowClickAnimation")],
-                        this._getSchemeValue("animationTime"),
-                        new ConstantColorConstraint(this._getColor("mouseLeave")),
+                        Animations[this._getSchemeValue("mouseLeaveAnimation", "type")],
+                        this._getSchemeValue("mouseLeaveAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "color")),
                         0
                         )
                 })
@@ -170,6 +171,6 @@ export default class SelectionElement extends BaseElement {
 
         this._hideArrows(this.getValue())
 
-        return this.box
+        return this.backgroundBox
     }
 }

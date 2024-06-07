@@ -10,15 +10,15 @@ export default class CheckboxElement extends BaseElement {
         if (!this.colorScheme) this.colorScheme = colorScheme
         if (elementType) this.elementType = elementType
 
-        this.checkBox = new UIRoundedRectangle(3)
+        this.checkBox = new UIRoundedRectangle(this._getSchemeValue("background", "roundness"))
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setColor(this._getCurrentColor())
-            .enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
+            .setColor(this._getColorByState())
+            .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
-        this.checkMark = new UIText(this.value ? this._getSchemeValue("enabledCheck") : this._getSchemeValue("disabledCheck"))
+        this.checkMark = new UIText(this.value ? this._getSchemeValue("check", "enabled") : this._getSchemeValue("check", "disabled"))
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
             .setChildOf(this.checkBox)
@@ -30,19 +30,23 @@ export default class CheckboxElement extends BaseElement {
 
             animate(component, (animation) => {
                 animation.setColorAnimation(
-                    Animations[this._getSchemeValue("mouseClickAnimation")],
-                    this._getSchemeValue("animationTime"),
-                    new ConstantColorConstraint(this._getCurrentColor()),
+                    Animations[this._getSchemeValue("mouseClickAnimation", "type")],
+                    this._getSchemeValue("mouseClickAnimation", "time"),
+                    new ConstantColorConstraint(this._getColorByState()),
                     0
                     )
             })
 
-            this.checkMark.setText(this.value    
-                ? this._getSchemeValue("enabledCheck")
-                : this._getSchemeValue("disabledCheck")
-                )
+            this.checkMark.setText(this.value
+                ? this._getSchemeValue("check", "enabled")
+                : this._getSchemeValue("check", "disabled")
+            )
         })
 
         return this.checkBox
+    }
+
+    _getColorByState() {
+        return this.getValue() ? this._getColor("background", "enabledColor") : this._getColor("background", "disabledColor")
     }
 }

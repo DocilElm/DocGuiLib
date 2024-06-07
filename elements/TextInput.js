@@ -1,4 +1,4 @@
-import { Animations, ConstantColorConstraint, FillConstraint, OutlineEffect, UIRoundedRectangle, UIText, UITextInput, animate } from "../../Elementa"
+import { Animations, CenterConstraint, ConstantColorConstraint, FillConstraint, OutlineEffect, UIRoundedRectangle, UIText, UITextInput, animate } from "../../Elementa"
 import BaseElement from "./Base"
 
 let ticksDown = 0
@@ -58,27 +58,27 @@ export default class TextInputElement extends BaseElement {
         if (!this.colorScheme) this.setColorScheme(colorScheme)
         if (elementType) this.elementType = elementType
 
-        this.bgBox = new UIRoundedRectangle(3)
+        this.bgBox = new UIRoundedRectangle(this._getSchemeValue("background", "roundness"))
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setColor(this._getColor("backgroundBox"))
-            .enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
+            .setColor(this._getColor("background", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
-        this.textInput = new UITextInput(this.placeHolder ? "" : this.getValue())
+        this.textInput = new UITextInput(this.placeHolder ? "" : this.getValue(), true)
             .setX((3).pixels())
-            .setY((1).pixels())
+            .setY(new CenterConstraint())
             .setWidth(new FillConstraint(useSiblings = false))
-            .setHeight((80).percent())
-            .setTextScale((this._getSchemeValue("textScale")).pixels())
-            .setColor(this._getColor("textColor"))
+            .setHeight((10).pixels())
+            .setTextScale((this._getSchemeValue("text", "scale")).pixels())
+            .setColor(this._getColor("text", "color"))
             .setChildOf(this.bgBox)
 
         if (this.placeHolder) {
             this.placeholderText = new UIText(this.placeHolder)
-                .setX((1).pixels())
-                .setY((1).pixels())
+                .setX((0).pixels())
+                .setY(new CenterConstraint())
                 .setChildOf(this.textInput)
         }
 
@@ -119,9 +119,9 @@ export default class TextInputElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations[this._getSchemeValue("mouseAnimation")],
-                        this._getSchemeValue("animationTime"),
-                        new ConstantColorConstraint(this._getColor("mouseEnter")),
+                        Animations[this._getSchemeValue("mouseEnterAnimation", "type")],
+                        this._getSchemeValue("mouseEnterAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "color")),
                         0
                         )
                 })
@@ -131,9 +131,9 @@ export default class TextInputElement extends BaseElement {
             
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations[this._getSchemeValue("mouseAnimation")],
-                        this._getSchemeValue("animationTime"),
-                        new ConstantColorConstraint(this._getColor("mouseLeave")),
+                        Animations[this._getSchemeValue("mouseLeaveAnimation", "type")],
+                        this._getSchemeValue("mouseLeaveAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "color")),
                         0
                         )
                 })
@@ -161,9 +161,9 @@ export default class TextInputElement extends BaseElement {
                 
                     animate(comp, (animation) => {
                         animation.setColorAnimation(
-                            Animations[this._getSchemeValue("mouseAnimation")],
-                            this._getSchemeValue("animationTime"),
-                            new ConstantColorConstraint(this._getColor("mouseEnter")),
+                            Animations[this._getSchemeValue("mouseEnterAnimation", "type")],
+                            this._getSchemeValue("mouseEnterAnimation", "time"),
+                            new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "color")),
                             0
                             )
                     })
@@ -173,9 +173,9 @@ export default class TextInputElement extends BaseElement {
                 
                     animate(comp, (animation) => {
                         animation.setColorAnimation(
-                            Animations[this._getSchemeValue("mouseAnimation")],
-                            this._getSchemeValue("animationTime"),
-                            new ConstantColorConstraint(this._getColor("mouseLeave")),
+                            Animations[this._getSchemeValue("mouseLeaveAnimation", "type")],
+                            this._getSchemeValue("mouseLeaveAnimation", "time"),
+                            new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "color")),
                             0
                             )
                     })

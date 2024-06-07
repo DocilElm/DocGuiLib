@@ -132,11 +132,14 @@ export default class ColorPickerElement extends BaseElement {
                 (60).percent(),
                 (30).percent()
             )
-            
+
         this.textInput
-            ._create(this.colorScheme, this.elementType)
+            ._create(this.colorScheme[this.elementType])
             .setChildOf(this.generalBg)
 
+        // TODO: make this a padding option in scheme
+        // this.textInput.textInput.setX((10).percent())
+            
         this.arrowText = new UIText(this._getSchemeValue("hideArrowText"))
             .setX(new CramSiblingConstraint(5))
             .setY(new CenterConstraint())
@@ -257,7 +260,7 @@ export default class ColorPickerElement extends BaseElement {
 
             const newVal = ElementUtils.miniMax(0, 1, parseFloat(this.currentAlpha.toFixed(2)))
             
-            this.alphaSlider.sliderValue.setText(newVal)
+            this.alphaSlider.sliderValue.setText(newVal.toFixed(2))
             this.alphaSlider.sliderBox.setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.75, newVal)))
             this.alphaSlider.compBox.setWidth(new RelativeConstraint(newVal))
 
@@ -420,8 +423,7 @@ export default class ColorPickerElement extends BaseElement {
         if (!this.firstExpandHeight) this.firstExpandHeight = height
 
         this.textInput.bgBox.setY((3).pixels())
-        const textHeight = this.textInput.textInput.getHeight()
-        comp.setY((textHeight - (comp.getHeight() / 2)).pixels())
+        comp.setY((this.textInput.textInput.getHeight() - (comp.getHeight() / 3)).pixels())
         this.generalBg.parent.setHeight(height)
     }
 

@@ -16,20 +16,19 @@ export default class ButtonElement extends BaseElement {
     _create(colorScheme) {
         if (!this.colorScheme) this.setColorScheme(colorScheme)
 
-        this.button = new UIRoundedRectangle(3)
+        this.button = new UIRoundedRectangle(this._getSchemeValue("background", "roundness"))
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setColor(this._getColor("backgroundBox"))
+            .setColor(this._getColor("background", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
         
-        if (this.outline) this.button.enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
-
         this.text = new UIWrappedText(this.value)
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
-            .setTextScale((this._getSchemeValue("textScale")).pixels())
-            .setColor(this._getColor("textColor"))
+            .setTextScale((this._getSchemeValue("text", "scale")).pixels())
+            .setColor(this._getColor("text", "color"))
             .setChildOf(this.button)
 
         // Event handlers
@@ -38,14 +37,14 @@ export default class ButtonElement extends BaseElement {
             
             animate(comp, (animation) => {
                 animation.setColorAnimation(
-                    Animations[this._getSchemeValue("mouseClickAnimation")],
-                    this._getSchemeValue("animationTime"),
-                    new ConstantColorConstraint(this._getColor("mouseClick")),
+                    Animations[this._getSchemeValue("mouseClickAnimation", "type")],
+                    this._getSchemeValue("mouseClickAnimation", "time"),
+                    new ConstantColorConstraint(this._getColor("mouseClickAnimation", "color")),
                     0
                     )
                 
                 animation.onComplete(() => {
-                    comp.setColor(this._getColor("backgroundBox"))
+                    comp.setColor(this._getColor("background", "color"))
                 })
             })
         })

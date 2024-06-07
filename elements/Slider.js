@@ -36,43 +36,44 @@ export default class SliderElement extends BaseElement {
             this._triggerEvent(this.onMouseRelease, this.defaultValue)
         }
 
-        this.backgroundBox = new UIRoundedRectangle(3)
+        this.backgroundBox = new UIRoundedRectangle(this._getSchemeValue("background", "roundness"))
             .setX(this.x)
             .setY(this.y)
             .setWidth(this.width)
             .setHeight(this.height)
-            .setColor(this._getColor("backgroundBox"))
-            .enableEffect(new OutlineEffect(this._getColor("outlineColor"), this._getSchemeValue("outlineThickness")))
+            .setColor(this._getColor("background", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
-        this.sliderBar = new UIRoundedRectangle(3)
+        this.sliderBar = new UIRoundedRectangle(this._getSchemeValue("bar", "roundness"))
             .setX((1).pixels())
             .setY(new CenterConstraint())
             .setWidth((98).percent())
             .setHeight((10).pixels())
-            .setColor(this._getColor("disabledBar"))
-            .enableEffect(new OutlineEffect(this._getColor("sliderBarOutlineColor"), this._getSchemeValue("sliderBarOutlineThickness")))
+            .setColor(this._getColor("bar", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("bar", "outlineColor"), this._getSchemeValue("bar", "outlineSize")))
             .setChildOf(this.backgroundBox)
 
-        this.compBox = new UIRoundedRectangle(3)
+        this.compBox = new UIRoundedRectangle(this._getSchemeValue("completionbar", "roundness"))
             .setWidth(new RelativeConstraint(this.initialPercent))
             .setHeight((100).percent())
-            .setColor(this._getColor("enabledBar"))
+            .setColor(this._getColor("completionbar", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("completionbar", "outlineColor"), this._getSchemeValue("completionbar", "outlineSize")))
             .setChildOf(this.sliderBar)
         
-        this.sliderBox = new UIRoundedRectangle(3)
+        this.sliderBox = new UIRoundedRectangle(this._getSchemeValue("sliderbox", "roundness"))
             .setX(this.initialX)
             .setY(new CenterConstraint())
             .setWidth(new AspectConstraint(1))
             .setHeight((15).pixels())
-            .setColor(this._getColor("sliderBox"))
-            .enableEffect(new OutlineEffect(this._getColor("sliderBoxOutlineColor"), this._getSchemeValue("sliderBoxOutlineThickness")))
+            .setColor(this._getColor("sliderbox", "color"))
+            .enableEffect(new OutlineEffect(this._getColor("sliderbox", "outlineColor"), this._getSchemeValue("sliderbox", "outlineSize")))
             .setChildOf(this.sliderBar)
         
         this.sliderValue = new UIText(this.defaultValue)
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
-            .setTextScale((this._getSchemeValue("textScale").pixels()))
-            .setColor(this._getColor("textColor"))
+            .setTextScale((this._getSchemeValue("text", "scale").pixels()))
+            .setColor(this._getColor("text", "color"))
             .setChildOf(this.sliderBox)
 
         // Slider events
@@ -92,9 +93,9 @@ export default class SliderElement extends BaseElement {
             .onMouseEnter((comp) => {
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations[this._getSchemeValue("mouseAnimation")],
-                        this._getSchemeValue("animationTime"),
-                        new ConstantColorConstraint(this._getColor("mouseEnter")),
+                        Animations[this._getSchemeValue("mouseEnterAnimation", "type")],
+                        this._getSchemeValue("mouseEnterAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "color")),
                         0
                         )
                 })
@@ -102,9 +103,9 @@ export default class SliderElement extends BaseElement {
             .onMouseLeave((comp) => {
                 animate(comp, (animation) => {
                     animation.setColorAnimation(
-                        Animations[this._getSchemeValue("mouseAnimation")],
-                        this._getSchemeValue("animationTime"),
-                        new ConstantColorConstraint(this._getColor("mouseLeave")),
+                        Animations[this._getSchemeValue("mouseLeaveAnimation", "type")],
+                        this._getSchemeValue("mouseLeaveAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "color")),
                         0
                         )
                 })

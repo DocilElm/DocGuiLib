@@ -77,7 +77,7 @@ export default class MultiCheckboxElement extends BaseElement {
                 .onMouseClickEvent((value) => {
                     this._triggerEvent(this.onMouseClick, obj.configName, value)
                 })
-                ._create(colorScheme, this.elementType)
+                ._create(this.colorScheme[this.elementType])
                 .setChildOf(optionBg)
 
             const mainBox = new UIRoundedRectangle(5)
