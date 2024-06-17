@@ -80,6 +80,7 @@ export default class TextInputElement extends BaseElement {
             this.placeholderText = new UIText(this.placeHolder)
                 .setX((0).pixels())
                 .setY(new CenterConstraint())
+                .setColor(this._getColor("text", "placeholderColor"))
                 .setChildOf(this.textInput)
         }
 
@@ -143,10 +144,10 @@ export default class TextInputElement extends BaseElement {
                         this.placeholderText.unhide(true)
                         this.placeHolderHidden = false
                     } else {
-                    this.placeholderText.hide(true)
-                    this.placeHolderHidden = true
+                        this.placeholderText.hide(true)
+                        this.placeHolderHidden = true
                     }
-                }
+                }                
             })
 
         if (this.placeholderText) {
@@ -158,7 +159,7 @@ export default class TextInputElement extends BaseElement {
                         animation.setColorAnimation(
                             Animations[this._getSchemeValue("mouseEnterAnimation", "type")],
                             this._getSchemeValue("mouseEnterAnimation", "time"),
-                            new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "color")),
+                            new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "placeholderColor")),
                             0
                             )
                     })
@@ -170,7 +171,7 @@ export default class TextInputElement extends BaseElement {
                         animation.setColorAnimation(
                             Animations[this._getSchemeValue("mouseLeaveAnimation", "type")],
                             this._getSchemeValue("mouseLeaveAnimation", "time"),
-                            new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "color")),
+                            new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "placeholderColor")),
                             0
                             )
                     })
