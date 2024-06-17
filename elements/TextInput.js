@@ -26,6 +26,7 @@ export default class TextInputElement extends BaseElement {
 
         this.text = null
         this.placeHolder = null
+        this.textSet = false
         // Only used by public methods [#unhidePlaceHolder/#hidePlaceHolder]
         this.placeHolderHidden = false
     }
@@ -66,7 +67,7 @@ export default class TextInputElement extends BaseElement {
             .setColor(this._getColor("background", "color"))
             .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
-        this.textInput = new UITextInput(this.placeHolder ? "" : this.getValue(), true)
+        this.textInput = new UITextInput(this.getValue() ?? "", true)
             .setX((this._getSchemeValue("text", "padding")).percent())
             .setY(new CenterConstraint())
             .setWidth(new FillConstraint(useSiblings = false))
@@ -79,6 +80,7 @@ export default class TextInputElement extends BaseElement {
             this.placeholderText = new UIText(this.placeHolder)
                 .setX((0).pixels())
                 .setY(new CenterConstraint())
+                .setColor(this._getColor("text", "placeholderColor"))
                 .setChildOf(this.textInput)
         }
 
@@ -89,10 +91,6 @@ export default class TextInputElement extends BaseElement {
         })
 
         this.textInput
-            .onFocus(() => {
-                this.placeholderText?.hide(true)
-                this.placeHolderHidden = true
-            })
             .onFocusLost(() => {
                 if (this.text) return
 
@@ -102,17 +100,14 @@ export default class TextInputElement extends BaseElement {
             .onMouseClick((component, __) => {
                 if (this._triggerEvent(this.onMouseClick, component) === 1) return
 
-                if (!component.getText()) {
+                if (!this.textSet) {
                     component.setText(this.getValue())
                     this.text = this.getValue()
+                    this.textSet = true // this is gross and I hate it
                 }
                 
                 component.grabWindowFocus()
                 component.focus()
-                if (this.placeholderText) {
-                    this.placeholderText.hide(true)
-                    this.placeHolderHidden = true
-                }
             })
             .onMouseEnter((comp, event) => {
                 if (this._triggerEvent(this.onMouseEnter, comp, event) === 1) return
@@ -143,15 +138,16 @@ export default class TextInputElement extends BaseElement {
 
                 this.text = input.getText()
                 
-                if (this.placeholderText && input.getText() == "") {
-                    this.placeholderText.unhide(true)
-                    this.placeHolderHidden = false
-                }
-                
                 if (this.placeholderText) {
-                    this.placeholderText.hide(true)
-                    this.placeHolderHidden = true
-                }
+                    if (input.getText() == "") {
+                        this.textInput.placeholder = ""
+                        this.placeholderText.unhide(true)
+                        this.placeHolderHidden = false
+                    } else {
+                        this.placeholderText.hide(true)
+                        this.placeHolderHidden = true
+                    }
+                }                
             })
 
         if (this.placeholderText) {
@@ -163,7 +159,7 @@ export default class TextInputElement extends BaseElement {
                         animation.setColorAnimation(
                             Animations[this._getSchemeValue("mouseEnterAnimation", "type")],
                             this._getSchemeValue("mouseEnterAnimation", "time"),
-                            new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "color")),
+                            new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "placeholderColor")),
                             0
                             )
                     })
@@ -175,11 +171,16 @@ export default class TextInputElement extends BaseElement {
                         animation.setColorAnimation(
                             Animations[this._getSchemeValue("mouseLeaveAnimation", "type")],
                             this._getSchemeValue("mouseLeaveAnimation", "time"),
-                            new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "color")),
+                            new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "placeholderColor")),
                             0
                             )
                     })
                 })
+            
+            if(this.getValue()) {
+                this.placeholderText?.hide(true)
+                this.placeHolderHidden = true
+            }
         }
 
         return this.bgBox
