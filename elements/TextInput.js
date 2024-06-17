@@ -90,10 +90,6 @@ export default class TextInputElement extends BaseElement {
         })
 
         this.textInput
-            .onFocus(() => {
-                this.placeholderText?.hide(true)
-                this.placeHolderHidden = true
-            })
             .onFocusLost(() => {
                 if (this.text) return
 
@@ -111,10 +107,6 @@ export default class TextInputElement extends BaseElement {
                 
                 component.grabWindowFocus()
                 component.focus()
-                if (this.placeholderText) {
-                    this.placeholderText.hide(true)
-                    this.placeHolderHidden = true
-                }
             })
             .onMouseEnter((comp, event) => {
                 if (this._triggerEvent(this.onMouseEnter, comp, event) === 1) return
