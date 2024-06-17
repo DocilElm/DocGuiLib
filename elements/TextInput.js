@@ -67,7 +67,7 @@ export default class TextInputElement extends BaseElement {
             .setColor(this._getColor("background", "color"))
             .enableEffect(new OutlineEffect(this._getColor("background", "outlineColor"), this._getSchemeValue("background", "outlineSize")))
 
-        this.textInput = new UITextInput(this.placeHolder ? "" : this.getValue(), true)
+        this.textInput = new UITextInput(this.getValue() ?? "", true)
             .setX((this._getSchemeValue("text", "padding")).percent())
             .setY(new CenterConstraint())
             .setWidth(new FillConstraint(useSiblings = false))
@@ -145,14 +145,15 @@ export default class TextInputElement extends BaseElement {
 
                 this.text = input.getText()
                 
-                if (this.placeholderText && input.getText() == "") {
-                    this.placeholderText.unhide(true)
-                    this.placeHolderHidden = false
-                }
-                
                 if (this.placeholderText) {
+                    if (input.getText() == "") {
+                        this.textInput.placeholder = ""
+                        this.placeholderText.unhide(true)
+                        this.placeHolderHidden = false
+                    } else {
                     this.placeholderText.hide(true)
                     this.placeHolderHidden = true
+                    }
                 }
             })
 
@@ -182,6 +183,11 @@ export default class TextInputElement extends BaseElement {
                             )
                     })
                 })
+            
+            if(this.getValue()) {
+                this.placeholderText?.hide(true)
+                this.placeHolderHidden = true
+            }
         }
 
         return this.bgBox
