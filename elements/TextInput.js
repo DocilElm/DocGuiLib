@@ -26,6 +26,7 @@ export default class TextInputElement extends BaseElement {
 
         this.text = null
         this.placeHolder = null
+        this.textSet = false
         // Only used by public methods [#unhidePlaceHolder/#hidePlaceHolder]
         this.placeHolderHidden = false
     }
@@ -102,9 +103,10 @@ export default class TextInputElement extends BaseElement {
             .onMouseClick((component, __) => {
                 if (this._triggerEvent(this.onMouseClick, component) === 1) return
 
-                if (!component.getText()) {
+                if (!this.textSet) {
                     component.setText(this.getValue())
                     this.text = this.getValue()
+                    this.textSet = true // this is gross and I hate it
                 }
                 
                 component.grabWindowFocus()
