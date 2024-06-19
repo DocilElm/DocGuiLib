@@ -27,8 +27,6 @@ export default class TextInputElement extends BaseElement {
         this.text = null
         this.placeHolder = null
         this.textSet = false
-        // Only used by public methods [#unhidePlaceHolder/#hidePlaceHolder]
-        this.placeHolderHidden = false
     }
 
     /**
@@ -84,6 +82,8 @@ export default class TextInputElement extends BaseElement {
                 .setChildOf(this.textInput)
         }
 
+        if (this.getValue()) this.placeholderText?.hide(true)
+
         keybindEvents.push((keyChar, keyCode) => {
             if (!this.textInput.hasFocus()) return
 
@@ -95,7 +95,6 @@ export default class TextInputElement extends BaseElement {
                 if (this.text) return
 
                 this.placeholderText?.unhide(true)
-                this.placeHolderHidden = false
             })
             .onMouseClick((component, __) => {
                 if (this._triggerEvent(this.onMouseClick, component) === 1) return
@@ -103,7 +102,7 @@ export default class TextInputElement extends BaseElement {
                 if (!this.textSet) {
                     component.setText(this.getValue())
                     this.text = this.getValue()
-                    this.textSet = true // this is gross and I hate it
+                    this.textSet = true
                 }
                 
                 component.grabWindowFocus()
@@ -120,6 +119,17 @@ export default class TextInputElement extends BaseElement {
                         0
                         )
                 })
+
+                if (!this.placeholderText) return
+
+                animate(this.placeholderText, (animation) => {
+                    animation.setColorAnimation(
+                        Animations[this._getSchemeValue("mouseEnterAnimation", "type")],
+                        this._getSchemeValue("mouseEnterAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "placeholderColor")),
+                        0
+                        )
+                })
             })
             .onMouseLeave((comp, event) => {
                 if (this._triggerEvent(this.onMouseLeave, comp, event) === 1) return
@@ -132,85 +142,35 @@ export default class TextInputElement extends BaseElement {
                         0
                         )
                 })
+
+                if (!this.placeholderText) return
+
+                animate(this.placeholderText, (animation) => {
+                    animation.setColorAnimation(
+                        Animations[this._getSchemeValue("mouseLeaveAnimation", "type")],
+                        this._getSchemeValue("mouseLeaveAnimation", "time"),
+                        new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "placeholderColor")),
+                        0
+                        )
+                })
             })
             .onKeyType((input, char, keycode) => {
                 if (this._triggerEvent(this.onKeyType, input.getText(), char, keycode) === 1) return
 
                 this.text = input.getText()
                 
-                if (this.placeholderText) {
-                    if (input.getText() == "") {
-                        this.textInput.placeholder = ""
-                        this.placeholderText.unhide(true)
-                        this.placeHolderHidden = false
-                    } else {
-                        this.placeholderText.hide(true)
-                        this.placeHolderHidden = true
-                    }
-                }                
+                if (!this.placeholderText) return
+
+                if (this.text === "") {
+                    this.textInput.placeholder = ""
+                    this.placeholderText.unhide(true)
+
+                    return
+                }
+
+                this.placeholderText.hide(true)
             })
 
-        if (this.placeholderText) {
-            this.placeholderText
-                .onMouseEnter((comp, event) => {
-                    if (this._triggerEvent(this.onMouseEnter, comp, event) === 1) return
-                
-                    animate(comp, (animation) => {
-                        animation.setColorAnimation(
-                            Animations[this._getSchemeValue("mouseEnterAnimation", "type")],
-                            this._getSchemeValue("mouseEnterAnimation", "time"),
-                            new ConstantColorConstraint(this._getColor("mouseEnterAnimation", "placeholderColor")),
-                            0
-                            )
-                    })
-                })
-                .onMouseLeave((comp, event) => {
-                    if (this._triggerEvent(this.onMouseLeave, comp, event) === 1) return
-                
-                    animate(comp, (animation) => {
-                        animation.setColorAnimation(
-                            Animations[this._getSchemeValue("mouseLeaveAnimation", "type")],
-                            this._getSchemeValue("mouseLeaveAnimation", "time"),
-                            new ConstantColorConstraint(this._getColor("mouseLeaveAnimation", "placeholderColor")),
-                            0
-                            )
-                    })
-                })
-            
-            if(this.getValue()) {
-                this.placeholderText?.hide(true)
-                this.placeHolderHidden = true
-            }
-        }
-
         return this.bgBox
-    }
-
-    /**
-     * - Hides the place holder text for this [TextInput]
-     * - If the placeholder has already been hidden it won't attempt to hide it again
-     * @returns this for method chaining
-     */
-    hidePlaceHolder() {
-        if (!this.placeHolder || this.placeHolderHidden) return this
-
-        this.placeholderText.hide(true)
-        this.placeHolderHidden = true
-
-        return this
-    }
-
-    /**
-     * - Unhides the place holder text for this [TextInput]
-     * - If the placeholder has already been unhidden it won't attempt to unhide it again
-     * @returns this for method chaining
-     */
-    unhidePlaceHolder() {
-        if (!this.placeHolder || !this.placeHolderHidden) return this
-
-        this.placeholderText.unhide(true)
-        this.placeHolderHidden = false
-
-        return this
     }
 }
