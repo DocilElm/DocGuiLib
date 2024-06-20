@@ -437,7 +437,6 @@ export default class ColorPickerElement extends BaseElement {
     }
 
     _setTextHexInput() {
-        this.textInput.hidePlaceHolder()
         this.textInput.textInput.setText(ElementUtils.rgbToHex([
             this.defaultColor.getRed(),
             this.defaultColor.getGreen(),
