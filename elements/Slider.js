@@ -24,7 +24,7 @@ export default class SliderElement extends BaseElement {
         this.offset = 0
 
         // Check for decimal pointers and if they should be there add them
-        if (this.settings[0] % 1 !== 0) this.defaultValue = this.defaultValue.toFixed(2)
+        if (this.settings[0] % 1 !== 0) this.defaultValue = parseFloat(this.defaultValue).toFixed(2)
     }
 
     _create(colorScheme = {}) {
@@ -144,7 +144,7 @@ export default class SliderElement extends BaseElement {
 
         // Makes the rounded number into an actual slider value
         this.value = this.settings[0] % 1 !== 0
-            ? parseFloat(((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0]).toFixed(2))
+            ? parseFloat(((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])).toFixed(2)
             : parseInt((this.settings[1] - this.settings[0]) * ((percent * 100) / 100) + this.settings[0])
 
         // TODO: make this more precise so people can have values whenever the max is higher than 2 digits

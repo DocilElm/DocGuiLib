@@ -256,7 +256,7 @@ export default class ColorPickerElement extends BaseElement {
 
             this.currentAlpha = a / 255
 
-            const newVal = ElementUtils.miniMax(0, 1, parseFloat(this.currentAlpha.toFixed(2)))
+            const newVal = ElementUtils.miniMax(0, 1, parseFloat(this.currentAlpha).toFixed(2))
             
             this.alphaSlider.sliderValue.setText(newVal.toFixed(2))
             this.alphaSlider.sliderBox.setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.75, newVal)))
@@ -323,7 +323,7 @@ export default class ColorPickerElement extends BaseElement {
         // Alpha slider
         this.alphaSlider
             .onMouseDragEvent((_, __, ___, ____, value) => {
-                this.currentAlpha = parseFloat(value)
+                this.currentAlpha = parseFloat(value).toFixed(2)
 
                 this._setTextHexInput()
                 this._recolorRgbaBox()
