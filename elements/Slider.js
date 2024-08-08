@@ -139,8 +139,9 @@ export default class SliderElement extends BaseElement {
         const percent = ElementUtils.miniMax(0, 1, (roundNumber - this.sliderBar.getLeft()) / this.sliderBar.getWidth())
 
         // Fix [sliderBox] going off bound
-        const roundNumberBox = ElementUtils.miniMax(this.sliderBar.getLeft(), this.sliderBar.getRight() - this.sliderBox.getWidth(), clamped)
-        const sliderBoxPercent = ElementUtils.miniMax(0, 1, (roundNumberBox - this.sliderBar.getLeft()) / this.sliderBar.getWidth())
+        const sliderBoxHalfWidth = this.sliderBox.getWidth() / 2
+        const roundNumberBox = ElementUtils.miniMax(this.sliderBar.getLeft() + sliderBoxHalfWidth, this.sliderBar.getRight() - sliderBoxHalfWidth, clamped)
+        const sliderBoxPercent = ElementUtils.miniMax(0, 1, (roundNumberBox - sliderBoxHalfWidth - this.sliderBar.getLeft()) / this.sliderBar.getWidth())
 
         // Makes the rounded number into an actual slider value
         this.value = this.settings[0] % 1 !== 0
