@@ -58,7 +58,7 @@ export default class DropDownElement extends BaseElement {
             .setY(new CramSiblingConstraint(5))
             .setWidth((200).percent())
             .setHeight((600).percent())
-            .enableEffect(new OutlineEffect(this._getColor("dropdownbackground", "color"), this._getSchemeValue("dropdownbackground", "outlineSize")))
+            .enableEffect(new OutlineEffect(this._getColor("dropdownbackground", "outlineColor"), this._getSchemeValue("dropdownbackground", "outlineSize")))
             .setColor(this._getColor("dropdownbackground", "color"))
             .setChildOf(this.bgBox)
 
