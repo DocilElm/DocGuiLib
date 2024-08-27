@@ -41,9 +41,10 @@ export default class Button1Element extends BaseElement {
                 .setChildOf(this.backgroundBox)
         }
 
-        this.text = new UIWrappedText(`${this._getSchemeValue("text", "format")}${this.getString()}`)
+        this.text = new UIWrappedText(`${this._getSchemeValue("text", "format")}${this.getString()}`, true, null, this._getSchemeValue("text", "centered"))
             .setX(this._getSchemeValue("text", "centered") ? new CenterConstraint() : (9).percent())
             .setY(this._getSchemeValue("text", "centered") ? new CenterConstraint() : (30).percent())
+            .setWidth((100).percent())
             .setTextScale((this._getSchemeValue("text", "scale")).pixels())
             .setColor(this._getColor("text", "color"))
             .setChildOf(this.backgroundBox)
