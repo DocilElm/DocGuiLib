@@ -70,13 +70,17 @@ export default class DropDownElement extends BaseElement {
             .setChildOf(this.dropDownBg)
 
         this.options.forEach((name, idx) => {
-            const mainBox = new UIRoundedRectangle(this._getSchemeValue("optionsbackground", "roundness"))
+            const isSelected = idx === this.value
+            const bgScheme = isSelected ? "selectedoptionbackground" : "optionsbackground"
+            const textScheme = isSelected ? "selectedoptiontext" : "optionstext"
+
+            const mainBox = new UIRoundedRectangle(this._getSchemeValue(bgScheme, "roundness"))
                 .setX((3).pixels())
                 .setY(new CramSiblingConstraint(5))
                 .setWidth((89).percent())
                 .setHeight((20).percent())
-                .setColor(this._getColor("optionsbackground", "color"))
-                .enableEffect(new OutlineEffect(this._getColor("optionsbackground", "outlineColor"), this._getSchemeValue("optionsbackground", "outlineSize")))
+                .setColor(this._getColor(bgScheme, "color"))
+                .enableEffect(new OutlineEffect(this._getColor(bgScheme, "outlineColor"), this._getSchemeValue(bgScheme, "outlineSize")))
                 .setChildOf(this.dropDownScrollable)
                 .onMouseClick((comp, event) => {
                     if (event.mouseButton !== 0) return
@@ -92,8 +96,8 @@ export default class DropDownElement extends BaseElement {
                 .setX(new CenterConstraint())
                 .setY(new CenterConstraint())
                 .setWidth((100).percent())
-                .setColor(this._getColor("optionstext", "color"))
-                .setTextScale((this._getSchemeValue("optionstext", "scale")).pixels())
+                .setColor(this._getColor(textScheme, "color"))
+                .setTextScale((this._getSchemeValue(textScheme, "scale")).pixels())
                 .setChildOf(mainBox)
         })
 
