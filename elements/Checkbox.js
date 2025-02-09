@@ -21,6 +21,7 @@ export default class CheckboxElement extends BaseElement {
         this.checkMark = new UIText(this.value ? this._getSchemeValue("check", "enabled") : this._getSchemeValue("check", "disabled"))
             .setX(new CenterConstraint())
             .setY(new CenterConstraint())
+            .setTextScale((this._getSchemeValue("check", "scale")).pixels())
             .setChildOf(this.checkBox)
 
         this.checkBox.onMouseClick((component) => {

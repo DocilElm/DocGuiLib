@@ -82,7 +82,8 @@
         },
         "check": {
             "enabled": "§l✓",
-            "disabled": ""
+            "disabled": "",
+            "scale": 1
         },
         "mouseClickAnimation": {
             "type": "OUT_EXP",
