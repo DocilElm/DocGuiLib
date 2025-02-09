@@ -133,7 +133,7 @@ export default class SliderElement extends BaseElement {
 
         // Cancel the custom event for this component
         if (this._triggerEvent(this.onMouseDrag, x, y, button, component, this.getValue()) === 1 || !this.offset) return
-        
+
         const clamped = (x + component.getLeft()) - this.offset
         const roundNumber = ElementUtils.miniMax(this.sliderBar.getLeft(), this.sliderBar.getRight(), clamped)
         const percent = ElementUtils.miniMax(0, 1, (roundNumber - this.sliderBar.getLeft()) / this.sliderBar.getWidth())
