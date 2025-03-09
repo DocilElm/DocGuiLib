@@ -31,6 +31,7 @@ export default class HandleRegisters {
             [CustomEventsENUM.MOUSEDRAG, []],
             [CustomEventsENUM.KEYTYPE, []],
         ])
+        this.isCustom = false
 
         // Initialize every register
         this.init()
@@ -194,6 +195,7 @@ export default class HandleRegisters {
      * - Unregisters and deletes the list
      */
     _stop() {
+        if (this.isCustom) return
         this.eventsList.forEach(event => event.unregister())
         this.eventsList.clear()
     }

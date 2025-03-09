@@ -27,6 +27,13 @@ export default class TextInputElement extends BaseElement {
         this.text = null
         this.placeHolder = null
         this.textSet = false
+        this._customKeyEvent = true
+    }
+
+    setUseCustomKeyEvent(bool) {
+        this._customKeyEvent = bool
+
+        return this
     }
 
     /**
@@ -84,7 +91,7 @@ export default class TextInputElement extends BaseElement {
 
         if (this.getValue()) this.placeholderText?.hide(true)
 
-        keybindEvents.push((keyChar, keyCode) => {
+        if (this._customKeyEvent) keybindEvents.push((keyChar, keyCode) => {
             if (!this.textInput.hasFocus()) return
 
             this.textInput.keyType(keyChar, keyCode)
