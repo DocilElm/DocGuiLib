@@ -18,8 +18,9 @@ export default class SliderElement extends BaseElement {
         // Used to check whether the previously saved value was over/under the min/max
         this.rawDefaultValue = defaultValue
 
-        this.initialPercent = ElementUtils.miniMax(0, 1, this.defaultValue / this.settings[1])
-        this.initialX = this.initialPercent !== 0 ? new RelativeConstraint(ElementUtils.miniMax(0, 0.75, this.initialPercent)) : this.x
+        const side = 0.31
+        this.initialPercent = (this.defaultValue - this.settings[0]) / (this.settings[1] - this.settings[0])
+        this.initialX = ElementUtils.miniMax(0, 1 - side, this.initialPercent - side / 2)
         this.isDragging = false
         this.offset = 0
 
@@ -61,7 +62,7 @@ export default class SliderElement extends BaseElement {
             .setChildOf(this.sliderBar)
         
         this.sliderBox = new UIRoundedRectangle(this._getSchemeValue("sliderbox", "roundness"))
-            .setX(this.initialX)
+            .setX(new RelativeConstraint(this.initialX))
             .setY(new CenterConstraint())
             .setWidth(new AspectConstraint(1))
             .setHeight((15).pixels())
@@ -156,12 +157,13 @@ export default class SliderElement extends BaseElement {
 
     setValue(value) {
         this.value = value
-        const val = ElementUtils.miniMax(this.settings[0], this.settings[1], this.value)
-        const initPercent = ElementUtils.miniMax(0, 1, val / this.settings[1])
-        const initX = initPercent !== 0 ? new RelativeConstraint(ElementUtils.miniMax(0, 0.75, initPercent)) : this.x
 
-        this.sliderValue.setText(this.value)
-        this.sliderBox.setX(new RelativeConstraint(initX))
-        this.compBox.setWidth(new RelativeConstraint(initPercent))
+        const side = this.sliderBox.getWidth() / this.sliderBar.getWidth()
+        const percent = (value - this.settings[0]) / (this.settings[1] - this.settings[0])
+        const x = ElementUtils.miniMax(0, 1 - side, percent - side / 2)
+
+        this.sliderBox.setX(new RelativeConstraint(x))
+        this.sliderValue.setText(value)
+        this.compBox.setWidth(new RelativeConstraint(ElementUtils.miniMax(0, 1, percent)))
     }
 }
