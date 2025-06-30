@@ -140,4 +140,10 @@ export default class DropDownElement extends BaseElement {
         this.dropDownBg.setFloating(true)
         this.hidden = false
     }
+
+    setValue(value) {
+        this.value = value
+        this.currentSelectionText.setText(this.options[this.getValue()])
+        this._hideDropDown()
+    }
 }

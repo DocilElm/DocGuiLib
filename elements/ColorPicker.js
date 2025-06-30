@@ -454,4 +454,13 @@ export default class ColorPickerElement extends BaseElement {
             ]
         ))
     }
+
+    setValue(value) {
+        this.value = value
+        const color = new Color(this.value[0] / 255, this.value[1] / 255, this.value[2] / 255, (this.value?.[3] ?? 255) / 255)
+        const hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null)
+        this.currentHue = hsb[0]
+        this.currentSaturation = hsb[1]
+        this.currentBrightness = hsb[2]
+    }
 }

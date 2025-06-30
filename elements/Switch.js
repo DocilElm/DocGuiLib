@@ -59,4 +59,21 @@ export default class SwitchElement extends BaseElement {
     _getColorByStateBackground() {
         return this.getValue() ? this._getColor("background", "enabledColor") : this._getColor("background", "disabledColor")
     }
+
+    setValue(value) {
+        this.value = value
+
+        this.backgroundBox.setColor(this._getColorByStateBackground())
+        this.switchBox.setColor(this._getColorByState())
+
+        animate(this.switchBox, (animation) => {
+            animation.setXAnimation(
+                Animations[this._getSchemeValue("mouseClickAnimation", "type")],
+                this._getSchemeValue("mouseClickAnimation", "time"),
+                this._getPosition()
+            )
+        })
+
+        return this
+    }
 }

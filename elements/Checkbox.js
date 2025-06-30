@@ -50,4 +50,21 @@ export default class CheckboxElement extends BaseElement {
     _getColorByState() {
         return this.getValue() ? this._getColor("background", "enabledColor") : this._getColor("background", "disabledColor")
     }
+
+    setValue(value) {
+        this.value = value
+        animate(component, (animation) => {
+            animation.setColorAnimation(
+                Animations[this._getSchemeValue("mouseClickAnimation", "type")],
+                this._getSchemeValue("mouseClickAnimation", "time"),
+                new ConstantColorConstraint(this._getColorByState()),
+                0
+                )
+        })
+
+        this.checkMark.setText(this.value
+            ? this._getSchemeValue("check", "enabled")
+            : this._getSchemeValue("check", "disabled")
+        )
+    }
 }

@@ -153,4 +153,15 @@ export default class SliderElement extends BaseElement {
         this.sliderBox.setX(new RelativeConstraint(sliderBoxPercent))
         this.compBox.setWidth(new RelativeConstraint(percent))
     }
+
+    setValue(value) {
+        this.value = value
+        const val = ElementUtils.miniMax(this.settings[0], this.settings[1], this.value)
+        const initPercent = ElementUtils.miniMax(0, 1, val / this.settings[1])
+        const initX = initPercent !== 0 ? new RelativeConstraint(ElementUtils.miniMax(0, 0.75, initPercent)) : this.x
+
+        this.sliderValue.setText(this.value)
+        this.sliderBox.setX(new RelativeConstraint(initX))
+        this.compBox.setWidth(new RelativeConstraint(initPercent))
+    }
 }

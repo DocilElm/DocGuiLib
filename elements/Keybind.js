@@ -88,4 +88,9 @@ export default class KeybindElement extends BaseElement {
 
         return keyName.length <= 3 ? `Key: ${keyName}` : keyName
     }
+
+    setValue(value) {
+        this.value = value
+        this.keyText.setText(this._getKeyName())
+    }
 }

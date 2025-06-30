@@ -173,4 +173,9 @@ export default class SelectionElement extends BaseElement {
 
         return this.backgroundBox
     }
+
+    setValue(value) {
+        this.value = value
+        this._setText(this.textValue, this.value)
+    }
 }

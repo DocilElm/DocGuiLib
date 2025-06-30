@@ -180,4 +180,10 @@ export default class TextInputElement extends BaseElement {
 
         return this.bgBox
     }
+
+    setValue(value) {
+        this.value = value
+        this.textInput.setText(this.value)
+        if (this.placeHolder && this.value !== "") this.placeholderText.hide(true)
+    }
 }
