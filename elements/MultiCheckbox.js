@@ -9,6 +9,7 @@ export default class MultiCheckboxElement extends BaseElement {
 
         this.placeholder = placeholder
         this.options = options
+        this.checkboxes = {}
         this.hidden = true
     }
 
@@ -77,8 +78,10 @@ export default class MultiCheckboxElement extends BaseElement {
                 .onMouseClickEvent((value) => {
                     this._triggerEvent(this.onMouseClick, obj.configName, value)
                 })
+            checkBox
                 ._create(this.colorScheme[this.elementType])
                 .setChildOf(optionBg)
+            this.checkboxes[obj.configName] = checkBox
 
             const mainBox = new UIRoundedRectangle(this._getSchemeValue("optionsbackground", "roundness"))
                 .setX((22).percent())
@@ -136,5 +139,11 @@ export default class MultiCheckboxElement extends BaseElement {
         this.dropDownBg.unhide(true)
         this.dropDownBg.setFloating(true)
         this.hidden = false
+    }
+
+    setValue(configName, value) {
+        if (!(configName in this.checkboxes)) return
+
+        this.checkboxes[configName].setValue(value)
     }
 }
