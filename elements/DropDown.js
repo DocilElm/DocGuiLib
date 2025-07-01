@@ -143,10 +143,13 @@ export default class DropDownElement extends BaseElement {
     }
 
     setValue(value) {
-        if (isNaN(value)) return
-        if (value < 0 || value > this.options.length) return
+        if (isNaN(value)) value = 0
+        if (value < 0 || value > this.options.length) value = 0
         this.value = value
+
         this.currentSelectionText.setText(this.options[this.getValue()])
         this._hideDropDown()
+
+        return this.value
     }
 }

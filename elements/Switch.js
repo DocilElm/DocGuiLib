@@ -61,6 +61,7 @@ export default class SwitchElement extends BaseElement {
     }
 
     setValue(value) {
+        if (typeof value !== "boolean") value = false
         this.value = value
 
         this.backgroundBox.setColor(this._getColorByStateBackground())
@@ -74,6 +75,6 @@ export default class SwitchElement extends BaseElement {
             )
         })
 
-        return this
+        return this.value
     }
 }

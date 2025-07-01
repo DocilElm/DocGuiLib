@@ -182,8 +182,12 @@ export default class TextInputElement extends BaseElement {
     }
 
     setValue(value) {
+        if (typeof value !== "string") value = ""
         this.value = value
+
         this.textInput.setText(this.value)
         if (this.placeHolder && this.value !== "") this.placeholderText.hide(true)
+
+        return this.value
     }
 }

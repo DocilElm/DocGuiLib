@@ -52,7 +52,9 @@ export default class CheckboxElement extends BaseElement {
     }
 
     setValue(value) {
+        if (typeof value !== "boolean") value = false
         this.value = value
+
         animate(this.checkBox, (animation) => {
             animation.setColorAnimation(
                 Animations[this._getSchemeValue("mouseClickAnimation", "type")],
@@ -66,5 +68,7 @@ export default class CheckboxElement extends BaseElement {
             ? this._getSchemeValue("check", "enabled")
             : this._getSchemeValue("check", "disabled")
         )
+
+        return this.value
     }
 }

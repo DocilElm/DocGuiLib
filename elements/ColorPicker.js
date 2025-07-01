@@ -456,8 +456,9 @@ export default class ColorPickerElement extends BaseElement {
     }
 
     setValue(value) {
-        if (value.some((it) => it < 0 || it > 255)) return
+        if (!Array.isArray(value) || value.some((it) => it < 0 || it > 255)) value = [0, 0, 0, 255]
         this.value = value
+
         const color = new Color(this.value[0] / 255, this.value[1] / 255, this.value[2] / 255, (this.value?.[3] ?? 255) / 255)
         const hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null)
         this.currentHue = hsb[0]
@@ -475,5 +476,7 @@ export default class ColorPickerElement extends BaseElement {
             .setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.96, this.currentSaturation)))
             .setY(new RelativeConstraint(ElementUtils.miniMax(0, 0.96, 1 - this.currentBrightness)))
         this.updateColor()
+
+        return this.value
     }
 }

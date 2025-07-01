@@ -175,7 +175,11 @@ export default class SelectionElement extends BaseElement {
     }
 
     setValue(value) {
+        if (typeof value !== "number") value = 0
         this.value = value
+
         this._setText(this.textValue, this.value)
+
+        return this.value
     }
 }
