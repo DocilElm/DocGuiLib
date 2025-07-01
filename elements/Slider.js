@@ -156,6 +156,8 @@ export default class SliderElement extends BaseElement {
     }
 
     setValue(value) {
+        if (isNaN(value)) return
+        if (value < this.settings[0] || value > this.settings[1]) return
         this.value = value
 
         const side = this.sliderBox.getWidth() / this.sliderBar.getWidth()

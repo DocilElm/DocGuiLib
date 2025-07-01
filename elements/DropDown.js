@@ -70,6 +70,7 @@ export default class DropDownElement extends BaseElement {
             .setChildOf(this.dropDownBg)
 
         this.options.forEach((name, idx) => {
+            // TODO: fix me. the selection text doesn't change as soon as it gets clicked
             const isSelected = idx === this.value
             const bgScheme = isSelected ? "selectedoptionbackground" : "optionsbackground"
             const textScheme = isSelected ? "selectedoptiontext" : "optionstext"
@@ -142,6 +143,8 @@ export default class DropDownElement extends BaseElement {
     }
 
     setValue(value) {
+        if (isNaN(value)) return
+        if (value < 0 || value > this.options.length) return
         this.value = value
         this.currentSelectionText.setText(this.options[this.getValue()])
         this._hideDropDown()

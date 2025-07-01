@@ -462,5 +462,6 @@ export default class ColorPickerElement extends BaseElement {
         this.currentHue = hsb[0]
         this.currentSaturation = hsb[1]
         this.currentBrightness = hsb[2]
+        this.updateColor()
     }
 }

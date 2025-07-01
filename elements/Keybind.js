@@ -90,6 +90,7 @@ export default class KeybindElement extends BaseElement {
     }
 
     setValue(value) {
+        if (isNaN(value)) return
         this.value = value
         this.keyText.setText(this._getKeyName())
     }

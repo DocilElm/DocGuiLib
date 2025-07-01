@@ -142,6 +142,7 @@ export default class MultiCheckboxElement extends BaseElement {
     }
 
     setValue(configName, value) {
+        if (typeof value !== "boolean") return
         if (!(configName in this.checkboxes)) return
 
         this.checkboxes[configName].setValue(value)
