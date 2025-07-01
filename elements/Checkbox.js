@@ -53,7 +53,7 @@ export default class CheckboxElement extends BaseElement {
 
     setValue(value) {
         this.value = value
-        animate(component, (animation) => {
+        animate(this.checkBox, (animation) => {
             animation.setColorAnimation(
                 Animations[this._getSchemeValue("mouseClickAnimation", "type")],
                 this._getSchemeValue("mouseClickAnimation", "time"),
