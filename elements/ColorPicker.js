@@ -350,12 +350,12 @@ export default class ColorPickerElement extends BaseElement {
     updateColor(internal = false) {
         this.defaultColor = new Color(Color.HSBtoRGB(this.currentHue, this.currentSaturation, this.currentBrightness))
         this.gradient.setStartColor(new Color(Color.HSBtoRGB(this.currentHue, 1, 1)))
-        
+
         this._triggerKeyEvent()
         this._recolorRgbaBox()
-        
+
         if (internal) return
-        
+
         this._setTextHexInput()
     }
 
@@ -462,6 +462,17 @@ export default class ColorPickerElement extends BaseElement {
         this.currentHue = hsb[0]
         this.currentSaturation = hsb[1]
         this.currentBrightness = hsb[2]
+        this.currentAlpha = color.getAlpha() / 255
+
+        const newVal = ElementUtils.miniMax(0, 1, parseFloat(this.currentAlpha).toFixed(2))
+    
+        this.alphaSlider.sliderValue.setText(newVal.toFixed(2))
+        this.alphaSlider.sliderBox.setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.75, newVal)))
+        this.alphaSlider.compBox.setWidth(new RelativeConstraint(newVal))
+        this.huePointer.setY(new RelativeConstraint(ElementUtils.miniMax(0, 1, this.currentHue)))
+        this.gradientPointer
+            .setX(new RelativeConstraint(ElementUtils.miniMax(0, 0.96, this.currentSaturation)))
+            .setY(new RelativeConstraint(ElementUtils.miniMax(0, 0.96, 1 - this.currentBrightness)))
         this.updateColor()
     }
 }
