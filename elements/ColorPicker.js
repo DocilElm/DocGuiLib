@@ -119,6 +119,7 @@ export default class ColorPickerElement extends BaseElement {
                 (60).percent(),
                 (30).percent()
             )
+            .setUseCustomKeyEvent(false)
 
         this.textInput
             ._create(this.colorScheme[this.elementType])

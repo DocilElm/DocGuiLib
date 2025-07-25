@@ -82,7 +82,9 @@ export default class HandleRegisters {
         }))
 
         this.eventsList.add(this.ctGui.registerKeyTyped((keyChar, keyCode) => {
-            this.window.keyType(keyChar, keyCode)
+            // I hope this works for everyone lol
+            const char = keyCode >= 32 && keyCode <= 126 ? keyChar : String.fromCharCode(0)
+            this.window.keyType(char, keyCode)
 
             // Trigger the saved [customEvents]
             this.customEvents.get(CustomEventsENUM.KEYTYPE)?.forEach(it => it(keyChar, keyCode))
