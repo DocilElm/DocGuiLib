@@ -87,8 +87,7 @@ export default class KeybindElement extends BaseElement {
     _getKeyName() {
         if (this.getValue() < 0) return `M${Math.abs(-100 % this.getValue())}`
 
-        // const keyName = Keyboard.getKeyName(this.getValue())
-        const keyName = this.keyName
+        const keyName = this.keyName?.toUpperCase()
 
         return keyName?.length <= 3 ? `Key: ${keyName}` : keyName
     }
