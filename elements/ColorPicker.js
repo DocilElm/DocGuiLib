@@ -4,6 +4,7 @@ import BaseElement from "./Base"
 import SliderElement from "./Slider"
 import TextInputElement from "./TextInput"
 
+const LegacyPipelineBuilder = Java.type("com.chattriggers.ctjs.api.render.LegacyPipelineBuilder").INSTANCE
 const UMatrixStack = Java.type("gg.essential.universal.UMatrixStack")
 const UGraphics = Java.type("gg.essential.universal.UGraphics")
 const Color = Java.type("java.awt.Color")
@@ -12,18 +13,6 @@ const hueColors = new Array(50).fill(null).map((_, idx) => new Color(Color.HSBto
 function UICustomGradient(color1) {
     return new JavaAdapter(GradientComponent, {
       draw() {
-        // Got too lazy to figure this out so
-        // now that's here
-        if (this.getStartColor().getRGB() === -1 && this.getEndColor().getRGB() === -1) {
-            this.setStartColor(color1)
-            this.setEndColor(new Color(0, 0, 0))
-        }
-
-        UGraphics.enableBlend()
-        UGraphics.disableAlpha()
-        UGraphics.tryBlendFuncSeparate(770, 771, 1, 0)
-        UGraphics.shadeModel(7425)
-
         const tessellator = UGraphics.getFromTessellator()
         const matrixStack = UMatrixStack.UNIT
 
@@ -33,22 +22,19 @@ function UICustomGradient(color1) {
             this.getEndColor(), this.getEndColor()
         ]
 
-        tessellator.beginWithDefaultShader(UGraphics.DrawMode.QUADS, UGraphics.CommonVertexFormats.POSITION_COLOR)
-        tessellator.pos(matrixStack, x1, y2, 0.0).color(bottomLeft).endVertex()
-        tessellator.pos(matrixStack, x2, y2, 0.0).color(bottomRight).endVertex()
-        tessellator.pos(matrixStack, x1, y1, 0.0).color(topLeft).endVertex()
-        tessellator.pos(matrixStack, x2, y1, 0.0).color(topRight).endVertex()
-        tessellator.pos(matrixStack, x2, y1, 0.0).color(topRight).endVertex()
-        tessellator.pos(matrixStack, x1, y1, 0.0).color(topLeft).endVertex()
-        tessellator.pos(matrixStack, x2, y2, 0.0).color(bottomRight).endVertex()
-        tessellator.pos(matrixStack, x1, y2, 0.0).color(bottomLeft).endVertex()
+        tessellator.beginRenderLayer(LegacyPipelineBuilder.begin(Renderer.DrawMode.QUADS, Renderer.VertexFormat.POSITION_COLOR, Renderer.RenderSnippet.GUI_SNIPPET).layer())
+        tessellator.pos(matrixStack, x1, y2, 0.0).color(bottomLeft)
+        tessellator.pos(matrixStack, x2, y2, 0.0).color(bottomRight)
+        tessellator.pos(matrixStack, x1, y1, 0.0).color(topLeft)
+        tessellator.pos(matrixStack, x2, y1, 0.0).color(topRight)
+        tessellator.pos(matrixStack, x2, y1, 0.0).color(topRight)
+        tessellator.pos(matrixStack, x1, y1, 0.0).color(topLeft)
+        tessellator.pos(matrixStack, x2, y2, 0.0).color(bottomRight)
+        tessellator.pos(matrixStack, x1, y2, 0.0).color(bottomLeft)
+        tessellator.endVertex()
         tessellator.drawDirect()
-
-        UGraphics.shadeModel(7424)
-        UGraphics.disableBlend()
-        UGraphics.enableAlpha()
       },
-    })
+    }, color1, new Color(0, 0, 0))
 }
 
 function UICustomBlock() {

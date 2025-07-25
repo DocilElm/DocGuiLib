@@ -345,7 +345,8 @@ export default class BaseElement {
         if (!handler) return null
 
         // Trigger the event handler (the function) set by the user
-        handler[1](...args)
+        let callback = handler[1]
+        callback(...args)
 
         // If [shouldCancel] is enabled we [return 1] so the custom event handler dosen't get triggered
         if (handler[0]) return 1

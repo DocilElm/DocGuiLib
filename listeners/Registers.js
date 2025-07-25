@@ -77,8 +77,6 @@ export default class HandleRegisters {
         }))
 
         this.eventsList.add(this.ctGui.registerClosed((gui) => {
-            this._stop()
-
             // Trigger the saved [customEvents]
             this.customEvents.get(CustomEventsENUM.CLOSE)?.forEach(it => it(gui))
         }))

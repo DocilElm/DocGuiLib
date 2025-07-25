@@ -183,7 +183,7 @@
         },
         "text": {
             "color": [255, 255, 255, 255],
-            "scale": 2,
+            "scale": 1.5,
             "openArrow": "§l↓",
             "closeArrow": "§l↑"
         },
@@ -328,7 +328,7 @@
         },
         "text": {
             "color": [255, 255, 255, 255],
-            "scale": 2,
+            "scale": 1.5,
             "openArrow": "§l↓",
             "closeArrow": "§l↑"
         },
@@ -378,7 +378,7 @@
         },
         "text": {
             "color": [255, 255, 255, 255],
-            "scale": 2,
+            "scale": 1.5,
             "openArrow": "§l↓",
             "closeArrow": "§l↑"
         },

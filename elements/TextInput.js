@@ -5,12 +5,12 @@ let ticksDown = 0
 let keybindEvents = []
 
 register("tick", () => {
-    if (!World.isLoaded() || !Keyboard.isKeyDown(Keyboard.KEY_BACK)) return ticksDown = 0
+    if (!World.isLoaded() || !Keyboard.isKeyDown(Keyboard.KEY_BACKSPACE)) return ticksDown = 0
 
     ticksDown++
     if (ticksDown <= 10) return
 
-    keybindEvents.forEach(it => it("", Keyboard.KEY_BACK))
+    keybindEvents.forEach(it => it("", Keyboard.KEY_BACKSPACE))
 })
 
 export default class TextInputElement extends BaseElement {

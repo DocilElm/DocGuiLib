@@ -1,7 +1,7 @@
 {
   "name": "DocGuiLib",
   "creator": "DocilElm",
-  "description": "doc is the best.",
+  "description": "Helper Gui library for other modules to not have to implement these themselves",
   "version": "2.14.1",
   "requires": ["Elementa"]
 }
